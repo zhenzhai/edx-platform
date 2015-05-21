@@ -821,6 +821,10 @@ INSTALLED_APPS = (
     # other apps that are.  Django 1.8 wants to have imported models supported
     # by installed apps.
     'lms.djangoapps.verify_student',
+
+    # Microsite configuration application
+    'microsite_configuration',
+
 )
 
 
@@ -1122,6 +1126,14 @@ DEPRECATED_BLOCK_TYPES = [
     'combinedopenended',
     'graphical_slider_tool',
 ]
+
+
+################################ Settings for Microsites ################################
+
+### Select an implementation for the microsite backend
+MICROSITE_BACKEND = 'microsite_configuration.backends.filebased.SettingsFileMicrositeBackend'
+MICROSITE_TEMPLATE_BACKEND = 'microsite_configuration.backends.base.BaseMicrositeTemplateBackend'
+
 
 #### PROCTORING CONFIGURATION DEFAULTS
 
