@@ -18,6 +18,7 @@
          * done.
          */
         modules: getModulesList([
+            'js/vendor/moment.min',
             'js/discovery/discovery_factory',
             'js/edxnotes/views/notes_visibility_factory',
             'js/edxnotes/views/page_factory',
@@ -67,7 +68,8 @@
             'logger': 'empty:',
             'utility': 'empty:',
             'URI': 'empty:',
-            'DiscussionModuleView': 'empty:'
+            'DiscussionModuleView': 'empty:',
+            'moment': 'empty:'
         },
 
         /**
