@@ -29,6 +29,7 @@ from path import Path as path
 import json
 import re
 from lxml import etree
+import copy
 
 from xmodule.modulestore.xml import XMLModuleStore, LibraryXMLModuleStore, ImportSystem
 from xblock.runtime import KvsFieldData, DictKeyValueStore
@@ -44,7 +45,7 @@ from xmodule.tabs import CourseTabList
 from xmodule.assetstore import AssetMetadata
 from xmodule.modulestore.django import ASSET_IGNORE_REGEX
 from xmodule.modulestore.exceptions import DuplicateCourseError
-from xmodule.modulestore.mongo.base import MongoRevisionKey
+from xmodule.modulestore.mongo.base import MongoRevisionKey, _DETACHED_CATEGORIES
 from xmodule.modulestore import ModuleStoreEnum
 from xmodule.modulestore.store_utilities import draft_node_constructor, get_draft_subtree_roots
 from xmodule.modulestore.tests.utils import LocationMixin
@@ -376,6 +377,8 @@ class ImportManager(object):
         Recursively imports all child blocks from the temporary modulestore into the
         target modulestore.
         """
+        existing_blocks = set(self.store.get_items(dest_id))
+        created_blocks = set()
         all_locs = set(self.xml_module_store.modules[courselike_key].keys())
         all_locs.remove(source_courselike.location)
 
@@ -394,7 +397,8 @@ class ImportManager(object):
                     if self.verbose:
                         log.debug('importing module location %s', child.location)
 
-                    _update_and_import_module(
+                    created_blocks.add(
+                        _update_and_import_module(
                         child,
                         self.store,
                         self.user_id,
@@ -402,25 +406,41 @@ class ImportManager(object):
                         dest_id,
                         do_import_static=self.do_import_static,
                         runtime=courselike.runtime,
+                        )
                     )
 
                     depth_first(child)
 
         depth_first(source_courselike)
 
+        print _DETACHED_CATEGORIES
         for leftover in all_locs:
             if self.verbose:
                 log.debug('importing module location %s', leftover)
 
-            _update_and_import_module(
-                self.xml_module_store.get_item(leftover),
-                self.store,
-                self.user_id,
-                courselike_key,
-                dest_id,
-                do_import_static=self.do_import_static,
-                runtime=courselike.runtime,
-            )
+            if leftover.block_type in _DETACHED_CATEGORIES or leftover.block_type == 'course':
+                created_blocks.add(
+                    _update_and_import_module(
+                        self.xml_module_store.get_item(leftover),
+                        self.store,
+                        self.user_id,
+                        courselike_key,
+                        dest_id,
+                        do_import_static=self.do_import_static,
+                        runtime=courselike.runtime,
+                    )
+                )
+
+        orphans = existing_blocks - created_blocks
+        deleted = set()
+        for orphan in orphans:
+            if orphan.category != 'course':
+                print orphan
+                deleted.add(orphan)
+                self.store.delete_item(orphan.location, self.user_id)
+
+        print "orphans deleted: "
+        print deleted
 
     def run_imports(self):
         """
@@ -467,8 +487,8 @@ class CourseImportManager(ImportManager):
 
     def get_courselike(self, courselike_key, runtime, dest_id):
         """
-        Given a key, runtime, and target key, get the version of the course
-        from the temporary modulestore.
+        Givekey, runtime, and target key, get the version of the course
+        from the temporary modulestore.n a
         """
         source_course = self.xml_module_store.get_course(courselike_key)
         # STEP 1: find and import course module

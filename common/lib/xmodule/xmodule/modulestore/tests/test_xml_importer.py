@@ -2,15 +2,21 @@
 Tests for XML importer.
 """
 import mock
+from ddt import ddt, unpack, data
 from opaque_keys.edx.locator import BlockUsageLocator, CourseLocator
 from xblock.fields import String, Scope, ScopeIds, List
+from xmodule.modulestore.tests.utils import SPLIT_MODULESTORE_SETUP, CONTENTSTORE_SETUPS, TEST_DATA_DIR
+
 from xblock.runtime import Runtime, KvsFieldData, DictKeyValueStore
 from xmodule.x_module import XModuleMixin
 from opaque_keys.edx.locations import Location
+from xmodule.fields import Date, Timedelta
 from xmodule.modulestore import ModuleStoreEnum
 from xmodule.modulestore.inheritance import InheritanceMixin
-from xmodule.modulestore.xml_importer import _update_and_import_module, _update_module_location
+from xmodule.modulestore.xml_importer import _update_and_import_module, _update_module_location, CourseImportManager, \
+    import_course_from_xml
 from xmodule.modulestore.tests.mongo_connection import MONGO_PORT_NUM, MONGO_HOST
+
 from opaque_keys.edx.locations import SlashSeparatedCourseKey
 from xmodule.tests import DATA_DIR
 from uuid import uuid4
@@ -62,7 +68,6 @@ class ModuleStoreNoSettings(unittest.TestCase):
         """
         self.addCleanup(self.cleanup_modulestore)
         super(ModuleStoreNoSettings, self).setUp()
-
 
 #===========================================
 def modulestore():
@@ -316,3 +321,42 @@ class UpdateLocationTest(ModuleStoreNoSettings):
         # Expect these fields pass "is_set_on" test
         for field in self.CONTENT_FIELDS + self.SETTINGS_FIELDS + self.CHILDREN_FIELDS:
             self.assertTrue(new_version.fields[field].is_set_on(new_version))
+
+@ddt
+class SplitMongoOrphanImportTest(ModuleStoreNoSettings):
+    """
+    Tests the modulestore(s) to ensure that orphans are removed when a course is re-imported.
+    """
+
+    @data((SPLIT_MODULESTORE_SETUP, CONTENTSTORE_SETUPS[0], 'split_test_module', 'split_test_module_orphaned'))
+    @unpack
+    def test_import_course(self, modulestore_builder, contentstore_builder, original_course_data_name, orphaned_course_data_name):
+        with contentstore_builder.build() as contentstore:
+            with modulestore_builder.build(contentstore=contentstore) as modulestore:
+                course_key = modulestore.make_course_key('edx', 'test', 'orphans')
+                import_course_from_xml(
+                    modulestore,
+                    ModuleStoreEnum.UserID.test,
+                    TEST_DATA_DIR,
+                    source_dirs=[original_course_data_name],
+                    static_content_store=contentstore,
+                    target_id=course_key,
+                    raise_on_failure=True,
+                    create_if_not_present=True
+                )
+
+                import_course_from_xml(
+                    modulestore,
+                    ModuleStoreEnum.UserID.test,
+                    TEST_DATA_DIR,
+                    source_dirs=[orphaned_course_data_name],
+                    static_content_store=contentstore,
+                    target_id=course_key,
+                    raise_on_failure=True,
+                    create_if_not_present=True
+                )
+
+
+
+    def setup(self):
+        super(SplitMongoOrphanImportTest, self).setUp()
