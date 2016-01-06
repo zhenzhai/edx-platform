@@ -20,6 +20,7 @@ from student.models import UserProfile, CourseEnrollment
 from lms.djangoapps.verify_student.models import SoftwareSecurePhotoVerification
 
 from certificates.models import (
+    CertificateStatuses,
     GeneratedCertificate,
     certificate_status_for_student,
     CertificateStatuses as status,
@@ -306,6 +307,15 @@ class XQueueCertInterface(object):
                 #   Despite blowing up the xml parser, bad values here are fine
                 grade_contents = None
 
+            # If this user's enrollment is not eligible to receive a
+            # certificate, mark it as such for reporting and
+            # analytics.
+            if not is_whitelisted and not CourseMode.is_eligible_for_certificate(enrollment_mode):
+                cert.eligible_for_certificate = False
+                new_status = CertificateStatuses.auditing
+                cert.status = new_status
+                cert.save()
+
             if is_whitelisted or grade_contents is not None:
 
                 if is_whitelisted:
@@ -336,7 +346,7 @@ class XQueueCertInterface(object):
                         new_status,
                         unicode(course_id)
                     )
-                else:
+                elif cert.eligible_for_certificate or is_whitelisted:
                     key = make_hashkey(random.random())
                     cert.key = key
                     contents = {

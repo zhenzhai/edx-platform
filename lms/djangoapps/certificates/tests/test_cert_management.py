@@ -6,6 +6,7 @@ from nose.plugins.attrib import attr
 from django.test.utils import override_settings
 from mock import patch
 
+from course_modes.models import CourseMode
 from opaque_keys.edx.locator import CourseLocator
 from certificates.tests.factories import BadgeAssertionFactory
 from xmodule.modulestore.tests.django_utils import ModuleStoreTestCase
@@ -35,7 +36,8 @@ class CertificateManagementTest(ModuleStoreTestCase):
         # Enroll the user in the course
         CourseEnrollmentFactory.create(
             user=user,
-            course_id=course_key
+            course_id=course_key,
+            mode=CourseMode.HONOR
         )
 
         # Create the certificate

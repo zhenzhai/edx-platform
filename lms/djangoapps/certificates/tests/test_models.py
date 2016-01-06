@@ -14,7 +14,14 @@ from certificates.models import (
     ExampleCertificateSet,
     CertificateHtmlViewConfiguration,
     CertificateTemplateAsset,
-    BadgeImageConfiguration)
+    BadgeImageConfiguration,
+    EligibleCertificateManager,
+    GeneratedCertificate,
+)
+from certificates.tests.factories import GeneratedCertificateFactory
+from student.tests.factories import UserFactory
+from xmodule.modulestore.tests.django_utils import SharedModuleStoreTestCase
+from xmodule.modulestore.tests.factories import CourseFactory
 
 FEATURES_INVALID_FILE_PATH = settings.FEATURES.copy()
 FEATURES_INVALID_FILE_PATH['CERTS_HTML_VIEW_CONFIG_PATH'] = 'invalid/path/to/config.json'
@@ -234,3 +241,37 @@ class CertificateTemplateAssetTest(TestCase):
 
         certificate_template_asset = CertificateTemplateAsset.objects.get(id=1)
         self.assertEqual(certificate_template_asset.asset, 'certificate_template_assets/1/picture2.jpg')
+
+
+@attr('shard_1')
+class EligibleCertificateManagerTest(SharedModuleStoreTestCase):
+    """
+    Test the GeneratedCertificate model's object manager for filtering
+    out ineligible certs.
+    """
+
+    @classmethod
+    def setUpClass(cls):
+        super(EligibleCertificateManagerTest, cls).setUpClass()
+        cls.courses = (CourseFactory(), CourseFactory())
+
+    def setUp(self):
+        super(EligibleCertificateManagerTest, self).setUp()
+        self.user = UserFactory()
+        self.eligible_cert = GeneratedCertificateFactory.create(
+            eligible_for_certificate=True,
+            user=self.user,
+            course_id=self.courses[0].id  # pylint: disable=no-member
+        )
+        self.ineligible_cert = GeneratedCertificateFactory.create(
+            eligible_for_certificate=False,
+            user=self.user,
+            course_id=self.courses[1].id  # pylint: disable=no-member
+        )
+
+    def test_eligible_cert_manager(self):
+        self.assertEqual(list(GeneratedCertificate.objects.filter(user=self.user)), [self.eligible_cert])
+        self.assertEqual(
+            list(GeneratedCertificate.with_ineligible_certificates.filter(user=self.user)),  # pylint: disable=no-member
+            [self.eligible_cert, self.ineligible_cert]
+        )

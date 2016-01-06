@@ -168,10 +168,35 @@ class CertificateWhitelist(models.Model):
         return result
 
 
+class EligibleCertificateManager(models.Manager):
+    """
+    A manager for `GeneratedCertificate` models that automatically
+    filters out ineligible certs.
+
+    The idea is to prevent accidentally granting certificates to
+    students who have not enrolled in a cert-granting mode. The
+    alternative is to filter by eligible_for_certificate=True every
+    time certs are searched for, which is verbose and likely to be
+    forgotten.
+    """
+
+    def get_queryset(self):
+        """
+        Return a queryset for `GeneratedCertificate` models, filtering out
+        ineligible certificates.
+        """
+        return super(EligibleCertificateManager, self).get_queryset().filter(eligible_for_certificate=True)
+
+
 class GeneratedCertificate(models.Model):
     """
     Base model for generated certificates
     """
+
+    # By default, only return eligible certificates from queries
+    objects = EligibleCertificateManager()
+    # Provides an unfiltered queryset in case it's necessary
+    with_ineligible_certificates = models.Manager()
 
     MODES = Choices('verified', 'honor', 'audit', 'professional', 'no-id-professional')
 
@@ -191,6 +216,19 @@ class GeneratedCertificate(models.Model):
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)
     error_reason = models.CharField(max_length=512, blank=True, default='')
+    # Whether or not this GeneratedCertificate represents a
+    # certificate which can be shown to the user. Grading and
+    # certificate logic is intertwined here, so even enrollments
+    # without certificates (as of Jan 2016, this is only audit mode)
+    # create a GeneratedCertificate record to record the learner's
+    # final grade. Since audit enrollments used to have certificates
+    # and now do not, we need to be able to distinguish between old
+    # records and new in our analytics and reporting. The way we'll do
+    # this is by checking this field. By default it is True in order
+    # to make sure old records are counted correctly, and in
+    # `GeneratedCertificate.add_cert` we set it to False for new audit
+    # enrollments.
+    eligible_for_certificate = models.BooleanField(default=True)
 
     class Meta(object):
         unique_together = (('user', 'course_id'),)
@@ -410,7 +448,7 @@ def certificate_status_for_student(student, course_id):
     '''
 
     try:
-        generated_certificate = GeneratedCertificate.objects.get(
+        generated_certificate = GeneratedCertificate.with_ineligible_certificates.get(  # pylint: disable=no-member
             user=student, course_id=course_id)
         cert_status = {
             'status': generated_certificate.status,

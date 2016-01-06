@@ -70,13 +70,13 @@ class Command(BaseCommand):
         enrolled_total = User.objects.filter(
             courseenrollment__course_id=course_id
         )
-        verified_enrolled = GeneratedCertificate.objects.filter(
+        verified_enrolled = GeneratedCertificate.with_ineligible_certificates.filter(  # pylint: disable=no-member
             course_id__exact=course_id, mode__exact='verified'
         )
-        honor_enrolled = GeneratedCertificate.objects.filter(
+        honor_enrolled = GeneratedCertificate.with_ineligible_certificates.filter(  # pylint: disable=no-member
             course_id__exact=course_id, mode__exact='honor'
         )
-        audit_enrolled = GeneratedCertificate.objects.filter(
+        audit_enrolled = GeneratedCertificate.with_ineligible_certificates.filter(  # pylint: disable=no-member
             course_id__exact=course_id, mode__exact='audit'
         )
 
@@ -88,7 +88,7 @@ class Command(BaseCommand):
             'audit_enrolled': audit_enrolled.count()
         }
 
-        status_tally = GeneratedCertificate.objects.filter(
+        status_tally = GeneratedCertificate.with_ineligible_certificates.filter(  # pylint: disable=no-member
             course_id__exact=course_id
         ).values('status').annotate(
             dcount=Count('status')
@@ -100,7 +100,7 @@ class Command(BaseCommand):
             }
         )
 
-        mode_tally = GeneratedCertificate.objects.filter(
+        mode_tally = GeneratedCertificate.with_ineligible_certificates.filter(  # pylint: disable=no-member
             course_id__exact=course_id,
             status__exact='downloadable'
         ).values('mode').annotate(

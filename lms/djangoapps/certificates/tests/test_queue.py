@@ -9,6 +9,7 @@ from nose.plugins.attrib import attr
 from django.test import TestCase
 from django.test.utils import override_settings
 
+from course_modes.models import CourseMode
 from opaque_keys.edx.locator import CourseLocator
 from xmodule.modulestore.tests.django_utils import ModuleStoreTestCase
 from student.tests.factories import UserFactory, CourseEnrollmentFactory
@@ -29,6 +30,7 @@ from certificates.models import (
     GeneratedCertificate,
     CertificateStatuses,
 )
+from certificates.tests.factories import CertificateWhitelistFactory
 from lms.djangoapps.verify_student.tests.factories import SoftwareSecurePhotoVerificationFactory
 
 
@@ -97,6 +99,30 @@ class XQueueCertInterfaceAddCertificateTest(ModuleStoreTestCase):
 
         self.assert_queue_response(mode, 'verified', template_name)
 
+    def test_ineligible_cert_whitelisted(self):
+        """Test that audit mode students can receive a certificate if they are whitelisted."""
+        # Enroll as audit
+        CourseEnrollmentFactory(
+            user=self.user_2,
+            course_id=self.course.id,
+            is_active=True,
+            mode='audit'
+        )
+        # Whitelist student
+        CertificateWhitelistFactory(course_id=self.course.id, user=self.user_2)
+
+        # Generate certs
+        with patch('courseware.grades.grade', Mock(return_value={'grade': 'Pass', 'percent': 0.75})):
+            with patch.object(XQueueInterface, 'send_to_queue') as mock_send:
+                mock_send.return_value = (0, None)
+                self.xqueue.add_cert(self.user_2, self.course.id)
+
+        # Assert cert generated correctly
+        self.assertTrue(mock_send.called)
+        certificate = GeneratedCertificate.certificate_for_student(self.user_2, self.course.id)
+        self.assertIsNotNone(certificate)
+        self.assertEqual(certificate.mode, 'audit')
+
     def assert_queue_response(self, mode, expected_mode, expected_template_name):
         """Dry method for course enrollment and adding request to queue."""
         CourseEnrollmentFactory(
@@ -110,17 +136,32 @@ class XQueueCertInterfaceAddCertificateTest(ModuleStoreTestCase):
                 mock_send.return_value = (0, None)
                 self.xqueue.add_cert(self.user_2, self.course.id)
 
-        # Verify that the task was sent to the queue with the correct callback URL
-        self.assertTrue(mock_send.called)
-        __, kwargs = mock_send.call_args_list[0]
+        # Ensure that a certificate record has been created, and
+        # grading has been run. If the enrollment mode is eligible for
+        # a certificate, assert that it has been correctly
+        # generated. Otherwise, it should not generate a cert.
+        if CourseMode.is_eligible_for_certificate(mode):
+            # Verify that the task was sent to the queue with the correct callback URL
+            self.assertTrue(mock_send.called)
 
-        actual_header = json.loads(kwargs['header'])
-        self.assertIn('https://edx.org/update_certificate?key=', actual_header['lms_callback_url'])
-        certificate = GeneratedCertificate.objects.get(user=self.user_2, course_id=self.course.id)
+            __, kwargs = mock_send.call_args_list[0]
+            actual_header = json.loads(kwargs['header'])
+            self.assertIn('https://edx.org/update_certificate?key=', actual_header['lms_callback_url'])
+            body = json.loads(kwargs['body'])
+            self.assertIn(expected_template_name, body['template_pdf'])
+
+            certificate = GeneratedCertificate.objects.get(user=self.user_2, course_id=self.course.id)
+        else:
+            # Ensure the certificate was not generated
+            self.assertFalse(mock_send.called)
+            certificate = GeneratedCertificate.with_ineligible_certificates.get(  # pylint: disable=no-member
+                user=self.user_2,
+                course_id=self.course.id
+            )
+            self.assertFalse(certificate.eligible_for_certificate)
+
+        # Either way, make sure the cert has the right mode
         self.assertEqual(certificate.mode, expected_mode)
-
-        body = json.loads(kwargs['body'])
-        self.assertIn(expected_template_name, body['template_pdf'])
 
 
 @attr('shard_1')
