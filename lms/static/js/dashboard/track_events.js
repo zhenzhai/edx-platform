@@ -25,6 +25,7 @@ var edx = edx || {};
         var $el = $(element);
 
         return {
+            category: 'dashboard',
             course_id: $el.closest('.course-container').find('.info-course-id').html(),
             xseries_id: $el.data('program-id')
         };
@@ -95,9 +96,8 @@ var edx = edx || {};
     edx.dashboard.xseriesTrackMessages = function() {
         $('.xseries-action .btn').each(function(i, element) {
             var data = edx.dashboard.generateProgramProperties($(element));
-            // TODO: Fire event
-            // 'edx.bi.dashboard.xseries_cta_message.viewed',
-            // data
+
+            window.analytics.track( 'edx.bi.dashboard.xseries_cta_message.viewed', data );
         });
     };
 

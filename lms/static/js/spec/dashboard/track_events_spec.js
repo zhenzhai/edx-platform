@@ -77,6 +77,18 @@
                     $('.xseries-action .btn'),
                     'edx.bi.dashboard.xseries_action_button.clicked',
                     {
+                        category: 'dashboard',
+                        course_id: 'CTB3365DWx',
+                        program_id: 'xseries007'
+                    }
+                );
+            });
+
+            it('sends an analytics event when xseries messages are present in the DOM on page load', function() {
+                expect(window.analytics.track).toHaveBeenCalledWith(
+                    'edx.bi.dashboard.xseries_action_button.viewed',
+                    {
+                        category: 'dashboard',
                         course_id: 'CTB3365DWx',
                         program_id: 'xseries007'
                     }
