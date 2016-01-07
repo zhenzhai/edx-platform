@@ -1,7 +1,7 @@
 """ Common Authentication Handlers used across projects. """
 from rest_framework.authentication import SessionAuthentication
 from rest_framework_oauth.authentication import OAuth2Authentication
-from rest_framework.exceptions import AuthenticationFailed
+from .exceptions import AuthenticationFailed
 from rest_framework_oauth.compat import oauth2_provider, provider_now
 
 
@@ -65,19 +65,25 @@ class OAuth2AuthenticationAllowInactiveUser(OAuth2Authentication):
     This class can be used for an OAuth2-accessible endpoint that allows users to access
     that endpoint without having their email verified.  For example, this is used
     for mobile endpoints.
-
     """
     def authenticate_credentials(self, request, access_token):
         """
         Authenticate the request, given the access token.
         Override base class implementation to discard failure if user is inactive.
         """
-        try:
-            token = oauth2_provider.oauth2.models.AccessToken.objects.select_related('user')
-            # provider_now switches to timezone aware datetime when
-            # the oauth2_provider version supports to it.
-            token = token.get(token=access_token, expires__gt=provider_now())
-        except oauth2_provider.oauth2.models.AccessToken.DoesNotExist:
-            raise AuthenticationFailed('Invalid token')
+        token_qs = oauth2_provider.oauth2.models.AccessToken.objects.select_related('user')
+        token = token_qs.filter(token=access_token).order_by('-expires').first()
+        if not token:
+            raise AuthenticationFailed({
+                u'error_code': u'token_invalid',
+                u'developer_message': u'The provided access token does not exist',
+            })
+        # provider_now switches to timezone aware datetime when
+        # the oauth2_provider version supports to it.
+        elif token.expires < provider_now():
+            raise AuthenticationFailed({
+                u'error_code': u'token_expired',
+                u'developer_message': u'The provided access token has expired and is no longer valid',
+            })
 
         return token.user, token

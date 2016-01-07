@@ -204,13 +204,21 @@ class OAuth2Tests(TestCase):
 
     @unittest.skipUnless(oauth2_provider, 'django-oauth2-provider not installed')
     def test_post_form_with_expired_access_token_failing_auth(self):
-        """Ensure POSTing with expired access token fails with an 'Invalid token' error"""
+        """Ensure POSTing with expired access token fails with a 'token_expired' error"""
         self.access_token.expires = datetime.datetime.now() - datetime.timedelta(seconds=10)  # 10 seconds late
         self.access_token.save()
         auth = self._create_authorization_header()
         response = self.csrf_client.post('/oauth2-test/', HTTP_AUTHORIZATION=auth)
         self.assertIn(response.status_code, (status.HTTP_401_UNAUTHORIZED, status.HTTP_403_FORBIDDEN))
-        self.assertIn('Invalid token', response.content)
+        self.assertIn('token_expired', response.content)
+
+    @unittest.skipUnless(oauth2_provider, 'django-oauth2-provider not installed')
+    def test_post_for_with_invalid_access_token_failing_auth(self):
+        """Ensure POSTing with an invalid access token fails with a 'token_invalid' error"""
+        auth = self._create_authorization_header(token='INVALID')
+        response = self.csrf_client.post('/oauth2-test/', HTTP_AUTHORIZATION=auth)
+        self.assertIn(response.status_code, (status.HTTP_401_UNAUTHORIZED, status.HTTP_403_FORBIDDEN))
+        self.assertIn('token_invalid', response.content)
 
     @unittest.skipUnless(oauth2_provider, 'django-oauth2-provider not installed')
     def test_post_form_with_invalid_scope_failing_auth(self):
