@@ -128,6 +128,7 @@ function (HTML5Video, Resizer) {
             state.videoPlayer.PlayerState = HTML5Video.PlayerState;
         }
 
+        state.videoPlayer.lastPlayerState = state.videoPlayer.PlayerState.UNSTARTED;
         state.videoPlayer.currentTime = 0;
 
         state.videoPlayer.goToStartTime = true;
@@ -724,6 +725,7 @@ function (HTML5Video, Resizer) {
             case this.videoPlayer.PlayerState.BUFFERING:
                 this.el.addClass('is-buffered');
                 this.el.trigger('buffering');
+                this.videoPlayer.emitPlayVideoEvent = this.videoPlayer.lastPlayerState !== this.videoPlayer.PlayerState.PLAYING;
                 break;
             case this.videoPlayer.PlayerState.ENDED:
                 this.el.addClass('is-ended');
@@ -736,6 +738,8 @@ function (HTML5Video, Resizer) {
                 }
                 break;
         }
+
+        this.videoPlayer.lastPlayerState = event.data;
     }
 
     function onError (code) {
