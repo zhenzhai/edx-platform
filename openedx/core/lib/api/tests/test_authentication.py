@@ -214,11 +214,11 @@ class OAuth2Tests(TestCase):
 
     @unittest.skipUnless(oauth2_provider, 'django-oauth2-provider not installed')
     def test_post_for_with_invalid_access_token_failing_auth(self):
-        """Ensure POSTing with an invalid access token fails with a 'token_invalid' error"""
+        """Ensure POSTing with an invalid access token fails with a 'token_nonexistent' error"""
         auth = self._create_authorization_header(token='INVALID')
         response = self.csrf_client.post('/oauth2-test/', HTTP_AUTHORIZATION=auth)
         self.assertIn(response.status_code, (status.HTTP_401_UNAUTHORIZED, status.HTTP_403_FORBIDDEN))
-        self.assertIn('token_invalid', response.content)
+        self.assertIn('token_nonexistent', response.content)
 
     @unittest.skipUnless(oauth2_provider, 'django-oauth2-provider not installed')
     def test_post_form_with_invalid_scope_failing_auth(self):

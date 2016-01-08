@@ -1,5 +1,6 @@
 """ Common Authentication Handlers used across projects. """
 from rest_framework.authentication import SessionAuthentication
+from rest_framework import exceptions as drf_exceptions
 from rest_framework_oauth.authentication import OAuth2Authentication
 from .exceptions import AuthenticationFailed
 from rest_framework_oauth.compat import oauth2_provider, provider_now
@@ -66,17 +67,43 @@ class OAuth2AuthenticationAllowInactiveUser(OAuth2Authentication):
     that endpoint without having their email verified.  For example, this is used
     for mobile endpoints.
     """
+
+    def authenticate(self, *args, **kwargs):
+        """
+        Returns two-tuple of (user, token) if access token authentication
+        succeeds, raises an AuthenticationFailed (HTTP 401) if authentication
+        fails or None if the user did not try to authenticate using an access
+        token.
+
+        Overrides base class implementation to return edX-style error
+        responses.
+        """
+
+        try:
+            return super(OAuth2AuthenticationAllowInactiveUser, self).authenticate(*args, **kwargs)
+        except drf_exceptions.AuthenticationFailed as exc:
+            if 'No credentials provided' in exc.detail:
+                error_code = u'token_not_provided'
+            elif 'Token string should not' in exc.detail:
+                error_code = u'token_nonexistent'
+            else:
+                error_code = u'token_error'
+            raise AuthenticationFailed({
+                u'error_code': error_code,
+                u'developer_message': exc.detail
+            })
+
     def authenticate_credentials(self, request, access_token):
         """
         Authenticate the request, given the access token.
-        Override base class implementation to discard failure if user is inactive.
+        Overrides base class implementation to discard failure if user is inactive.
         """
         token_qs = oauth2_provider.oauth2.models.AccessToken.objects.select_related('user')
         token = token_qs.filter(token=access_token).order_by('-expires').first()
         if not token:
             raise AuthenticationFailed({
-                u'error_code': u'token_invalid',
-                u'developer_message': u'The provided access token does not exist',
+                u'error_code': u'token_nonexistent',
+                u'developer_message': u'The provided access token does not match any valid tokens'
             })
         # provider_now switches to timezone aware datetime when
         # the oauth2_provider version supports to it.
@@ -85,5 +112,5 @@ class OAuth2AuthenticationAllowInactiveUser(OAuth2Authentication):
                 u'error_code': u'token_expired',
                 u'developer_message': u'The provided access token has expired and is no longer valid',
             })
-
-        return token.user, token
+        else:
+            return token.user, token
