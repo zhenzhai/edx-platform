@@ -6,6 +6,10 @@ converted to JSON, like other API responses.
 from rest_framework import exceptions
 
 
+# TBD: Override Throttled, UnsupportedMediaType, ValidationError.  These types require
+# more careful handling of arguments.
+
+
 class _DictAPIException(exceptions.APIException):
     """
     Intermediate class to allow exceptions to pass dict detail values.  Use by
@@ -77,22 +81,4 @@ class PermissionDenied(exceptions.PermissionDenied, _DictAPIException):
     pass
 
 
-class Throttled(exceptions.Throttled, _DictAPIException):
-    """
-    Override of DRF's Throttled exception to allow dictionary responses.
-    """
-    pass
 
-
-class UnsupportedMediaType(exceptions.UnsupportedMediaType, _DictAPIException):
-    """
-    Override of DRF's UnsupportedMediaType exception to allow dictionary responses.
-    """
-    pass
-
-
-class ValidationError(exceptions.ValidationError, _DictAPIException):
-    """
-    Override of DRF's ValidationError exception to allow dictionary responses.
-    """
-    pass
