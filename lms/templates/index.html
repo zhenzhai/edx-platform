@@ -61,8 +61,11 @@ from microsite_configuration import microsite
     </div>
 
   </header>
-
-  <%include file="courses_list.html"/>
+  <%
+    # allow for microsite override the courses list
+    courses_list = microsite.get_template_path('courses_list.html')
+  %>
+  <%include file="${courses_list}" />
 
 </section>
 
