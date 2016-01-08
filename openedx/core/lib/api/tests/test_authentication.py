@@ -119,36 +119,36 @@ class OAuth2Tests(TestCase):
         """Ensure that a wrong token type lead to the correct HTTP error status code"""
         auth = "Wrong token-type-obviously"
         response = self.csrf_client.get('/oauth2-test/', {}, HTTP_AUTHORIZATION=auth)
-        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
         response = self.csrf_client.get('/oauth2-test/', HTTP_AUTHORIZATION=auth)
-        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     @unittest.skipUnless(oauth2_provider, 'django-oauth2-provider not installed')
     def test_get_form_with_wrong_authorization_header_token_format_failing(self):
         """Ensure that a wrong token format lead to the correct HTTP error status code"""
         auth = "Bearer wrong token format"
         response = self.csrf_client.get('/oauth2-test/', {}, HTTP_AUTHORIZATION=auth)
-        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
         response = self.csrf_client.get('/oauth2-test/', HTTP_AUTHORIZATION=auth)
-        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     @unittest.skipUnless(oauth2_provider, 'django-oauth2-provider not installed')
     def test_get_form_with_wrong_authorization_header_token_failing(self):
         """Ensure that a wrong token lead to the correct HTTP error status code"""
         auth = "Bearer wrong-token"
         response = self.csrf_client.get('/oauth2-test/', {}, HTTP_AUTHORIZATION=auth)
-        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
         response = self.csrf_client.get('/oauth2-test/', HTTP_AUTHORIZATION=auth)
-        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     @unittest.skipUnless(oauth2_provider, 'django-oauth2-provider not installed')
     def test_get_form_with_wrong_authorization_header_token_missing(self):
         """Ensure that a missing token lead to the correct HTTP error status code"""
         auth = "Bearer"
         response = self.csrf_client.get('/oauth2-test/', {}, HTTP_AUTHORIZATION=auth)
-        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
         response = self.csrf_client.get('/oauth2-test/', HTTP_AUTHORIZATION=auth)
-        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     @unittest.skipUnless(oauth2_provider, 'django-oauth2-provider not installed')
     def test_get_form_passing_auth(self):
@@ -178,7 +178,7 @@ class OAuth2Tests(TestCase):
         """Ensure GETing form over OAuth with correct client credentials in query fails when DEBUG is False"""
         query = urlencode({'access_token': self.access_token.token})
         response = self.csrf_client.get('/oauth2-test/?%s' % query)
-        self.assertIn(response.status_code, (status.HTTP_401_UNAUTHORIZED, status.HTTP_403_FORBIDDEN))
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     @unittest.skipUnless(oauth2_provider, 'django-oauth2-provider not installed')
     def test_post_form_passing_auth(self):
@@ -193,14 +193,14 @@ class OAuth2Tests(TestCase):
         self.access_token.delete()
         auth = self._create_authorization_header()
         response = self.csrf_client.post('/oauth2-test/', HTTP_AUTHORIZATION=auth)
-        self.assertIn(response.status_code, (status.HTTP_401_UNAUTHORIZED, status.HTTP_403_FORBIDDEN))
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     @unittest.skipUnless(oauth2_provider, 'django-oauth2-provider not installed')
     def test_post_form_with_refresh_token_failing_auth(self):
         """Ensure POSTing with refresh token instead of access token fails"""
         auth = self._create_authorization_header(token=self.refresh_token.token)
         response = self.csrf_client.post('/oauth2-test/', HTTP_AUTHORIZATION=auth)
-        self.assertIn(response.status_code, (status.HTTP_401_UNAUTHORIZED, status.HTTP_403_FORBIDDEN))
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     @unittest.skipUnless(oauth2_provider, 'django-oauth2-provider not installed')
     def test_post_form_with_expired_access_token_failing_auth(self):
@@ -209,15 +209,23 @@ class OAuth2Tests(TestCase):
         self.access_token.save()
         auth = self._create_authorization_header()
         response = self.csrf_client.post('/oauth2-test/', HTTP_AUTHORIZATION=auth)
-        self.assertIn(response.status_code, (status.HTTP_401_UNAUTHORIZED, status.HTTP_403_FORBIDDEN))
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
         self.assertIn('token_expired', response.content)
+
+    @unittest.skipUnless(oauth2_provider, 'django-oauth2-provider not installed')
+    def test_post_for_with_nonexistent_access_token_failing_auth(self):
+        """Ensure POSTing with an invalid access token fails with a 'token_nonexistent' error"""
+        auth = self._create_authorization_header(token='INVALID')
+        response = self.csrf_client.post('/oauth2-test/', HTTP_AUTHORIZATION=auth)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+        self.assertIn('token_nonexistent', response.content)
 
     @unittest.skipUnless(oauth2_provider, 'django-oauth2-provider not installed')
     def test_post_for_with_invalid_access_token_failing_auth(self):
         """Ensure POSTing with an invalid access token fails with a 'token_nonexistent' error"""
-        auth = self._create_authorization_header(token='INVALID')
+        auth = self._create_authorization_header(token='INVALID token')
         response = self.csrf_client.post('/oauth2-test/', HTTP_AUTHORIZATION=auth)
-        self.assertIn(response.status_code, (status.HTTP_401_UNAUTHORIZED, status.HTTP_403_FORBIDDEN))
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
         self.assertIn('token_nonexistent', response.content)
 
     @unittest.skipUnless(oauth2_provider, 'django-oauth2-provider not installed')
