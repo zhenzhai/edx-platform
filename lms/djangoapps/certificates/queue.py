@@ -121,7 +121,7 @@ class XQueueCertInterface(object):
         Change the certificate status to unavailable (if it exists) and request
         grading. Passing grades will put a certificate request on the queue.
 
-        Return the status object.
+        Return the cert.
         """
         # TODO: when del_cert is implemented and plumbed through certificates
         #       repo also, do a deletion followed by a creation r/t a simple
@@ -212,7 +212,7 @@ class XQueueCertInterface(object):
         If a student does not have a passing grade the status
         will change to status.notpassing
 
-        Returns the student's status and newly created certificate instance
+        Returns the newly created certificate instance
         """
 
         valid_statuses = [
@@ -225,7 +225,7 @@ class XQueueCertInterface(object):
         ]
 
         cert_status = certificate_status_for_student(student, course_id)['status']
-        new_status = cert_status
+        # new_status = cert_status
         cert = None
 
         if cert_status not in valid_statuses:
@@ -312,8 +312,7 @@ class XQueueCertInterface(object):
             # analytics.
             if not is_whitelisted and not CourseMode.is_eligible_for_certificate(enrollment_mode):
                 cert.eligible_for_certificate = False
-                new_status = CertificateStatuses.auditing
-                cert.status = new_status
+                cert.status = CertificateStatuses.auditing
                 cert.save()
 
             if is_whitelisted or grade_contents is not None:
@@ -331,8 +330,7 @@ class XQueueCertInterface(object):
                 # on the queue
 
                 if self.restricted.filter(user=student).exists():
-                    new_status = status.restricted
-                    cert.status = new_status
+                    cert.status = status.restricted
                     cert.save()
 
                     LOGGER.info(
@@ -343,7 +341,7 @@ class XQueueCertInterface(object):
                             u"No certificate generation task was sent to the XQueue."
                         ),
                         student.id,
-                        new_status,
+                        cert.status,
                         unicode(course_id)
                     )
                 elif cert.eligible_for_certificate or is_whitelisted:
@@ -361,20 +359,18 @@ class XQueueCertInterface(object):
                     if template_file:
                         contents['template_pdf'] = template_file
                     if generate_pdf:
-                        new_status = status.generating
+                        cert.status = status.generating
                     else:
-                        new_status = status.downloadable
+                        cert.status = status.downloadable
                         cert.verify_uuid = uuid4().hex
 
-                    cert.status = new_status
                     cert.save()
 
                     if generate_pdf:
                         try:
                             self._send_to_xqueue(contents, key)
                         except XQueueAddToQueueError as exc:
-                            new_status = ExampleCertificate.STATUS_ERROR
-                            cert.status = new_status
+                            cert.status = ExampleCertificate.STATUS_ERROR
                             cert.error_reason = unicode(exc)
                             cert.save()
                             LOGGER.critical(
@@ -392,12 +388,11 @@ class XQueueCertInterface(object):
                                     u"Sent a certificate grading task to the XQueue "
                                     u"with the key '%s'. "
                                 ),
-                                new_status,
+                                cert.status,
                                 key
                             )
             else:
-                new_status = status.notpassing
-                cert.status = new_status
+                cert.status = status.notpassing
                 cert.save()
 
                 LOGGER.info(
@@ -408,10 +403,10 @@ class XQueueCertInterface(object):
                     ),
                     student.id,
                     unicode(course_id),
-                    new_status
+                    cert.status
                 )
 
-        return new_status, cert
+        return cert
 
     def add_example_cert(self, example_cert):
         """Add a task to create an example certificate.
