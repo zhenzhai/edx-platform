@@ -8,7 +8,7 @@ from rest_framework import exceptions as drf_exceptions
 from rest_framework_oauth.authentication import OAuth2Authentication
 
 from provider.oauth2 import models as dop_models
-from edx_oauth2_provider import models as dot_models
+from oauth2_provider import models as dot_models
 
 from openedx.core.lib.api.exceptions import AuthenticationFailed
 
