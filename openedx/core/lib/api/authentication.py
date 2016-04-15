@@ -6,6 +6,7 @@ import django.utils.timezone
 from rest_framework.authentication import SessionAuthentication
 from rest_framework import exceptions as drf_exceptions
 from rest_framework_oauth.authentication import OAuth2Authentication
+from rest_framework_oauth.compat import oauth2_provider, provider_now
 
 from provider.oauth2 import models as dop_models
 from oauth2_provider import models as dot_models
