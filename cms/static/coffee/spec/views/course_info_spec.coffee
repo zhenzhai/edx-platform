@@ -123,6 +123,9 @@ define ["js/views/course_info_handout", "js/views/course_info_update", "js/model
                 # Verify the link is not rewritten when saved.
                 expect(requestSent.content).toEqual('/static/image.jpg')
 
+                # Verify that analytics are sent
+                expect(window.analytics.track).toHaveBeenCalled()
+
             it "does rewrite links for preview", ->
                 # Create a new update.
                 @createNewUpdate('/static/image.jpg')
@@ -149,6 +152,21 @@ define ["js/views/course_info_handout", "js/views/course_info_update", "js/model
 
             it "does not remove existing course info on click outside modal", ->
                 @cancelExistingCourseInfo(false)
+
+            @testInvalidDateValue: (value) ->
+                @courseInfoEdit.onNew(@event)
+                expect(@courseInfoEdit.$el.find('.save-button').hasClass("is-disabled")).toEqual(false)
+                @courseInfoEdit.$el.find('input.date').val(value).trigger("change")
+                expect(@courseInfoEdit.$el.find('.save-button').hasClass("is-disabled")).toEqual(true)
+                @courseInfoEdit.$el.find('input.date').val("01/01/16").trigger("change")
+                expect(@courseInfoEdit.$el.find('.save-button').hasClass("is-disabled")).toEqual(false)
+
+            it "does not allow updates to be saved with an invalid date", ->
+                @testInvalidDateValue("Marchtober 40, 2048")
+
+            it "does not allow updates to be saved with a blank date", ->
+                @testInvalidDateValue("")
+
 
         describe "Course Updates WITH Push notification", ->
             courseInfoTemplate = readFixtures('course_info_update.underscore')
@@ -177,14 +195,21 @@ define ["js/views/course_info_handout", "js/views/course_info_update", "js/model
                 requestSent = JSON.parse(requests[requests.length - 1].requestBody)
                 expect(requestSent.push_notification_selected).toEqual(true)
 
+		# Check that analytics send push_notification info
+                analytics_payload = window.analytics.track.calls[0].args[1]
+                expect(analytics_payload).toEqual(jasmine.objectContaining({'push_notification_selected': true}))
+
             it "sends correct value for push_notification_selected when it is unselected", ->
                 requests = AjaxHelpers.requests(this);
                 # unselect push notification
                 @courseInfoEdit.$el.find('.toggle-checkbox').attr('checked', false);
-
                 @courseInfoEdit.$el.find('.save-button').click()
                 requestSent = JSON.parse(requests[requests.length - 1].requestBody)
                 expect(requestSent.push_notification_selected).toEqual(false)
+
+		# Check that analytics send push_notification info
+                analytics_payload = window.analytics.track.calls[0].args[1]
+                expect(analytics_payload).toEqual(jasmine.objectContaining({'push_notification_selected': false}))
 
         describe "Course Handouts", ->
             handoutsTemplate = readFixtures('course_info_handouts.underscore')

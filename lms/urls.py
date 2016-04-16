@@ -8,7 +8,6 @@ from django.views.generic.base import RedirectView
 from ratelimitbackend import admin
 from django.conf.urls.static import static
 
-import django.contrib.auth.views
 from microsite_configuration import microsite
 import auth_exchange.views
 
@@ -101,6 +100,23 @@ urlpatterns = (
 
     url(r'^api/commerce/', include('commerce.api.urls', namespace='commerce_api')),
     url(r'^api/credit/', include('openedx.core.djangoapps.credit.urls', app_name="credit", namespace='credit')),
+    url(r'^rss_proxy/', include('rss_proxy.urls', namespace='rss_proxy')),
+    url(r'^api/organizations/', include('organizations.urls', namespace='organizations')),
+
+    # Update session view
+    url(r'^lang_pref/session_language', 'lang_pref.views.update_session_language', name='session_language'),
+
+    # Multiple course modes and identity verification
+    # TODO Namespace these!
+    url(r'^course_modes/', include('course_modes.urls')),
+    url(r'^verify_student/', include('verify_student.urls')),
+
+    # URLs for API access management
+    url(r'^api-admin/', include('openedx.core.djangoapps.api_admin.urls', namespace='api_admin')),
+)
+
+urlpatterns += (
+    url(r'^dashboard/', include('learner_dashboard.urls')),
 )
 
 if settings.FEATURES["ENABLE_COMBINED_LOGIN_REGISTRATION"]:
@@ -123,23 +139,16 @@ if settings.FEATURES["ENABLE_MOBILE_REST_API"]:
         url(r'^api/mobile/v0.5/', include('mobile_api.urls')),
     )
 
-# if settings.FEATURES.get("MULTIPLE_ENROLLMENT_ROLES"):
-urlpatterns += (
-    # TODO Namespace these!
-    url(r'^verify_student/', include('verify_student.urls')),
-    url(r'^course_modes/', include('course_modes.urls')),
-)
+if settings.FEATURES["ENABLE_OPENBADGES"]:
+    urlpatterns += (
+        url(r'^api/badges/v1/', include('badges.api.urls', app_name="badges", namespace="badges_api")),
+    )
 
 js_info_dict = {
     'domain': 'djangojs',
     # We need to explicitly include external Django apps that are not in LOCALE_PATHS.
     'packages': ('openassessment',),
 }
-
-urlpatterns += (
-    # Serve catalog of localized strings to be rendered by Javascript
-    url(r'^i18n.js$', 'django.views.i18n.javascript_catalog', js_info_dict),
-)
 
 # sysadmin dashboard, to see what courses are loaded, to delete & load courses
 if settings.FEATURES["ENABLE_SYSADMIN_DASHBOARD"]:
@@ -185,10 +194,8 @@ if not settings.FEATURES["USE_CUSTOM_THEME"]:
             {'template': 'press.html'}, name="press"),
         url(r'^media-kit$', 'static_template_view.views.render',
             {'template': 'media-kit.html'}, name="media-kit"),
-
-        # TODO: (bridger) The copyright has been removed until it is updated for edX
-        # url(r'^copyright$', 'static_template_view.views.render',
-        #     {'template': 'copyright.html'}, name="copyright"),
+        url(r'^copyright$', 'static_template_view.views.render',
+            {'template': 'copyright.html'}, name="copyright"),
 
         # Press releases
         url(r'^press/([_a-zA-Z0-9-]+)$', 'static_template_view.views.render_press_release', name='press_release'),
@@ -205,9 +212,12 @@ for key, value in settings.MKTG_URL_LINK_MAP.items():
     if key == "ROOT" or key == "COURSES":
         continue
 
-    # Make the assumptions that the templates are all in the same dir
-    # and that they all match the name of the key (plus extension)
-    template = "%s.html" % key.lower()
+    # The MKTG_URL_LINK_MAP key specifies the template filename
+    template = key.lower()
+    if '.' not in template:
+        # Append STATIC_TEMPLATE_VIEW_DEFAULT_FILE_EXTENSION if
+        # no file extension was specified in the key
+        template = "%s.%s" % (template, settings.STATIC_TEMPLATE_VIEW_DEFAULT_FILE_EXTENSION)
 
     # To allow theme templates to inherit from default templates,
     # prepend a standard prefix
@@ -822,9 +832,18 @@ if settings.FEATURES.get('AUTH_USE_OPENID_PROVIDER'):
 
 if settings.FEATURES.get('ENABLE_OAUTH2_PROVIDER'):
     urlpatterns += (
-        url(r'^oauth2/', include('oauth2_provider.urls', namespace='oauth2')),
+        # These URLs dispatch to django-oauth-toolkit or django-oauth2-provider as appropriate.
+        # Developers should use these routes, to maintain compatibility for existing client code
+        url(r'^oauth2/', include('lms.djangoapps.oauth_dispatch.urls')),
+        # These URLs contain the django-oauth2-provider default behavior.  It exists to provide
+        # URLs for django-oauth2-provider to call using reverse() with the oauth2 namespace, and
+        # also to maintain support for views that have not yet been wrapped in dispatch views.
+        url(r'^oauth2/', include('edx_oauth2_provider.urls', namespace='oauth2')),
+        # The /_o/ prefix exists to provide a target for code in django-oauth-toolkit that
+        # uses reverse() with the 'oauth2_provider' namespace.  Developers should not access these
+        # views directly, but should rather use the wrapped views at /oauth2/
+        url(r'^_o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
     )
-
 
 if settings.FEATURES.get('ENABLE_LMS_MIGRATION'):
     urlpatterns += (
@@ -872,13 +891,6 @@ urlpatterns += (
     url(r'^debug/show_parameters$', 'debug.views.show_parameters'),
 )
 
-# Crowdsourced hinting instructor manager.
-if settings.FEATURES.get('ENABLE_HINTER_INSTRUCTOR_VIEW'):
-    urlpatterns += (
-        url(r'^courses/{}/hint_manager$'.format(settings.COURSE_ID_PATTERN),
-            'instructor.hint_manager.hint_manager', name="hint_manager"),
-    )
-
 # enable automatic login
 if settings.FEATURES.get('AUTOMATIC_AUTH_FOR_TESTING'):
     urlpatterns += (
@@ -897,14 +909,6 @@ if settings.FEATURES.get('ENABLE_THIRD_PARTY_AUTH'):
 
 # OAuth token exchange
 if settings.FEATURES.get('ENABLE_OAUTH2_PROVIDER'):
-    if settings.FEATURES.get('ENABLE_THIRD_PARTY_AUTH'):
-        urlpatterns += (
-            url(
-                r'^oauth2/exchange_access_token/(?P<backend>[^/]+)/$',
-                auth_exchange.views.AccessTokenExchangeView.as_view(),
-                name="exchange_access_token"
-            ),
-        )
     urlpatterns += (
         url(
             r'^oauth2/login/$',
@@ -933,6 +937,7 @@ if settings.FEATURES["CUSTOM_COURSES_EDX"]:
     urlpatterns += (
         url(r'^courses/{}/'.format(settings.COURSE_ID_PATTERN),
             include('ccx.urls')),
+        url(r'^api/ccx/', include('lms.djangoapps.ccx.api.urls', namespace='ccx_api')),
     )
 
 # Access to courseware as an LTI provider
@@ -950,6 +955,7 @@ urlpatterns = patterns(*urlpatterns)
 
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     urlpatterns += static(
         settings.PROFILE_IMAGE_BACKEND['options']['base_url'],
         document_root=settings.PROFILE_IMAGE_BACKEND['options']['location']

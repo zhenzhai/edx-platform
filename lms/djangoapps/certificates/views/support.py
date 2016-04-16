@@ -85,7 +85,7 @@ def search_certificates(request):
         ]
 
     """
-    user_filter = request.GET.get("user", "")
+    user_filter = urllib.unquote(urllib.quote_plus(request.GET.get("user", "")))
     if not user_filter:
         msg = _("user is not given.")
         return HttpResponseBadRequest(msg)
@@ -260,5 +260,10 @@ def generate_certificate_for_user(request):
             return HttpResponseBadRequest(msg)
 
         # Attempt to generate certificate
-        generate_certificates_for_students(request, params["course_key"], students=[params["user"]])
+        generate_certificates_for_students(
+            request,
+            params["course_key"],
+            student_set="specific_student",
+            specific_student_id=params["user"].id
+        )
         return HttpResponse(200)

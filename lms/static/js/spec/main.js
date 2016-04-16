@@ -29,8 +29,8 @@
             'moment': 'xmodule_js/common_static/js/vendor/moment.min',
             'moment-with-locales': 'xmodule_js/common_static/js/vendor/moment-with-locales.min',
             'text': 'xmodule_js/common_static/js/vendor/requirejs/text',
-            'underscore': 'xmodule_js/common_static/js/vendor/underscore-min',
-            'underscore.string': 'xmodule_js/common_static/js/vendor/underscore.string.min',
+            'underscore': 'xmodule_js/common_static/common/js/vendor/underscore',
+            'underscore.string': 'xmodule_js/common_static/common/js/vendor/underscore.string',
             'backbone': 'xmodule_js/common_static/js/vendor/backbone-min',
             'backbone.associations': 'xmodule_js/common_static/js/vendor/backbone-associations-min',
             'backbone.paginator': 'xmodule_js/common_static/js/vendor/backbone.paginator.min',
@@ -47,9 +47,8 @@
             'jasmine-imagediff': 'xmodule_js/common_static/js/vendor/jasmine-imagediff',
             'jasmine-stealth': 'xmodule_js/common_static/js/vendor/jasmine-stealth',
             'jasmine.async': 'xmodule_js/common_static/js/vendor/jasmine.async',
-            'draggabilly': 'xmodule_js/common_static/js/vendor/draggabilly.pkgd',
             'domReady': 'xmodule_js/common_static/js/vendor/domReady',
-            'mathjax': '//cdn.mathjax.org/mathjax/2.5-latest/MathJax.js?config=TeX-MML-AM_HTMLorMML-full&delayStartupUntil=configured', // jshint ignore:line
+            'mathjax': '//cdn.mathjax.org/mathjax/2.6-latest/MathJax.js?config=TeX-MML-AM_SVG&delayStartupUntil=configured', // jshint ignore:line
             'youtube': '//www.youtube.com/player_api?noext',
             'coffee/src/ajax_prefix': 'xmodule_js/common_static/coffee/src/ajax_prefix',
             'coffee/src/instructor_dashboard/student_admin': 'coffee/src/instructor_dashboard/student_admin',
@@ -66,6 +65,11 @@
             '_split': 'js/split',
             'mathjax_delay_renderer': 'coffee/src/mathjax_delay_renderer',
             'MathJaxProcessor': 'coffee/src/customwmd',
+            'picturefill': 'common/js/vendor/picturefill.min',
+            'draggabilly': 'xmodule_js/common_static/js/vendor/draggabilly',
+            'modernizr': 'xmodule_js/common_static/edx-pattern-library/js/modernizr-custom',
+            'afontgarde': 'xmodule_js/common_static/edx-pattern-library/js/afontgarde',
+            'edxicons': 'xmodule_js/common_static/edx-pattern-library/js/edx-icons',
 
             // Manually specify LMS files that are not converted to RequireJS
             'history': 'js/vendor/history',
@@ -181,22 +185,7 @@
             },
             'underscore': {
                 deps: ['underscore.string'],
-                exports: '_',
-                init: function(UnderscoreString) {
-                    /* Mix non-conflicting functions from underscore.string
-                     * (all but include, contains, and reverse) into the
-                     * Underscore namespace. This allows the login, register,
-                     * and password reset templates to render independent of the
-                     * access view.
-                     */
-                    _.mixin(UnderscoreString.exports());
-
-                    /* Since the access view is not using RequireJS, we also
-                     * expose underscore.string at _.str, so that the access
-                     * view can perform the mixin on its own.
-                     */
-                    _.str = UnderscoreString;
-                }
+                exports: '_'
             },
             'backbone': {
                 deps: ['underscore', 'jquery'],
@@ -221,7 +210,7 @@
                 exports: 'Markdown.Converter'
             },
             'Markdown.Editor': {
-                deps: ['Markdown.Converter'],
+                deps: ['Markdown.Converter', 'gettext', 'underscore'],
                 exports: 'Markdown.Editor'
             },
             'Markdown.Sanitizer': {
@@ -317,6 +306,10 @@
                 exports: 'js/dashboard/donation',
                 deps: ['jquery', 'underscore', 'gettext']
             },
+            'js/dashboard/dropdown.js': {
+                exports: 'js/dashboard/dropdown',
+                deps: ['jquery']
+            },
             'js/shoppingcart/shoppingcart.js': {
                 exports: 'js/shoppingcart/shoppingcart',
                 deps: ['jquery', 'underscore', 'gettext']
@@ -370,7 +363,15 @@
             },
             'js/verify_student/views/step_view': {
                 exports: 'edx.verify_student.StepView',
-                deps: [ 'jquery', 'underscore', 'underscore.string', 'backbone', 'gettext' ]
+                deps: [ 'jquery', 'underscore', 'underscore.string', 'backbone', 'gettext' ],
+                init: function() {
+                    // Set global variables that the payment code is expecting to be defined
+                    window._ = require('underscore');
+                    window._.str = require('underscore.string');
+                    window.edx = edx || {};
+                    window.edx.HtmlUtils = require('edx-ui-toolkit/js/utils/html-utils');
+                    window.edx.StringUtils = require('edx-ui-toolkit/js/utils/string-utils');
+                }
             },
             'js/verify_student/views/intro_step_view': {
                 exports: 'edx.verify_student.IntroStepView',
@@ -511,12 +512,6 @@
                 ],
                 exports: 'Discussion'
             },
-            'xmodule_js/common_static/coffee/src/discussion/discussion_filter': {
-                deps: [
-                    'xmodule_js/common_static/coffee/src/discussion/utils'
-                ],
-                exports: 'DiscussionFilter'
-            },
             'xmodule_js/common_static/coffee/src/discussion/models/discussion_course_settings': {
                 deps: [
                     'xmodule_js/common_static/coffee/src/discussion/utils'
@@ -610,7 +605,6 @@
                     'URI',
                     'xmodule_js/common_static/coffee/src/discussion/content',
                     'xmodule_js/common_static/coffee/src/discussion/discussion',
-                    'xmodule_js/common_static/coffee/src/discussion/discussion_filter',
                     'xmodule_js/common_static/coffee/src/discussion/utils',
                     'xmodule_js/common_static/coffee/src/discussion/models/discussion_course_settings',
                     'xmodule_js/common_static/coffee/src/discussion/models/discussion_user',
@@ -634,8 +628,13 @@
                     'xmodule_js/common_static/coffee/src/discussion/utils'
                 ],
                 exports: 'DiscussionSpecHelper'
+            },
+            'modernizr': {
+                exports: 'Modernizr'
+            },
+            'afontgarde': {
+                exports: 'AFontGarde'
             }
-
         }
     });
 
@@ -643,12 +642,12 @@
     define([
         // Run the LMS tests
         'lms/include/js/spec/components/header/header_spec.js',
-        'lms/include/js/spec/components/tabbed/tabbed_view_spec.js',
         'lms/include/js/spec/components/card/card_spec.js',
         'lms/include/js/spec/staff_debug_actions_spec.js',
         'lms/include/js/spec/views/notification_spec.js',
         'lms/include/js/spec/views/file_uploader_spec.js',
         'lms/include/js/spec/dashboard/donation.js',
+        'lms/include/js/spec/dashboard/dropdown_spec.js',
         'lms/include/js/spec/dashboard/track_events_spec.js',
         'lms/include/js/spec/groups/views/cohorts_spec.js',
         'lms/include/js/spec/shoppingcart/shoppingcart_spec.js',
@@ -677,6 +676,11 @@
         'lms/include/js/spec/student_profile/learner_profile_factory_spec.js',
         'lms/include/js/spec/student_profile/learner_profile_view_spec.js',
         'lms/include/js/spec/student_profile/learner_profile_fields_spec.js',
+        'lms/include/js/spec/student_profile/share_modal_view_spec.js',
+        'lms/include/js/spec/student_profile/badge_view_spec.js',
+        'lms/include/js/spec/student_profile/section_two_tab_spec.js',
+        'lms/include/js/spec/student_profile/badge_list_view_spec.js',
+        'lms/include/js/spec/student_profile/badge_list_container_spec.js',
         'lms/include/js/spec/verify_student/pay_and_verify_view_spec.js',
         'lms/include/js/spec/verify_student/reverify_view_spec.js',
         'lms/include/js/spec/verify_student/webcam_photo_view_spec.js',
@@ -705,9 +709,11 @@
         'lms/include/js/spec/edxnotes/plugins/events_spec.js',
         'lms/include/js/spec/edxnotes/plugins/scroller_spec.js',
         'lms/include/js/spec/edxnotes/plugins/caret_navigation_spec.js',
+        'lms/include/js/spec/edxnotes/plugins/store_error_handler_spec.js',
         'lms/include/js/spec/edxnotes/collections/notes_spec.js',
         'lms/include/js/spec/search/search_spec.js',
         'lms/include/js/spec/navigation_spec.js',
+        'lms/include/js/spec/courseware/updates_visibility.js',
         'lms/include/js/spec/discovery/collections/filters_spec.js',
         'lms/include/js/spec/discovery/models/course_card_spec.js',
         'lms/include/js/spec/discovery/models/course_directory_spec.js',
@@ -744,7 +750,11 @@
         'lms/include/js/spec/financial-assistance/financial_assistance_form_view_spec.js',
         'lms/include/js/spec/bookmarks/bookmarks_list_view_spec.js',
         'lms/include/js/spec/bookmarks/bookmark_button_view_spec.js',
-        'lms/include/js/spec/views/message_banner_spec.js'
+        'lms/include/js/spec/views/message_banner_spec.js',
+        'lms/include/js/spec/markdown_editor_spec.js',
+        'lms/include/js/spec/learner_dashboard/collection_list_view_spec.js',
+        'lms/include/js/spec/learner_dashboard/sidebar_view_spec.js',
+        'lms/include/js/spec/learner_dashboard/program_card_view_spec.js'
     ]);
 
 }).call(this, requirejs, define);

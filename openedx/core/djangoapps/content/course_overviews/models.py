@@ -3,6 +3,7 @@ Declaration of CourseOverview model
 """
 import json
 import logging
+from urlparse import urlparse, urlunparse
 
 from django.db import models, transaction
 from django.db.models.fields import BooleanField, DateTimeField, DecimalField, TextField, FloatField, IntegerField
@@ -17,6 +18,7 @@ from opaque_keys.edx.keys import CourseKey
 from config_models.models import ConfigurationModel
 from lms.djangoapps import django_comment_client
 from openedx.core.djangoapps.models.course_details import CourseDetails
+from static_replace.models import AssetBaseUrlConfig
 from util.date_utils import strftime_localized
 from xmodule import course_metadata_utils
 from xmodule.course_module import CourseDescriptor, DEFAULT_START_DATE
@@ -43,7 +45,7 @@ class CourseOverview(TimeStampedModel):
         app_label = 'course_overviews'
 
     # IMPORTANT: Bump this whenever you modify this model and/or add a migration.
-    VERSION = 3
+    VERSION = 4
 
     # Cache entry versioning.
     version = IntegerField()
@@ -64,7 +66,6 @@ class CourseOverview(TimeStampedModel):
 
     # URLs
     course_image_url = TextField()
-    facebook_url = TextField(null=True)
     social_sharing_url = TextField(null=True)
     end_of_course_survey_url = TextField(null=True)
 
@@ -97,6 +98,7 @@ class CourseOverview(TimeStampedModel):
     short_description = TextField(null=True)
     course_video_url = TextField(null=True)
     effort = TextField(null=True)
+    self_paced = BooleanField(default=False)
 
     @classmethod
     def _create_from_course(cls, course):
@@ -154,7 +156,6 @@ class CourseOverview(TimeStampedModel):
             announcement=course.announcement,
 
             course_image_url=course_image_url(course),
-            facebook_url=course.facebook_url,
             social_sharing_url=course.social_sharing_url,
 
             certificates_display_behavior=course.certificates_display_behavior,
@@ -181,6 +182,7 @@ class CourseOverview(TimeStampedModel):
             short_description=CourseDetails.fetch_about_attribute(course.id, 'short_description'),
             effort=CourseDetails.fetch_about_attribute(course.id, 'effort'),
             course_video_url=CourseDetails.fetch_video_url(course.id),
+            self_paced=course.self_paced,
         )
 
     @classmethod
@@ -549,7 +551,60 @@ class CourseOverview(TimeStampedModel):
             urls['small'] = self.image_set.small_url or raw_image_url
             urls['large'] = self.image_set.large_url or raw_image_url
 
-        return urls
+        return self.apply_cdn_to_urls(urls)
+
+    @property
+    def pacing(self):
+        """ Returns the pacing for the course.
+
+        Potential values:
+            self: Self-paced courses
+            instructor: Instructor-led courses
+        """
+        return 'self' if self.self_paced else 'instructor'
+
+    def apply_cdn_to_urls(self, image_urls):
+        """
+        Given a dict of resolutions -> urls, return a copy with CDN applied.
+
+        If CDN does not exist or is disabled, just returns the original. The
+        URLs that we store in CourseOverviewImageSet are all already top level
+        paths, so we don't need to go through the /static remapping magic that
+        happens with other course assets. We just need to add the CDN server if
+        appropriate.
+        """
+        cdn_config = AssetBaseUrlConfig.current()
+        if not cdn_config.enabled:
+            return image_urls
+
+        base_url = cdn_config.base_url
+
+        return {
+            resolution: self._apply_cdn_to_url(url, base_url)
+            for resolution, url in image_urls.items()
+        }
+
+    def _apply_cdn_to_url(self, url, base_url):
+        """
+        Applies a new CDN/base URL to the given URL.
+
+        If a URL is absolute, we skip switching the host since it could
+        be a hostname that isn't behind our CDN, and we could unintentionally
+        break the URL overall.
+        """
+
+        # The URL can't be empty.
+        if not url:
+            return url
+
+        _, netloc, path, params, query, fragment = urlparse(url)
+
+        # If this is an absolute URL, just return it as is.  It could be a domain
+        # that isn't ours, and thus CDNing it would actually break it.
+        if netloc:
+            return url
+
+        return urlunparse((None, base_url, path, params, query, fragment))
 
     def __unicode__(self):
         """Represent ourselves with the course key."""
@@ -680,8 +735,9 @@ class CourseOverviewImageSet(TimeStampedModel):
         # an error or the course has no source course_image), our url fields
         # just keep their blank defaults.
         try:
-            image_set.save()
-            course_overview.image_set = image_set
+            with transaction.atomic():
+                image_set.save()
+                course_overview.image_set = image_set
         except (IntegrityError, ValueError):
             # In the event of a race condition that tries to save two image sets
             # to the same CourseOverview, we'll just silently pass on the one

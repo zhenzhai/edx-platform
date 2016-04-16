@@ -22,6 +22,7 @@ from urllib import urlencode
 import uuid
 
 import analytics
+
 from config_models.models import ConfigurationModel
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
@@ -45,9 +46,11 @@ from simple_history.models import HistoricalRecords
 from track import contexts
 from xmodule_django.models import CourseKeyField, NoneToEmptyManager
 
+from lms.djangoapps.badges.utils import badges_enabled
 from certificates.models import GeneratedCertificate
 from course_modes.models import CourseMode
 from enrollment.api import _default_course_mode
+from microsite_configuration import microsite
 import lms.lib.comment_client as cc
 from openedx.core.djangoapps.commerce.utils import ecommerce_api_client, ECOMMERCE_DATE_FORMAT
 from openedx.core.djangoapps.content.course_overviews.models import CourseOverview
@@ -292,7 +295,7 @@ class UserProfile(models.Model):
         year_of_birth = self.year_of_birth
         year = datetime.now(UTC).year
         if year_of_birth is not None:
-            return year - year_of_birth
+            return self._calculate_age(year, year_of_birth)
 
     @property
     def level_of_education_display(self):
@@ -364,13 +367,24 @@ class UserProfile(models.Model):
         if date is None:
             age = self.age
         else:
-            age = date.year - year_of_birth
+            age = self._calculate_age(date.year, year_of_birth)
 
-        return age <= age_limit
+        return age < age_limit
 
     def __enumerable_to_display(self, enumerables, enum_value):
         """ Get the human readable value from an enumerable list of key-value pairs. """
         return dict(enumerables)[enum_value]
+
+    def _calculate_age(self, year, year_of_birth):
+        """Calculate the youngest age for a user with a given year of birth.
+
+        :param year: year
+        :param year_of_birth: year of birth
+        :return: youngest age a user could be for the given year
+        """
+        # There are legal implications regarding how we can contact users and what information we can make public
+        # based on their age, so we must take the most conservative estimate.
+        return year - year_of_birth - 1
 
     @classmethod
     def country_cache_key_name(cls, user_id):
@@ -760,6 +774,19 @@ class LoginFailures(models.Model):
     lockout_until = models.DateTimeField(null=True)
 
     @classmethod
+    def _get_record_for_user(cls, user):
+        """
+        Gets a user's record, and fixes any duplicates that may have arisen due to get_or_create
+        race conditions. See https://code.djangoproject.com/ticket/13906 for details.
+
+        Use this method in place of `LoginFailures.objects.get(user=user)`
+        """
+        records = LoginFailures.objects.filter(user=user).order_by('-lockout_until')
+        for extra_record in records[1:]:
+            extra_record.delete()
+        return records.get()
+
+    @classmethod
     def is_feature_enabled(cls):
         """
         Returns whether the feature flag around this functionality has been set
@@ -772,7 +799,7 @@ class LoginFailures(models.Model):
         Static method to return in a given user has his/her account locked out
         """
         try:
-            record = LoginFailures.objects.get(user=user)
+            record = cls._get_record_for_user(user)
             if not record.lockout_until:
                 return False
 
@@ -807,7 +834,7 @@ class LoginFailures(models.Model):
         Removes the lockout counters (normally called after a successful login)
         """
         try:
-            entry = LoginFailures.objects.get(user=user)
+            entry = cls._get_record_for_user(user)
             entry.delete()
         except ObjectDoesNotExist:
             return
@@ -852,6 +879,33 @@ class CourseEnrollmentManager(models.Manager):
 
         return enrollment_number
 
+    def num_enrolled_in_exclude_admins(self, course_id):
+        """
+        Returns the count of active enrollments in a course excluding instructors, staff and CCX coaches.
+
+        Arguments:
+            course_id (CourseLocator): course_id to return enrollments (count).
+
+        Returns:
+            int: Count of enrollments excluding staff, instructors and CCX coaches.
+
+        """
+        # To avoid circular imports.
+        from student.roles import CourseCcxCoachRole, CourseInstructorRole, CourseStaffRole
+        course_locator = course_id
+
+        if getattr(course_id, 'ccx', None):
+            course_locator = course_id.to_course_locator()
+
+        staff = CourseStaffRole(course_locator).users_with_role()
+        admins = CourseInstructorRole(course_locator).users_with_role()
+        coaches = CourseCcxCoachRole(course_locator).users_with_role()
+
+        return super(CourseEnrollmentManager, self).get_queryset().filter(
+            course_id=course_id,
+            is_active=1,
+        ).exclude(user__in=staff).exclude(user__in=admins).exclude(user__in=coaches).count()
+
     def is_course_full(self, course):
         """
         Returns a boolean value regarding whether a course has already reached it's max enrollment
@@ -859,7 +913,8 @@ class CourseEnrollmentManager(models.Manager):
         """
         is_course_full = False
         if course.max_student_enrollments_allowed is not None:
-            is_course_full = self.num_enrolled_in(course.id) >= course.max_student_enrollments_allowed
+            is_course_full = self.num_enrolled_in_exclude_admins(course.id) >= course.max_student_enrollments_allowed
+
         return is_course_full
 
     def users_enrolled_in(self, course_id):
@@ -972,7 +1027,7 @@ class CourseEnrollment(models.Model):
         if user.id is None:
             user.save()
 
-        enrollment, created = CourseEnrollment.objects.get_or_create(
+        enrollment, created = cls.objects.get_or_create(
             user=user,
             course_id=course_key,
         )
@@ -997,7 +1052,7 @@ class CourseEnrollment(models.Model):
             Course enrollment object or None
         """
         try:
-            return CourseEnrollment.objects.get(
+            return cls.objects.get(
                 user=user,
                 course_id=course_key
             )
@@ -1159,7 +1214,7 @@ class CourseEnrollment(models.Model):
                 raise NonExistentCourseError
 
         if check_access:
-            if CourseEnrollment.is_enrollment_closed(user, course):
+            if cls.is_enrollment_closed(user, course):
                 log.warning(
                     u"User %s failed to enroll in course %s because enrollment is closed",
                     user.username,
@@ -1167,14 +1222,15 @@ class CourseEnrollment(models.Model):
                 )
                 raise EnrollmentClosedError
 
-            if CourseEnrollment.objects.is_course_full(course):
+            if cls.objects.is_course_full(course):
                 log.warning(
-                    u"User %s failed to enroll in full course %s",
-                    user.username,
+                    u"Course %s has reached its maximum enrollment of %d learners. User %s failed to enroll.",
                     course_key.to_deprecated_string(),
+                    course.max_student_enrollments_allowed,
+                    user.username,
                 )
                 raise CourseFullError
-        if CourseEnrollment.is_enrolled(user, course_key):
+        if cls.is_enrolled(user, course_key):
             log.warning(
                 u"User %s attempted to enroll in %s, but they were already enrolled",
                 user.username,
@@ -1186,6 +1242,10 @@ class CourseEnrollment(models.Model):
         # User is allowed to enroll if they've reached this point.
         enrollment = cls.get_or_create_enrollment(user, course_key)
         enrollment.update_enrollment(is_active=True, mode=mode)
+        if badges_enabled():
+            from lms.djangoapps.badges.events.course_meta import award_enrollment_badge
+            award_enrollment_badge(user)
+
         return enrollment
 
     @classmethod
@@ -1242,7 +1302,7 @@ class CourseEnrollment(models.Model):
         `skip_refund` can be set to True to avoid the refund process.
         """
         try:
-            record = CourseEnrollment.objects.get(user=user, course_id=course_id)
+            record = cls.objects.get(user=user, course_id=course_id)
             record.update_enrollment(is_active=False, skip_refund=skip_refund)
 
         except cls.DoesNotExist:
@@ -1288,7 +1348,7 @@ class CourseEnrollment(models.Model):
             return False
 
         try:
-            record = CourseEnrollment.objects.get(user=user, course_id=course_key)
+            record = cls.objects.get(user=user, course_id=course_key)
             return record.is_active
         except cls.DoesNotExist:
             return False
@@ -1313,7 +1373,7 @@ class CourseEnrollment(models.Model):
         course_key = SlashSeparatedCourseKey(course_id_partial.org, course_id_partial.course, '')
         querystring = unicode(course_key.to_deprecated_string())
         try:
-            return CourseEnrollment.objects.filter(
+            return cls.objects.filter(
                 user=user,
                 course_id__startswith=querystring,
                 is_active=1
@@ -1334,14 +1394,14 @@ class CourseEnrollment(models.Model):
         Returns (None, None) if the courseenrollment record does not exist.
         """
         try:
-            record = CourseEnrollment.objects.get(user=user, course_id=course_id)
+            record = cls.objects.get(user=user, course_id=course_id)
             return (record.mode, record.is_active)
         except cls.DoesNotExist:
             return (None, None)
 
     @classmethod
     def enrollments_for_user(cls, user):
-        return CourseEnrollment.objects.filter(user=user, is_active=1)
+        return cls.objects.filter(user=user, is_active=1)
 
     def is_paid_course(self):
         """
@@ -1747,10 +1807,11 @@ def log_successful_login(sender, request, user, **kwargs):  # pylint: disable=un
 @receiver(user_logged_out)
 def log_successful_logout(sender, request, user, **kwargs):  # pylint: disable=unused-argument
     """Handler to log when logouts have occurred successfully."""
-    if settings.FEATURES['SQUELCH_PII_IN_LOGS']:
-        AUDIT_LOG.info(u"Logout - user.id: {0}".format(request.user.id))
-    else:
-        AUDIT_LOG.info(u"Logout - {0}".format(request.user))
+    if hasattr(request, 'user'):
+        if settings.FEATURES['SQUELCH_PII_IN_LOGS']:
+            AUDIT_LOG.info(u"Logout - user.id: {0}".format(request.user.id))  # pylint: disable=logging-format-interpolation
+        else:
+            AUDIT_LOG.info(u"Logout - {0}".format(request.user))  # pylint: disable=logging-format-interpolation
 
 
 @receiver(user_logged_in)
@@ -1766,7 +1827,12 @@ def enforce_single_login(sender, request, user, signal, **kwargs):    # pylint: 
         else:
             key = None
         if user:
-            user.profile.set_login_session(key)
+            user_profile, __ = UserProfile.objects.get_or_create(
+                user=user,
+                defaults={'name': user.username}
+            )
+            if user_profile:
+                user.profile.set_login_session(key)
 
 
 class DashboardConfiguration(ConfigurationModel):
@@ -1842,8 +1908,9 @@ class LinkedInAddToProfileConfiguration(ConfigurationModel):
             target (str): An identifier for the occurrance of the button.
 
         """
+        company_identifier = microsite.get_value('LINKEDIN_COMPANY_ID', self.company_identifier)
         params = OrderedDict([
-            ('_ed', self.company_identifier),
+            ('_ed', company_identifier),
             ('pfCertificationName', self._cert_name(course_name, cert_mode).encode('utf-8')),
             ('pfCertificationUrl', cert_url),
             ('source', source)
@@ -1863,7 +1930,7 @@ class LinkedInAddToProfileConfiguration(ConfigurationModel):
             cert_mode,
             _(u"{platform_name} Certificate for {course_name}")
         ).format(
-            platform_name=settings.PLATFORM_NAME,
+            platform_name=microsite.get_value('platform_name', settings.PLATFORM_NAME),
             course_name=course_name
         )
 

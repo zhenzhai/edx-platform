@@ -23,6 +23,7 @@ from discussion_api.tests.utils import (
     CommentsServiceMockMixin,
     make_minimal_cs_comment,
     make_minimal_cs_thread,
+    make_paginated_api_response
 )
 from student.tests.factories import CourseEnrollmentFactory, UserFactory
 from util.testing import UrlResetMixin, PatchMediaTypeMixin
@@ -307,15 +308,18 @@ class ThreadViewSetListTest(DiscussionAPIViewTestMixin, ModuleStoreTestCase):
         }]
         self.register_get_threads_response(source_threads, page=1, num_pages=2)
         response = self.client.get(self.url, {"course_id": unicode(self.course.id), "following": ""})
+        expected_response = make_paginated_api_response(
+            results=expected_threads,
+            count=1,
+            num_pages=2,
+            next_link="http://testserver/api/discussion/v1/threads/?course_id=x%2Fy%2Fz&page=2",
+            previous_link=None
+        )
+        expected_response.update({"text_search_rewrite": None})
         self.assert_response_correct(
             response,
             200,
-            {
-                "results": expected_threads,
-                "next": "http://testserver/api/discussion/v1/threads/?course_id=x%2Fy%2Fz&page=2",
-                "previous": None,
-                "text_search_rewrite": None,
-            }
+            expected_response
         )
         self.assert_last_query_params({
             "user_id": [unicode(self.user.id)],
@@ -374,15 +378,20 @@ class ThreadViewSetListTest(DiscussionAPIViewTestMixin, ModuleStoreTestCase):
 
     def test_text_search(self):
         self.register_get_user_response(self.user)
-        self.register_get_threads_search_response([], None)
+        self.register_get_threads_search_response([], None, num_pages=0)
         response = self.client.get(
             self.url,
             {"course_id": unicode(self.course.id), "text_search": "test search string"}
         )
+
+        expected_response = make_paginated_api_response(
+            results=[], count=0, num_pages=0, next_link=None, previous_link=None
+        )
+        expected_response.update({"text_search_rewrite": None})
         self.assert_response_correct(
             response,
             200,
-            {"results": [], "next": None, "previous": None, "text_search_rewrite": None}
+            expected_response
         )
         self.assert_last_query_params({
             "user_id": [unicode(self.user.id)],
@@ -398,7 +407,7 @@ class ThreadViewSetListTest(DiscussionAPIViewTestMixin, ModuleStoreTestCase):
     @ddt.data(True, "true", "1")
     def test_following_true(self, following):
         self.register_get_user_response(self.user)
-        self.register_subscribed_threads_response(self.user, [], page=1, num_pages=1)
+        self.register_subscribed_threads_response(self.user, [], page=1, num_pages=0)
         response = self.client.get(
             self.url,
             {
@@ -406,10 +415,15 @@ class ThreadViewSetListTest(DiscussionAPIViewTestMixin, ModuleStoreTestCase):
                 "following": following,
             }
         )
+
+        expected_response = make_paginated_api_response(
+            results=[], count=0, num_pages=0, next_link=None, previous_link=None
+        )
+        expected_response.update({"text_search_rewrite": None})
         self.assert_response_correct(
             response,
             200,
-            {"results": [], "next": None, "previous": None, "text_search_rewrite": None}
+            expected_response
         )
         self.assertEqual(
             urlparse(httpretty.last_request().path).path,
@@ -870,6 +884,34 @@ class CommentViewSetListTest(DiscussionAPIViewTestMixin, ModuleStoreTestCase):
         overrides.setdefault("course_id", unicode(self.course.id))
         return make_minimal_cs_thread(overrides)
 
+    def expected_response_comment(self, overrides=None):
+        """
+        create expected response data
+        """
+        response_data = {
+            "id": "test_comment",
+            "thread_id": self.thread_id,
+            "parent_id": None,
+            "author": self.author.username,
+            "author_label": None,
+            "created_at": "1970-01-01T00:00:00Z",
+            "updated_at": "1970-01-01T00:00:00Z",
+            "raw_body": "dummy",
+            "rendered_body": "<p>dummy</p>",
+            "endorsed": False,
+            "endorsed_by": None,
+            "endorsed_by_label": None,
+            "endorsed_at": None,
+            "abuse_flagged": False,
+            "voted": False,
+            "vote_count": 0,
+            "children": [],
+            "editable_fields": ["abuse_flagged", "voted"],
+            "child_count": 0,
+        }
+        response_data.update(overrides or {})
+        return response_data
+
     def test_thread_id_missing(self):
         response = self.client.get(self.url)
         self.assert_response_correct(
@@ -904,27 +946,17 @@ class CommentViewSetListTest(DiscussionAPIViewTestMixin, ModuleStoreTestCase):
             "endorsed": False,
             "abuse_flaggers": [],
             "votes": {"up_count": 4},
-        }]
-        expected_comments = [{
-            "id": "test_comment",
-            "thread_id": self.thread_id,
-            "parent_id": None,
-            "author": self.author.username,
-            "author_label": None,
-            "created_at": "2015-05-11T00:00:00Z",
-            "updated_at": "2015-05-11T11:11:11Z",
-            "raw_body": "Test body",
-            "rendered_body": "<p>Test body</p>",
-            "endorsed": False,
-            "endorsed_by": None,
-            "endorsed_by_label": None,
-            "endorsed_at": None,
-            "abuse_flagged": False,
-            "voted": True,
-            "vote_count": 4,
-            "editable_fields": ["abuse_flagged", "voted"],
+            "child_count": 0,
             "children": [],
         }]
+        expected_comments = [self.expected_response_comment(overrides={
+            "voted": True,
+            "vote_count": 4,
+            "raw_body": "Test body",
+            "rendered_body": "<p>Test body</p>",
+            "created_at": "2015-05-11T00:00:00Z",
+            "updated_at": "2015-05-11T11:11:11Z",
+        })]
         self.register_get_thread_response({
             "id": self.thread_id,
             "course_id": unicode(self.course.id),
@@ -933,16 +965,15 @@ class CommentViewSetListTest(DiscussionAPIViewTestMixin, ModuleStoreTestCase):
             "resp_total": 100,
         })
         response = self.client.get(self.url, {"thread_id": self.thread_id})
+        next_link = "http://testserver/api/discussion/v1/comments/?page=2&thread_id={}".format(
+            self.thread_id
+        )
         self.assert_response_correct(
             response,
             200,
-            {
-                "results": expected_comments,
-                "next": "http://testserver/api/discussion/v1/comments/?page=2&thread_id={}".format(
-                    self.thread_id
-                ),
-                "previous": None,
-            }
+            make_paginated_api_response(
+                results=expected_comments, count=100, num_pages=10, next_link=next_link, previous_link=None
+            )
         )
         self.assert_query_params_equal(
             httpretty.httpretty.latest_requests[-2],
@@ -966,7 +997,6 @@ class CommentViewSetListTest(DiscussionAPIViewTestMixin, ModuleStoreTestCase):
             "id": self.thread_id,
             "course_id": unicode(self.course.id),
             "thread_type": "discussion",
-            "children": [],
             "resp_total": 10,
         }))
         response = self.client.get(
@@ -1045,6 +1075,52 @@ class CommentViewSetListTest(DiscussionAPIViewTestMixin, ModuleStoreTestCase):
             {"field_errors": {
                 "endorsed": {"developer_message": "This field is required for question threads."}
             }}
+        )
+
+    def test_child_comments_count(self):
+        self.register_get_user_response(self.user)
+        response_1 = make_minimal_cs_comment({
+            "id": "test_response_1",
+            "thread_id": self.thread_id,
+            "user_id": str(self.author.id),
+            "username": self.author.username,
+            "child_count": 2,
+        })
+        response_2 = make_minimal_cs_comment({
+            "id": "test_response_2",
+            "thread_id": self.thread_id,
+            "user_id": str(self.author.id),
+            "username": self.author.username,
+            "child_count": 3,
+        })
+        thread = self.make_minimal_cs_thread({
+            "id": self.thread_id,
+            "course_id": unicode(self.course.id),
+            "thread_type": "discussion",
+            "children": [response_1, response_2],
+            "resp_total": 2,
+            "comments_count": 8,
+            "unread_comments_count": 0,
+
+        })
+        self.register_get_thread_response(thread)
+        response = self.client.get(self.url, {"thread_id": self.thread_id})
+        expected_comments = [
+            self.expected_response_comment(overrides={"id": "test_response_1", "child_count": 2}),
+            self.expected_response_comment(overrides={"id": "test_response_2", "child_count": 3}),
+        ]
+        self.assert_response_correct(
+            response,
+            200,
+            {
+                "results": expected_comments,
+                "pagination": {
+                    "count": 2,
+                    "next": None,
+                    "num_pages": 1,
+                    "previous": None,
+                }
+            }
         )
 
 
@@ -1126,6 +1202,7 @@ class CommentViewSetCreateTest(DiscussionAPIViewTestMixin, ModuleStoreTestCase):
             "vote_count": 0,
             "children": [],
             "editable_fields": ["abuse_flagged", "raw_body", "voted"],
+            "child_count": 0,
         }
         response = self.client.post(
             self.url,
@@ -1214,6 +1291,7 @@ class CommentViewSetPartialUpdateTest(DiscussionAPIViewTestMixin, ModuleStoreTes
             "vote_count": 0,
             "children": [],
             "editable_fields": [],
+            "child_count": 0,
         }
         response_data.update(overrides or {})
         return response_data
@@ -1416,7 +1494,8 @@ class CommentViewSetRetrieveTest(DiscussionAPIViewTestMixin, ModuleStoreTestCase
             "voted": False,
             "vote_count": 0,
             "abuse_flagged": False,
-            "editable_fields": ["abuse_flagged", "raw_body", "voted"]
+            "editable_fields": ["abuse_flagged", "raw_body", "voted"],
+            "child_count": 0,
         }
 
         response = self.client.get(self.url)
@@ -1427,3 +1506,29 @@ class CommentViewSetRetrieveTest(DiscussionAPIViewTestMixin, ModuleStoreTestCase
         self.register_get_comment_error_response(self.comment_id, 404)
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 404)
+
+    def test_pagination(self):
+        """
+        Test that pagination parameters are correctly plumbed through to the
+        comments service and that a 404 is correctly returned if a page past the
+        end is requested
+        """
+        self.register_get_user_response(self.user)
+        cs_comment_child = self.make_comment_data("test_child_comment", self.comment_id, children=[])
+        cs_comment = self.make_comment_data(self.comment_id, None, [cs_comment_child])
+        cs_thread = make_minimal_cs_thread({
+            "id": self.thread_id,
+            "course_id": unicode(self.course.id),
+            "children": [cs_comment],
+        })
+        self.register_get_thread_response(cs_thread)
+        self.register_get_comment_response(cs_comment)
+        response = self.client.get(
+            self.url,
+            {"comment_id": self.comment_id, "page": "18", "page_size": "4"}
+        )
+        self.assert_response_correct(
+            response,
+            404,
+            {"developer_message": "Page not found (No results on this page)."}
+        )

@@ -14,7 +14,7 @@ import pystache_custom as pystache
 from opaque_keys.edx.locations import i4xEncoder
 from opaque_keys.edx.keys import CourseKey
 from xmodule.modulestore.django import modulestore
-from ccx.overrides import get_current_ccx
+from lms.djangoapps.ccx.overrides import get_current_ccx
 
 from django_comment_common.models import Role, FORUM_ROLE_STUDENT
 from django_comment_client.permissions import check_permissions_by_view, has_permission, get_team
@@ -129,7 +129,7 @@ def get_accessible_discussion_modules(course, user, include_all=False):  # pylin
     Return a list of all valid discussion modules in this course that
     are accessible to the given user.
     """
-    all_modules = modulestore().get_items(course.id, qualifiers={'category': 'discussion'})
+    all_modules = modulestore().get_items(course.id, qualifiers={'category': 'discussion'}, include_orphans=False)
 
     return [
         module for module in all_modules
@@ -198,7 +198,7 @@ def get_discussion_id_map(course, user):
     return dict(map(get_discussion_id_map_entry, get_accessible_discussion_modules(course, user)))
 
 
-def _filter_unstarted_categories(category_map):
+def _filter_unstarted_categories(category_map, course):
     """
     Returns a subset of categories from the provided map which have not yet met the start date
     Includes information about category children, subcategories (different), and entries
@@ -221,7 +221,7 @@ def _filter_unstarted_categories(category_map):
 
         for child in unfiltered_map["children"]:
             if child in unfiltered_map["entries"]:
-                if unfiltered_map["entries"][child]["start_date"] <= now:
+                if course.self_paced or unfiltered_map["entries"][child]["start_date"] <= now:
                     filtered_map["children"].append(child)
                     filtered_map["entries"][child] = {}
                     for key in unfiltered_map["entries"][child]:
@@ -230,7 +230,7 @@ def _filter_unstarted_categories(category_map):
                 else:
                     log.debug(u"Filtering out:%s with start_date: %s", child, unfiltered_map["entries"][child]["start_date"])
             else:
-                if unfiltered_map["subcategories"][child]["start_date"] < now:
+                if course.self_paced or unfiltered_map["subcategories"][child]["start_date"] < now:
                     filtered_map["children"].append(child)
                     filtered_map["subcategories"][child] = {}
                     unfiltered_queue.append(unfiltered_map["subcategories"][child])
@@ -382,7 +382,7 @@ def get_discussion_category_map(course, user, cohorted_if_in_list=False, exclude
 
     _sort_map_entries(category_map, course.discussion_sort_alpha)
 
-    return _filter_unstarted_categories(category_map) if exclude_unstarted else category_map
+    return _filter_unstarted_categories(category_map, course) if exclude_unstarted else category_map
 
 
 def discussion_category_id_access(course, user, discussion_id):
@@ -654,7 +654,7 @@ def prepare_content(content, course_key, is_staff=False, course_is_cohorted=None
         'read', 'group_id', 'group_name', 'pinned', 'abuse_flaggers',
         'stats', 'resp_skip', 'resp_limit', 'resp_total', 'thread_type',
         'endorsed_responses', 'non_endorsed_responses', 'non_endorsed_resp_total',
-        'endorsement', 'context'
+        'endorsement', 'context', 'last_activity_at'
     ]
 
     if (content.get('anonymous') is False) and ((content.get('anonymous_to_peers') is False) or is_staff):

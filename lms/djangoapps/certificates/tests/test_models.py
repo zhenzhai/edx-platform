@@ -1,20 +1,25 @@
 """Tests for certificate Django models. """
 from django.conf import settings
 from django.core.exceptions import ValidationError
-from django.core.files.images import ImageFile
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
 from django.test.utils import override_settings
 from nose.plugins.attrib import attr
 from path import Path as path
 
-from opaque_keys.edx.locator import CourseLocator
 from certificates.models import (
     ExampleCertificate,
     ExampleCertificateSet,
     CertificateHtmlViewConfiguration,
     CertificateTemplateAsset,
-    BadgeImageConfiguration)
+    GeneratedCertificate,
+    CertificateStatuses,
+)
+from certificates.tests.factories import GeneratedCertificateFactory
+from opaque_keys.edx.locator import CourseLocator
+from student.tests.factories import UserFactory
+from xmodule.modulestore.tests.django_utils import SharedModuleStoreTestCase
+from xmodule.modulestore.tests.factories import CourseFactory
 
 FEATURES_INVALID_FILE_PATH = settings.FEATURES.copy()
 FEATURES_INVALID_FILE_PATH['CERTS_HTML_VIEW_CONFIG_PATH'] = 'invalid/path/to/config.json'
@@ -160,55 +165,6 @@ class CertificateHtmlViewConfigurationTest(TestCase):
 
 
 @attr('shard_1')
-class BadgeImageConfigurationTest(TestCase):
-    """
-    Test the validation features of BadgeImageConfiguration.
-    """
-    def get_image(self, name):
-        """
-        Get one of the test images from the test data directory.
-        """
-        return ImageFile(open(TEST_DATA_ROOT / 'badges' / name + '.png'))
-
-    def create_clean(self, file_obj):
-        """
-        Shortcut to create a BadgeImageConfiguration with a specific file.
-        """
-        BadgeImageConfiguration(mode='honor', icon=file_obj).full_clean()
-
-    def test_good_image(self):
-        """
-        Verify that saving a valid badge image is no problem.
-        """
-        good = self.get_image('good')
-        BadgeImageConfiguration(mode='honor', icon=good).full_clean()
-
-    def test_unbalanced_image(self):
-        """
-        Verify that setting an image with an uneven width and height raises an error.
-        """
-        unbalanced = ImageFile(self.get_image('unbalanced'))
-        self.assertRaises(ValidationError, self.create_clean, unbalanced)
-
-    def test_large_image(self):
-        """
-        Verify that setting an image that is too big raises an error.
-        """
-        large = self.get_image('large')
-        self.assertRaises(ValidationError, self.create_clean, large)
-
-    def test_no_double_default(self):
-        """
-        Verify that creating two configurations as default is not permitted.
-        """
-        BadgeImageConfiguration(mode='test', icon=self.get_image('good'), default=True).save()
-        self.assertRaises(
-            ValidationError,
-            BadgeImageConfiguration(mode='test2', icon=self.get_image('good'), default=True).full_clean
-        )
-
-
-@attr('shard_1')
 class CertificateTemplateAssetTest(TestCase):
     """
     Test Assets are uploading/saving successfully for CertificateTemplateAsset.
@@ -234,3 +190,42 @@ class CertificateTemplateAssetTest(TestCase):
 
         certificate_template_asset = CertificateTemplateAsset.objects.get(id=1)
         self.assertEqual(certificate_template_asset.asset, 'certificate_template_assets/1/picture2.jpg')
+
+
+@attr('shard_1')
+class EligibleCertificateManagerTest(SharedModuleStoreTestCase):
+    """
+    Test the GeneratedCertificate model's object manager for filtering
+    out ineligible certs.
+    """
+
+    @classmethod
+    def setUpClass(cls):
+        super(EligibleCertificateManagerTest, cls).setUpClass()
+        cls.courses = (CourseFactory(), CourseFactory())
+
+    def setUp(self):
+        super(EligibleCertificateManagerTest, self).setUp()
+        self.user = UserFactory()
+        self.eligible_cert = GeneratedCertificateFactory.create(
+            status=CertificateStatuses.downloadable,
+            user=self.user,
+            course_id=self.courses[0].id  # pylint: disable=no-member
+        )
+        self.ineligible_cert = GeneratedCertificateFactory.create(
+            status=CertificateStatuses.audit_passing,
+            user=self.user,
+            course_id=self.courses[1].id  # pylint: disable=no-member
+        )
+
+    def test_filter_ineligible_certificates(self):
+        """
+        Verify that the EligibleCertificateManager filters out
+        certificates marked as ineligible, and that the default object
+        manager for GeneratedCertificate does not filter them out.
+        """
+        self.assertEqual(list(GeneratedCertificate.eligible_certificates.filter(user=self.user)), [self.eligible_cert])
+        self.assertEqual(
+            list(GeneratedCertificate.objects.filter(user=self.user)),  # pylint: disable=no-member
+            [self.eligible_cert, self.ineligible_cert]
+        )

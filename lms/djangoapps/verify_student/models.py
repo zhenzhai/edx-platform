@@ -26,7 +26,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
 from django.core.cache import cache
 from django.dispatch import receiver
-from django.db import models, transaction, IntegrityError
+from django.db import models, transaction
 from django.utils.translation import ugettext as _, ugettext_lazy
 
 from boto.s3.connection import S3Connection
@@ -593,18 +593,22 @@ class SoftwareSecurePhotoVerification(PhotoVerification):
     copy_id_photo_from = models.ForeignKey("self", null=True, blank=True)
 
     @classmethod
-    def get_initial_verification(cls, user):
+    def get_initial_verification(cls, user, earliest_allowed_date=None):
         """Get initial verification for a user with the 'photo_id_key'.
 
         Arguments:
             user(User): user object
+            earliest_allowed_date(datetime): override expiration date for initial verification
 
         Return:
-            SoftwareSecurePhotoVerification (object)
+            SoftwareSecurePhotoVerification (object) or None
         """
         init_verification = cls.objects.filter(
             user=user,
-            status__in=["submitted", "approved"]
+            status__in=["submitted", "approved"],
+            created_at__gte=(
+                earliest_allowed_date or cls._earliest_allowed_date()
+            )
         ).exclude(photo_id_key='')
 
         return init_verification.latest('created_at') if init_verification.exists() else None

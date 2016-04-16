@@ -67,11 +67,12 @@ class CommentsServiceMockMixin(object):
                 "collection": threads,
                 "page": page,
                 "num_pages": num_pages,
+                "thread_count": len(threads),
             }),
             status=200
         )
 
-    def register_get_threads_search_response(self, threads, rewrite):
+    def register_get_threads_search_response(self, threads, rewrite, num_pages=1):
         """Register a mock response for GET on the CS thread search endpoint"""
         httpretty.register_uri(
             httpretty.GET,
@@ -79,8 +80,9 @@ class CommentsServiceMockMixin(object):
             body=json.dumps({
                 "collection": threads,
                 "page": 1,
-                "num_pages": 1,
+                "num_pages": num_pages,
                 "corrected_text": rewrite,
+                "thread_count": len(threads),
             }),
             status=200
         )
@@ -200,6 +202,7 @@ class CommentsServiceMockMixin(object):
                 "collection": threads,
                 "page": page,
                 "num_pages": num_pages,
+                "thread_count": len(threads),
             }),
             status=200
         )
@@ -329,6 +332,7 @@ def make_minimal_cs_thread(overrides=None):
         "anonymous_to_peers": False,
         "created_at": "1970-01-01T00:00:00Z",
         "updated_at": "1970-01-01T00:00:00Z",
+        "last_activity_at": "1970-01-01T00:00:00Z",
         "thread_type": "discussion",
         "title": "dummy",
         "body": "dummy",
@@ -355,6 +359,7 @@ def make_minimal_cs_comment(overrides=None):
     ret = {
         "type": "comment",
         "id": "dummy",
+        "commentable_id": "dummy",
         "thread_id": "dummy",
         "parent_id": None,
         "user_id": "0",
@@ -367,7 +372,23 @@ def make_minimal_cs_comment(overrides=None):
         "abuse_flaggers": [],
         "votes": {"up_count": 0},
         "endorsed": False,
+        "child_count": 0,
         "children": [],
     }
     ret.update(overrides or {})
     return ret
+
+
+def make_paginated_api_response(results=None, count=0, num_pages=0, next_link=None, previous_link=None):
+    """
+    Generates the response dictionary of paginated APIs with passed data
+    """
+    return {
+        "pagination": {
+            "next": next_link,
+            "previous": previous_link,
+            "count": count,
+            "num_pages": num_pages,
+        },
+        "results": results or []
+    }

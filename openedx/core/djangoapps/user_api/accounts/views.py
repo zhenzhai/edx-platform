@@ -5,19 +5,19 @@ For more information, see:
 https://openedx.atlassian.net/wiki/display/TNL/User+API
 """
 from django.db import transaction
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
+from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from rest_framework import permissions
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from openedx.core.lib.api.authentication import (
     SessionAuthenticationAllowInactiveUser,
     OAuth2AuthenticationAllowInactiveUser,
 )
-from ..errors import UserNotFound, UserNotAuthorized, AccountUpdateError, AccountValidationError
 from openedx.core.lib.api.parsers import MergePatchParser
 from .api import get_account_settings, update_account_settings
-from .serializers import PROFILE_IMAGE_KEY_PREFIX
+from ..errors import UserNotFound, UserNotAuthorized, AccountUpdateError, AccountValidationError
 
 
 class AccountView(APIView):
@@ -98,6 +98,8 @@ class AccountView(APIView):
             * year_of_birth: The year the user was born, as an integer, or null.
             * account_privacy: The user's setting for sharing her personal
               profile. Possible values are "all_users" or "private".
+            * accomplishments_shared: Signals whether badges are enabled on the
+              platform and should be fetched.
 
             For all text fields, plain text instead of HTML is supported. The
             data is stored exactly as specified. Clients must HTML escape
@@ -138,7 +140,9 @@ class AccountView(APIView):
 
             If the update is successful, updated user account data is returned.
     """
-    authentication_classes = (OAuth2AuthenticationAllowInactiveUser, SessionAuthenticationAllowInactiveUser)
+    authentication_classes = (
+        OAuth2AuthenticationAllowInactiveUser, SessionAuthenticationAllowInactiveUser, JSONWebTokenAuthentication
+    )
     permission_classes = (permissions.IsAuthenticated,)
     parser_classes = (MergePatchParser,)
 
@@ -147,7 +151,8 @@ class AccountView(APIView):
         GET /api/user/v1/accounts/{username}/
         """
         try:
-            account_settings = get_account_settings(request, username, view=request.query_params.get('view'))
+            account_settings = get_account_settings(
+                request, username, view=request.query_params.get('view'))
         except UserNotFound:
             return Response(status=status.HTTP_403_FORBIDDEN if request.user.is_staff else status.HTTP_404_NOT_FOUND)
 

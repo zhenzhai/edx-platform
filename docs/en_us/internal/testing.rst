@@ -70,6 +70,12 @@ UI Acceptance Tests
    write end-user acceptance tests directly in Python, using the
    framework to maximize reliability and maintainability.
 
+Internationalization
+~~~~~~~~~~~~~~~~~~~~
+
+-  Any new text that is added should be internationalized and translated.
+
+
 Test Locations
 --------------
 
@@ -166,6 +172,12 @@ To run these tests without ``collectstatic``, which is faster, append the follow
 ::
 
     paver test_system -s lms --fasttest
+
+For even more speed, use the ``--disable-migrations`` option to run tests without applying migrations and instead create tables directly from apps' models.
+
+::
+
+    paver test_system -s lms --disable-migrations
 
 To run cms python tests without ``collectstatic`` use this command.
 
@@ -269,6 +281,14 @@ uncomment the ``pdb=1`` line in ``setup.cfg``, the test runner
 will drop you into pdb on error. This lets you go up and down the stack
 and see what the values of the variables are. Check out `the pdb
 documentation <http://docs.python.org/library/pdb.html>`__
+
+Use this command to put a temporary debugging breakpoint in a test.
+If you check this in, your tests will hang on jenkins.
+
+::
+
+    from nose.tools import set_trace; set_trace()
+
 
 Note: More on the ``--failed`` functionality
 
@@ -385,7 +405,7 @@ common/test/acceptance/tests. This is another example.
 
     paver test_bokchoy -t studio/test_studio_bad_data.py
 
-To run a single test faster by not repeating setup tasks us the ``--fasttest`` option.
+To run a single test faster by not repeating setup tasks use the ``--fasttest`` option.
 
 ::
 
@@ -407,7 +427,8 @@ test case method.
 During acceptance test execution, log files and also screenshots of
 failed tests are captured in test\_root/log.
 
-Use this command to put a debugging breakpoint in a test.
+Use this command to put a temporary debugging breakpoint in a test.
+If you check this in, your tests will hang on jenkins.
 
 ::
 
@@ -594,6 +615,41 @@ During acceptance test execution, Django log files are written to
 ``test_root/log/cms_acceptance.log``.
 
 **Note**: The acceptance tests can *not* currently run in parallel.
+
+
+Testing internationalization with dummy translations
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Any text you add to the platform should be internationalized. To generate
+translations for your new strings, run the following command.
+
+::
+
+    paver i18n_dummy
+
+This command generates dummy translations for each dummy language in the
+platform and puts the dummy strings in the appropriate language files.
+You can then preview the dummy languages on your local machine and also in
+your sandbox, if and when you create one.
+
+The dummy language files that are generated during this process can be
+found in the following locations.
+
+::
+
+    conf/locale/{LANG_CODE}
+
+There are a few JavaScript files that are generated from this process. You
+can find those in the following locations.
+
+::
+
+    lms/static/js/i18n/{LANG_CODE}
+    cms/static/js/i18n/{LANG_CODE}
+
+Do not commit the ``.po``, ``.mo``, ``.js`` files that are generated
+in the above locations during the dummy translation process!
+
 
 Debugging Acceptance Tests on Vagrant
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -4,13 +4,23 @@
     // into the optimized files. Therefore load these libraries through script tags and explicitly define them.
     // Note that when the optimizer executes this code, window will not be defined.
     if (window) {
-        var defineDependency = function (globalVariable, name, noShim) {
-            if (window[globalVariable]) {
+        var defineDependency = function (globalName, name, noShim) {
+            var getGlobalValue = function(name) {
+                var globalNamePath = name.split('.'),
+                    result = window,
+                    i;
+                for (i = 0; i < globalNamePath.length; i++) {
+                    result = result[globalNamePath[i]];
+                }
+                return result;
+            },
+                globalValue = getGlobalValue(globalName);
+            if (globalValue) {
                 if (noShim) {
                     define(name, {});
                 }
                 else {
-                    define(name, [], function() {return window[globalVariable];});
+                    define(name, [], function() { return globalValue; });
                 }
             }
             else {
@@ -19,10 +29,21 @@
         };
         defineDependency("jQuery", "jquery");
         defineDependency("_", "underscore");
+        defineDependency("s", "underscore.string");
+        // Underscore.string no longer installs itself directly on "_". For compatibility with existing
+        // code, add it to "_" with its previous name.
+        if (window._ && window.s) {
+            window._.str = window.s;
+        }
         defineDependency("gettext", "gettext");
         defineDependency("Logger", "logger");
         defineDependency("URI", "URI");
         defineDependency("Backbone", "backbone");
+        defineDependency("Modernizr", "modernizr");
+
+        // Add the UI Toolkit helper classes that have been installed in the "edx" namespace
+        defineDependency("edx.HtmlUtils", "edx-ui-toolkit/js/utils/html-utils");
+        defineDependency("edx.StringUtils", "edx-ui-toolkit/js/utils/string-utils");
 
         // utility.js adds two functions to the window object, but does not return anything
         defineDependency("isExternal", "utility", true);
@@ -32,7 +53,6 @@
         // NOTE: baseUrl has been previously set in lms/templates/main.html
         waitSeconds: 60,
         paths: {
-            "gettext": "/i18n",
             "annotator_1.2.9": "js/vendor/edxnotes/annotator-full.min",
             "date": "js/vendor/date",
             "moment": "js/vendor/moment.min",
@@ -42,8 +62,8 @@
             "backbone": "js/vendor/backbone-min",
             "backbone-super": "js/vendor/backbone-super",
             "backbone.paginator": "js/vendor/backbone.paginator.min",
-            "underscore": "js/vendor/underscore-min",
-            "underscore.string": "js/vendor/underscore.string.min",
+            "underscore": "common/js/vendor/underscore",
+            "underscore.string": "common/js/vendor/underscore.string",
             "jquery": "js/vendor/jquery.min",
             "jquery.cookie": "js/vendor/jquery.cookie",
             'jquery.timeago': 'js/vendor/jquery.timeago',
@@ -54,6 +74,10 @@
             "URI": "js/vendor/URI.min",
             "string_utils": "js/src/string_utils",
             "utility": "js/src/utility",
+            "modernizr": "edx-pattern-library/js/modernizr-custom",
+            "afontgarde": "edx-pattern-library/js/afontgarde",
+            "edxicons": "edx-pattern-library/js/edx-icons",
+            "draggabilly": "js/vendor/draggabilly",
 
             // Files needed by OVA
             "annotator": "js/vendor/ova/annotator-full",
@@ -75,22 +99,17 @@
             "catch": "js/vendor/ova/catch/js/catch",
             "handlebars": "js/vendor/ova/catch/js/handlebars-1.1.2",
             "tinymce": "js/vendor/tinymce/js/tinymce/tinymce.full.min",
-            "jquery.tinymce": "js/vendor/tinymce/js/tinymce/jquery.tinymce.min"
+            "jquery.tinymce": "js/vendor/tinymce/js/tinymce/jquery.tinymce.min",
+            "picturefill": "common/js/vendor/picturefill.min"
             // end of files needed by OVA
         },
         shim: {
-            "gettext": {
-                exports: "gettext"
-            },
             "annotator_1.2.9": {
                 deps: ["jquery"],
                 exports: "Annotator"
             },
             "date": {
                 exports: "Date"
-            },
-            "jquery": {
-                exports: "$"
             },
             "jquery.cookie": {
                 deps: ["jquery"],
@@ -111,13 +130,6 @@
             "jquery.tinymce": {
                 deps: ["jquery", "tinymce"],
                 exports: "jQuery.fn.tinymce"
-            },
-            "underscore": {
-                exports: "_"
-            },
-            "backbone": {
-                deps: ["underscore", "jquery"],
-                exports: "Backbone"
             },
             "backbone.paginator": {
                 deps: ["backbone"],
@@ -193,6 +205,15 @@
             },
             "moment-with-locales": {
                 exports: "moment"
+            },
+            "afontgarde": {
+                exports: "AFontGarde"
+            },
+            // Because Draggabilly is being used by video code, the namespaced version of
+            // require is not being recognized. Therefore the library is being added to the
+            // global namespace instead of being registered in require.
+            "draggabilly": {
+                exports: "Draggabilly"
             }
         }
     });

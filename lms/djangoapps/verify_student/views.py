@@ -23,14 +23,14 @@ from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext as _, ugettext_lazy
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
-from django.views.generic.base import View, RedirectView
+from django.views.generic.base import View
 
 import analytics
 from eventtracking import tracker
 from opaque_keys import InvalidKeyError
 from opaque_keys.edx.keys import CourseKey, UsageKey
 
-from commerce.utils import audit_log
+from commerce.utils import audit_log, EcommerceService
 from course_modes.models import CourseMode
 from courseware.url_helpers import get_redirect_url
 from edx_rest_api_client.exceptions import SlumberBaseException
@@ -338,7 +338,10 @@ class PayAndVerifyView(View):
             already_verified,
             already_paid,
             is_enrolled,
-            course_key
+            course_key,
+            user_is_trying_to_pay,
+            request.user,
+            relevant_course_mode.sku
         )
         if redirect_response is not None:
             return redirect_response
@@ -429,12 +432,8 @@ class PayAndVerifyView(View):
         return render_to_response("verify_student/pay_and_verify.html", context)
 
     def _redirect_if_necessary(
-        self,
-        message,
-        already_verified,
-        already_paid,
-        is_enrolled,
-        course_key
+        self, message, already_verified, already_paid, is_enrolled, course_key,  # pylint: disable=bad-continuation
+        user_is_trying_to_pay, user, sku  # pylint: disable=bad-continuation
     ):
         """Redirect the user to a more appropriate page if necessary.
 
@@ -493,6 +492,13 @@ class PayAndVerifyView(View):
             else:
                 url = reverse('verify_student_start_flow', kwargs=course_kwargs)
 
+        if user_is_trying_to_pay and user.is_active:
+            # IIf the user is trying to pay, has activated their account, and the ecommerce service
+            # is enabled redirect him to the ecommerce checkout page.
+            ecommerce_service = EcommerceService()
+            if ecommerce_service.is_enabled(user):
+                url = ecommerce_service.checkout_page_url(sku)
+
         # Redirect if necessary, otherwise implicitly return None
         if url is not None:
             return redirect(url)
@@ -522,9 +528,9 @@ class PayAndVerifyView(View):
             if mode.min_price > 0 and not CourseMode.is_credit_mode(mode):
                 return mode
 
-        # Otherwise, find the first expired mode
+        # Otherwise, find the first non credit expired paid mode
         for mode in all_modes[course_key]:
-            if mode.min_price > 0:
+            if mode.min_price > 0 and not CourseMode.is_credit_mode(mode):
                 return mode
 
         # Otherwise, return None and so the view knows to respond with a 404.
@@ -872,6 +878,11 @@ class SubmitPhotosView(View):
         face_image, photo_id_image, response = self._decode_image_data(
             params["face_image"], params.get("photo_id_image")
         )
+
+        # If we have a photo_id we do not want use the initial verification image.
+        if photo_id_image is not None:
+            initial_verification = None
+
         if response is not None:
             return response
 

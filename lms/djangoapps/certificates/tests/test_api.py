@@ -231,7 +231,7 @@ class GenerateUserCertificatesTest(EventTestMixin, WebCertificateTestMixin, Modu
                 certs_api.generate_user_certificates(self.student, self.course.id)
 
         # Verify that the certificate has status 'generating'
-        cert = GeneratedCertificate.objects.get(user=self.student, course_id=self.course.id)
+        cert = GeneratedCertificate.eligible_certificates.get(user=self.student, course_id=self.course.id)
         self.assertEqual(cert.status, CertificateStatuses.generating)
         self.assert_event_emitted(
             'edx.certificate.created',
@@ -249,7 +249,7 @@ class GenerateUserCertificatesTest(EventTestMixin, WebCertificateTestMixin, Modu
                 certs_api.generate_user_certificates(self.student, self.course.id)
 
         # Verify that the certificate has been marked with status error
-        cert = GeneratedCertificate.objects.get(user=self.student, course_id=self.course.id)
+        cert = GeneratedCertificate.eligible_certificates.get(user=self.student, course_id=self.course.id)
         self.assertEqual(cert.status, 'error')
         self.assertIn(self.ERROR_REASON, cert.error_reason)
 
@@ -263,7 +263,7 @@ class GenerateUserCertificatesTest(EventTestMixin, WebCertificateTestMixin, Modu
             certs_api.generate_user_certificates(self.student, self.course.id)
 
         # Verify that the certificate has status 'downloadable'
-        cert = GeneratedCertificate.objects.get(user=self.student, course_id=self.course.id)
+        cert = GeneratedCertificate.eligible_certificates.get(user=self.student, course_id=self.course.id)
         self.assertEqual(cert.status, CertificateStatuses.downloadable)
 
     @patch.dict(settings.FEATURES, {'CERTIFICATES_HTML_VIEW': False})
@@ -369,8 +369,8 @@ class GenerateExampleCertificatesTest(TestCase):
 
     def test_generate_example_certs_with_verified_mode(self):
         # Create verified and honor modes for the course
-        CourseModeFactory(course_id=self.COURSE_KEY, mode_slug='honor')
-        CourseModeFactory(course_id=self.COURSE_KEY, mode_slug='verified')
+        CourseModeFactory.create(course_id=self.COURSE_KEY, mode_slug='honor')
+        CourseModeFactory.create(course_id=self.COURSE_KEY, mode_slug='verified')
 
         # Generate certificates for the course
         with self._mock_xqueue() as mock_queue:

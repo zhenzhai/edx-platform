@@ -19,9 +19,11 @@ class ProgramsApiConfigMixin(object):
         'cache_ttl': 0,
         'enable_student_dashboard': True,
         'enable_studio_tab': True,
+        'enable_certification': True,
+        'xseries_ad_enabled': True,
     }
 
-    def create_config(self, **kwargs):
+    def create_programs_config(self, **kwargs):
         """Creates a new ProgramsApiConfig with DEFAULTS, updated with any provided overrides."""
         fields = dict(self.DEFAULTS, **kwargs)
         ProgramsApiConfig(**fields).save()
@@ -34,6 +36,7 @@ class ProgramsDataMixin(object):
     PROGRAM_NAMES = [
         'Test Program A',
         'Test Program B',
+        'Test Program C',
     ]
 
     COURSE_KEYS = [
@@ -47,6 +50,7 @@ class ProgramsDataMixin(object):
         'organization-b/course-d/winter',
     ]
 
+    # TODO: Use factory-boy.
     PROGRAMS_API_RESPONSE = {
         'results': [
             {
@@ -55,7 +59,7 @@ class ProgramsDataMixin(object):
                 'subtitle': 'A program used for testing purposes',
                 'category': 'xseries',
                 'status': 'unpublished',
-                'marketing_slug': '',
+                'marketing_slug': '{}_test_url'.format(PROGRAM_NAMES[0].replace(' ', '_')),
                 'organizations': [
                     {
                         'display_name': 'Test Organization A',
@@ -121,7 +125,7 @@ class ProgramsDataMixin(object):
                 'subtitle': 'Another program used for testing purposes',
                 'category': 'xseries',
                 'status': 'unpublished',
-                'marketing_slug': '',
+                'marketing_slug': '{}_test_url'.format(PROGRAM_NAMES[1].replace(' ', '_')),
                 'organizations': [
                     {
                         'display_name': 'Test Organization B',
@@ -180,9 +184,69 @@ class ProgramsDataMixin(object):
                 ],
                 'created': '2015-10-26T19:59:03.064000Z',
                 'modified': '2015-10-26T19:59:18.536000Z'
+            },
+            {
+                'id': 3,
+                'name': PROGRAM_NAMES[2],
+                'subtitle': 'A third program used for testing purposes',
+                'category': 'xseries',
+                'status': 'unpublished',
+                'marketing_slug': '{}_test_url'.format(PROGRAM_NAMES[2].replace(' ', '_')),
+                'organizations': [
+                    {
+                        'display_name': 'Test Organization B',
+                        'key': 'organization-b'
+                    }
+                ],
+                'course_codes': [
+                    {
+                        'display_name': 'Test Course D',
+                        'key': 'course-d',
+                        'organization': {
+                            'display_name': 'Test Organization B',
+                            'key': 'organization-b'
+                        },
+                        'run_modes': [
+                            {
+                                'course_key': COURSE_KEYS[7],
+                                'mode_slug': 'verified',
+                                'sku': '',
+                                'start_date': '2015-11-05T07:39:02.791741Z',
+                                'run_key': 'winter'
+                            }
+                        ]
+                    }
+                ],
+                'created': '2015-10-26T19:59:03.064000Z',
+                'modified': '2015-10-26T19:59:18.536000Z'
             }
         ]
     }
+
+    PROGRAMS_CREDENTIALS_DATA = [
+        {
+            "id": 1,
+            "username": "test",
+            "credential": {
+                "credential_id": 1,
+                "program_id": 1
+            },
+            "status": "awarded",
+            "uuid": "dummy-uuid-1",
+            "certificate_url": "http://credentials.edx.org/credentials/dummy-uuid-1/"
+        },
+        {
+            "id": 2,
+            "username": "test",
+            "credential": {
+                "credential_id": 2,
+                "program_id": 2
+            },
+            "status": "awarded",
+            "uuid": "dummy-uuid-2",
+            "certificate_url": "http://credentials.edx.org/credentials/dummy-uuid-2/"
+        }
+    ]
 
     def mock_programs_api(self, data=None, status_code=200):
         """Utility for mocking out Programs API URLs."""

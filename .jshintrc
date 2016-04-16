@@ -139,8 +139,15 @@
         "appendSetFixtures",
         "spyOnEvent",
 
+        // Django i18n catalog globals
+        "interpolate",
+        "gettext",
+        "ngettext",
+
         // Miscellaneous globals
         "JSON",
-        "gettext"
+
+        // edX globals
+        "edx"
     ]
 }

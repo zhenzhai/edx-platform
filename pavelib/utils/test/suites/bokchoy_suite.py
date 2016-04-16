@@ -11,6 +11,8 @@ from pavelib.utils.envs import Env
 from pavelib.utils.test import bokchoy_utils
 from pavelib.utils.test import utils as test_utils
 
+import os
+
 try:
     from pygments.console import colorize
 except ImportError:
@@ -37,6 +39,7 @@ class BokChoyTestSuite(TestSuite):
       default_store - modulestore to use when running tests (split or draft)
       num_processes - number of processes or threads to use in tests. Recommendation is that this
       is less than or equal to the number of available processors.
+      verify_xss - when set, check for XSS vulnerabilities in the page HTML.
       See nosetest documentation: http://nose.readthedocs.org/en/latest/usage.html
     """
     def __init__(self, *args, **kwargs):
@@ -53,11 +56,13 @@ class BokChoyTestSuite(TestSuite):
         self.default_store = kwargs.get('default_store', None)
         self.verbosity = kwargs.get('verbosity', DEFAULT_VERBOSITY)
         self.num_processes = kwargs.get('num_processes', DEFAULT_NUM_PROCESSES)
+        self.verify_xss = kwargs.get('verify_xss', os.environ.get('VERIFY_XSS', False))
         self.extra_args = kwargs.get('extra_args', '')
         self.har_dir = self.log_dir / 'hars'
         self.a11y_file = Env.BOK_CHOY_A11Y_CUSTOM_RULES_FILE
         self.imports_dir = kwargs.get('imports_dir', None)
         self.coveragerc = kwargs.get('coveragerc', None)
+        self.save_screenshots = kwargs.get('save_screenshots', False)
 
     def __enter__(self):
         super(BokChoyTestSuite, self).__enter__()
@@ -68,7 +73,7 @@ class BokChoyTestSuite(TestSuite):
         self.report_dir.makedirs_p()
         test_utils.clean_reports_dir()      # pylint: disable=no-value-for-parameter
 
-        if not (self.fasttest or self.skip_clean):
+        if not (self.fasttest or self.skip_clean or self.testsonly):
             test_utils.clean_test_files()
 
         msg = colorize('green', "Checking for mongo, memchache, and mysql...")
@@ -100,12 +105,16 @@ class BokChoyTestSuite(TestSuite):
     def __exit__(self, exc_type, exc_value, traceback):
         super(BokChoyTestSuite, self).__exit__(exc_type, exc_value, traceback)
 
-        msg = colorize('green', "Cleaning up databases...")
-        print msg
-
-        # Clean up data we created in the databases
-        sh("./manage.py lms --settings bok_choy flush --traceback --noinput")
-        bokchoy_utils.clear_mongo()
+        # Using testsonly will leave all fixtures in place (Note: the db will also be dirtier.)
+        if self.testsonly:
+            msg = colorize('green', 'Running in testsonly mode... SKIPPING database cleanup.')
+            print msg
+        else:
+            # Clean up data we created in the databases
+            msg = colorize('green', "Cleaning up databases...")
+            print msg
+            sh("./manage.py lms --settings bok_choy flush --traceback --noinput")
+            bokchoy_utils.clear_mongo()
 
     def verbosity_processes_string(self):
         """
@@ -219,12 +228,15 @@ class BokChoyTestSuite(TestSuite):
             "BOK_CHOY_HAR_DIR='{}'".format(self.har_dir),
             "BOKCHOY_A11Y_CUSTOM_RULES_FILE='{}'".format(self.a11y_file),
             "SELENIUM_DRIVER_LOG_DIR='{}'".format(self.log_dir),
+            "VERIFY_XSS='{}'".format(self.verify_xss),
             "nosetests",
             test_spec,
             "{}".format(self.verbosity_processes_string())
         ]
         if self.pdb:
             cmd.append("--pdb")
+        if self.save_screenshots:
+            cmd.append("--with-save-baseline")
         cmd.append(self.extra_args)
 
         cmd = (" ").join(cmd)

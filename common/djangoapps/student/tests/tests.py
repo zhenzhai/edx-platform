@@ -9,6 +9,7 @@ from datetime import datetime, timedelta
 from urlparse import urljoin
 
 import pytz
+from markupsafe import escape
 from mock import Mock, patch
 from opaque_keys.edx.locations import SlashSeparatedCourseKey
 from pyquery import PyQuery as pq
@@ -225,7 +226,7 @@ class DashboardTest(ModuleStoreTestCase):
         """
         Check that the css class and the status message are in the dashboard html.
         """
-        CourseModeFactory(mode_slug=mode, course_id=self.course.id)
+        CourseModeFactory.create(mode_slug=mode, course_id=self.course.id)
         CourseEnrollment.enroll(self.user, self.course.location.course_key, mode=mode)
 
         if mode == 'verified':
@@ -248,18 +249,21 @@ class DashboardTest(ModuleStoreTestCase):
         Test that the certificate verification status for courses is visible on the dashboard.
         """
         self.client.login(username="jack", password="test")
-        self._check_verification_status_on('verified', 'You\'re enrolled as a verified student')
-        self._check_verification_status_on('honor', 'You\'re enrolled as an honor code student')
+        self._check_verification_status_on('verified', 'You&#39;re enrolled as a verified student')
+        self._check_verification_status_on('honor', 'You&#39;re enrolled as an honor code student')
         self._check_verification_status_off('audit', '')
-        self._check_verification_status_on('professional', 'You\'re enrolled as a professional education student')
-        self._check_verification_status_on('no-id-professional', 'You\'re enrolled as a professional education student')
+        self._check_verification_status_on('professional', 'You&#39;re enrolled as a professional education student')
+        self._check_verification_status_on(
+            'no-id-professional',
+            'You&#39;re enrolled as a professional education student',
+        )
 
     @unittest.skipUnless(settings.ROOT_URLCONF == 'lms.urls', 'Test only valid in lms')
     def _check_verification_status_off(self, mode, value):
         """
         Check that the css class and the status message are not in the dashboard html.
         """
-        CourseModeFactory(mode_slug=mode, course_id=self.course.id)
+        CourseModeFactory.create(mode_slug=mode, course_id=self.course.id)
         CourseEnrollment.enroll(self.user, self.course.location.course_key, mode=mode)
 
         if mode == 'verified':
@@ -403,7 +407,7 @@ class DashboardTest(ModuleStoreTestCase):
         self.assertNotIn('Add Certificate to LinkedIn', response.content)
 
         response_url = 'http://www.linkedin.com/profile/add?_ed='
-        self.assertNotContains(response, response_url)
+        self.assertNotContains(response, escape(response_url))
 
     @unittest.skipUnless(settings.ROOT_URLCONF == 'lms.urls', 'Test only valid in lms')
     @patch.dict('django.conf.settings.FEATURES', {'CERTIFICATES_HTML_VIEW': False})
@@ -451,7 +455,7 @@ class DashboardTest(ModuleStoreTestCase):
             'pfCertificationUrl=www.edx.org&'
             'source=o'
         )
-        self.assertContains(response, expected_url)
+        self.assertContains(response, escape(expected_url))
 
     @unittest.skipUnless(settings.ROOT_URLCONF == 'lms.urls', 'Test only valid in lms')
     @ddt.data(ModuleStoreEnum.Type.mongo, ModuleStoreEnum.Type.split)
@@ -491,7 +495,6 @@ class DashboardTest(ModuleStoreTestCase):
             self.assertEquals(response_2.status_code, 200)
 
     @unittest.skipUnless(settings.ROOT_URLCONF == 'lms.urls', 'Test only valid in lms')
-    @patch.dict(settings.FEATURES, {"IS_EDX_DOMAIN": True})
     def test_dashboard_header_nav_has_find_courses(self):
         self.client.login(username="jack", password="test")
         response = self.client.get(reverse("dashboard"))
@@ -898,6 +901,7 @@ class AnonymousLookupTable(ModuleStoreTestCase):
         self.assertEqual(anonymous_id, anonymous_id_for_user(self.user, course2.id, save=False))
 
 
+# TODO: Clean up these tests so that they use the ProgramsDataMixin.
 @unittest.skipUnless(settings.ROOT_URLCONF == 'lms.urls', 'Test only valid in lms')
 @ddt.ddt
 class DashboardTestXSeriesPrograms(ModuleStoreTestCase, ProgramsApiConfigMixin):
@@ -915,6 +919,7 @@ class DashboardTestXSeriesPrograms(ModuleStoreTestCase, ProgramsApiConfigMixin):
         self.course_3 = CourseFactory.create()
         self.program_name = 'Testing Program'
         self.category = 'xseries'
+        self.display_category = 'XSeries'
 
         CourseModeFactory.create(
             course_id=self.course_1.id,
@@ -928,9 +933,13 @@ class DashboardTestXSeriesPrograms(ModuleStoreTestCase, ProgramsApiConfigMixin):
     def _create_program_data(self, data):
         """Dry method to create testing programs data."""
         programs = {}
+        _id = 0
+
         for course, program_status in data:
-            programs[unicode(course)] = {
+            programs[unicode(course)] = [{
+                'id': _id,
                 'category': self.category,
+                'display_category': self.display_category,
                 'organization': {'display_name': 'Test Organization 1', 'key': 'edX'},
                 'marketing_slug': 'fake-marketing-slug-xseries-1',
                 'status': program_status,
@@ -953,7 +962,9 @@ class DashboardTestXSeriesPrograms(ModuleStoreTestCase, ProgramsApiConfigMixin):
                 ],
                 'subtitle': 'sub',
                 'name': self.program_name
-            }
+            }]
+
+            _id += 1
 
         return programs
 
@@ -968,15 +979,17 @@ class DashboardTestXSeriesPrograms(ModuleStoreTestCase, ProgramsApiConfigMixin):
         """Verify that program data is parsed correctly for a given course"""
         with patch('student.views.get_programs_for_dashboard') as mock_data:
             mock_data.return_value = {
-                u'edx/demox/Run_1': {
+                u'edx/demox/Run_1': [{
+                    'id': 0,
                     'category': self.category,
+                    'display_category': self.display_category,
                     'organization': {'display_name': 'Test Organization 1', 'key': 'edX'},
                     'marketing_slug': marketing_slug,
                     'status': program_status,
                     'course_codes': course_codes,
                     'subtitle': 'sub',
                     'name': self.program_name
-                }
+                }]
             }
             parse_data = _get_course_programs(
                 self.user, [
@@ -991,12 +1004,15 @@ class DashboardTestXSeriesPrograms(ModuleStoreTestCase, ProgramsApiConfigMixin):
                     {
                         u'edx/demox/Run_1': {
                             'category': 'xseries',
-                            'course_count': len(course_codes),
-                            'display_name': self.program_name,
-                            'program_marketing_url': urljoin(
-                                settings.MKTG_URLS.get('ROOT'), 'xseries' + '/{}'
-                            ).format(marketing_slug),
-                            'display_category': 'XSeries'
+                            'display_category': 'XSeries',
+                            'course_program_list': [{
+                                'program_id': 0,
+                                'course_count': len(course_codes),
+                                'display_name': self.program_name,
+                                'program_marketing_url': urljoin(
+                                    settings.MKTG_URLS.get('ROOT'), 'xseries' + '/{}'
+                                ).format(marketing_slug)
+                            }]
                         }
                     },
                     parse_data
@@ -1026,7 +1042,7 @@ class DashboardTestXSeriesPrograms(ModuleStoreTestCase, ProgramsApiConfigMixin):
         CourseEnrollment.enroll(self.user, self.course_2.id, mode=course_mode)
 
         self.client.login(username="jack", password="test")
-        self.create_config()
+        self.create_programs_config()
 
         with patch('student.views.get_programs_for_dashboard') as mock_data:
             mock_data.return_value = self._create_program_data(
@@ -1059,7 +1075,7 @@ class DashboardTestXSeriesPrograms(ModuleStoreTestCase, ProgramsApiConfigMixin):
         CourseEnrollment.enroll(self.user, self.course_1.id, mode='verified')
 
         self.client.login(username="jack", password="test")
-        self.create_config()
+        self.create_programs_config()
 
         with patch(
             'student.views.get_programs_for_dashboard',
@@ -1089,7 +1105,7 @@ class DashboardTestXSeriesPrograms(ModuleStoreTestCase, ProgramsApiConfigMixin):
         CourseEnrollment.enroll(self.user, self.course_3.id, mode='honor')
 
         self.client.login(username="jack", password="test")
-        self.create_config()
+        self.create_programs_config()
 
         with patch('student.views.get_programs_for_dashboard') as mock_data:
             mock_data.return_value = self._create_program_data(
@@ -1110,11 +1126,12 @@ class DashboardTestXSeriesPrograms(ModuleStoreTestCase, ProgramsApiConfigMixin):
 
         CourseEnrollment.enroll(self.user, self.course_1.id)
         self.client.login(username="jack", password="test")
-        self.create_config()
+        self.create_programs_config()
 
         program_data = self._create_program_data([(self.course_1.id, 'active')])
-        if key_remove and key_remove in program_data[unicode(self.course_1.id)]:
-            del program_data[unicode(self.course_1.id)][key_remove]
+        for program in program_data[unicode(self.course_1.id)]:
+            if key_remove and key_remove in program:
+                del program[key_remove]
 
         with patch('student.views.get_programs_for_dashboard') as mock_data:
             mock_data.return_value = program_data
@@ -1126,7 +1143,7 @@ class DashboardTestXSeriesPrograms(ModuleStoreTestCase, ProgramsApiConfigMixin):
                 log_warn.assert_called_with(
                     'Program structure is invalid, skipping display: %r', program_data[
                         unicode(self.course_1.id)
-                    ]
+                    ][0]
                 )
                 # verify that no programs related upsell messages appear on the
                 # student dashboard.

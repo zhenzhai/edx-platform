@@ -1,13 +1,13 @@
+<%page expression_filter="h"/>
 <%inherit file="main.html" />
 <%namespace name='static' file='static_content.html'/>
 <%!
+from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
 from django.template import RequestContext
 import third_party_auth
 from third_party_auth import pipeline
-from microsite_configuration import microsite
-from django.core.urlresolvers import reverse
-import json
+from openedx.core.djangolib.js_utils import dump_js_escaped_json, js_escaped_string
 %>
 
 <%
@@ -40,9 +40,9 @@ import json
   <script type="text/javascript">
     $(document).ready(function() {
       edx.dashboard.legacy.init({
-        dashboard: "${reverse('dashboard')}",
-        signInUser: "${reverse('signin_user')}",
-        changeEmailSettings: "${reverse('change_email_settings')}"
+        dashboard: "${reverse('dashboard') | n, js_escaped_string}",
+        signInUser: "${reverse('signin_user') | n, js_escaped_string}",
+        changeEmailSettings: "${reverse('change_email_settings') | n, js_escaped_string}"
       });
     });
   </script>
@@ -55,7 +55,7 @@ import json
     <%static:require_module module_name="js/views/message_banner" class_name="MessageBannerView">
         var banner = new MessageBannerView({urgency: 'low', type: 'warning'});
         $('#content').prepend(banner.$el);
-        banner.showMessage(${json.dumps(redirect_message)})
+        banner.showMessage(${redirect_message | n, dump_js_escaped_json})
     </%static:require_module>
   % endif
 </%block>
@@ -63,19 +63,19 @@ import json
 <div class="dashboard-notifications" tabindex="-1">
     %if message:
         <section class="dashboard-banner">
-            ${message}
+            ${message | n, unicode}
         </section>
     %endif
 
     %if enrollment_message:
         <section class="dashboard-banner">
-            ${enrollment_message}
+            ${enrollment_message | n, unicode}
         </section>
     %endif
 </div>
 
 <section class="container dashboard" id="dashboard-main">
-  <section class="my-courses" id="my-courses" role="main" aria-label="Content">
+  <section class="my-courses" id="my-courses" role="main" tabindex="-1">
     <header class="wrapper-header-courses">
       <h2 class="header-courses">${_("My Courses")}</h2>
     </header>
@@ -118,7 +118,7 @@ import json
         <h2>${_("Course-loading errors")}</h2>
 
       % for course_dir, errors in errored_courses.items():
-         <h3>${course_dir | h}</h3>
+         <h3>${course_dir}</h3>
              <ul>
            % for (msg, err) in errors:
                <li>${msg}
@@ -152,13 +152,6 @@ import json
     <section id="dashboard-search-results" class="search-results dashboard-search-results"></section>
   % endif
 
-  % if settings.FEATURES.get('IS_EDX_DOMAIN') and settings.FEATURES.get('COURSES_ARE_BROWSABLE'):
-    <div class="wrapper-find-courses">
-      <p class="copy">${_("Check out our recently launched courses and what's new in your favorite subjects")}</p>
-      <p><a class="btn-find-courses" href="${marketing_link('COURSES')}">${_("Find New Courses")}</a></p>
-    </div>
-  % endif
-
   <section class="profile-sidebar" id="profile-sidebar" role="region" aria-label="Account Status Info">
     <header class="profile">
       <h2 class="account-status-title sr">${_("Account Status Info")}: </h2>
@@ -175,11 +168,24 @@ import json
         </li>
         % endif
 
-        <%include file="${microsite.get_template_path('dashboard/_dashboard_status_verification.html')}" />
+        <%include file="${static.get_template_path('dashboard/_dashboard_status_verification.html')}" />
 
       </ul>
     </section>
   </section>
+  % if xseries_credentials:
+    <div class="wrapper-xseries-certificates">
+      <p class="title">${_("XSeries Program Certificates")}</p>
+      <p class="copy">${_("You have received a certificate for the following XSeries programs:")}</p>
+      <ul>
+      % for xseries_credential in xseries_credentials:
+        <li>
+          <a class="copy" href="${xseries_credential['credential_url']}">${xseries_credential['display_name']}</a>
+        </li>
+      % endfor
+      </ul>
+    </div>
+  % endif
 </section>
 
 <section id="email-settings-modal" class="modal" aria-hidden="true">

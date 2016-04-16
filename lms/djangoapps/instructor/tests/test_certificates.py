@@ -619,7 +619,7 @@ class CertificateExceptionViewInstructorApiTest(SharedModuleStoreTestCase):
         # Verify that certificate exception successfully removed from CertificateWhitelist and GeneratedCertificate
         with self.assertRaises(ObjectDoesNotExist):
             CertificateWhitelist.objects.get(user=self.user2, course_id=self.course.id)
-            GeneratedCertificate.objects.get(
+            GeneratedCertificate.eligible_certificates.get(
                 user=self.user2, course_id=self.course.id, status__not=CertificateStatuses.unavailable
             )
 
@@ -720,7 +720,6 @@ class GenerateCertificatesInstructorApiTest(SharedModuleStoreTestCase):
 
         response = self.client.post(
             url,
-            data=json.dumps([self.certificate_exception]),
             content_type='application/json'
         )
         # Assert Success
@@ -736,24 +735,49 @@ class GenerateCertificatesInstructorApiTest(SharedModuleStoreTestCase):
             u"Certificate generation started for white listed students."
         )
 
-    def test_generate_certificate_exceptions_invalid_user_list_error(self):
+    def test_generate_certificate_exceptions_whitelist_not_generated(self):
         """
-        Test generate certificates exceptions api endpoint returns error
-        when called with certificate exceptions with empty 'user_id' field
+        Test generate certificates exceptions api endpoint returns success
+        when calling with new certificate exception.
         """
         url = reverse(
             'generate_certificate_exceptions',
             kwargs={'course_id': unicode(self.course.id), 'generate_for': 'new'}
         )
 
-        # assign empty user_id
-        self.certificate_exception.update({'user_id': ''})
+        response = self.client.post(
+            url,
+            content_type='application/json'
+        )
+
+        # Assert Success
+        self.assertEqual(response.status_code, 200)
+
+        res_json = json.loads(response.content)
+
+        # Assert Request is successful
+        self.assertTrue(res_json['success'])
+        # Assert Message
+        self.assertEqual(
+            res_json['message'],
+            u"Certificate generation started for white listed students."
+        )
+
+    def test_generate_certificate_exceptions_generate_for_incorrect_value(self):
+        """
+        Test generate certificates exceptions api endpoint returns error
+        when calling with generate_for without 'new' or 'all' value.
+        """
+        url = reverse(
+            'generate_certificate_exceptions',
+            kwargs={'course_id': unicode(self.course.id), 'generate_for': ''}
+        )
 
         response = self.client.post(
             url,
-            data=json.dumps([self.certificate_exception]),
             content_type='application/json'
         )
+
         # Assert Failure
         self.assertEqual(response.status_code, 400)
 
@@ -764,7 +788,7 @@ class GenerateCertificatesInstructorApiTest(SharedModuleStoreTestCase):
         # Assert Message
         self.assertEqual(
             res_json['message'],
-            u"Invalid data, user_id must be present for all certificate exceptions."
+            u'Invalid data, generate_for must be "new" or "all".'
         )
 
 
@@ -1010,7 +1034,7 @@ class CertificateInvalidationViewTests(SharedModuleStoreTestCase):
             self.fail("The certificate is not invalidated.")
 
         # Validate generated certificate was invalidated
-        generated_certificate = GeneratedCertificate.objects.get(
+        generated_certificate = GeneratedCertificate.eligible_certificates.get(
             user=self.enrolled_user_1,
             course_id=self.course.id,
         )

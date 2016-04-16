@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import datetime
 import json
+import ddt
 import mock
 from nose.plugins.attrib import attr
 from pytz import UTC
@@ -23,6 +24,7 @@ from student.tests.factories import UserFactory, AdminFactory, CourseEnrollmentF
 from openedx.core.djangoapps.content.course_structures.models import CourseStructure
 from openedx.core.djangoapps.util.testing import ContentGroupTestCase
 from student.roles import CourseStaffRole
+from xmodule.modulestore import ModuleStoreEnum
 from xmodule.modulestore.tests.factories import CourseFactory, ItemFactory
 from xmodule.modulestore.tests.django_utils import ModuleStoreTestCase, TEST_DATA_MIXED_TOY_MODULESTORE
 from xmodule.modulestore.django import modulestore
@@ -108,6 +110,7 @@ class AccessUtilsTestCase(ModuleStoreTestCase):
         self.assertFalse(ret)
 
 
+@ddt.ddt
 @attr('shard_1')
 class CoursewareContextTestCase(ModuleStoreTestCase):
     """
@@ -169,6 +172,32 @@ class CoursewareContextTestCase(ModuleStoreTestCase):
 
         assertThreadCorrect(threads[0], self.discussion1, "Chapter / Discussion 1")
         assertThreadCorrect(threads[1], self.discussion2, "Subsection / Discussion 2")
+
+    @ddt.data((ModuleStoreEnum.Type.mongo, 2), (ModuleStoreEnum.Type.split, 1))
+    @ddt.unpack
+    def test_get_accessible_discussion_modules(self, modulestore_type, expected_discussion_modules):
+        """
+        Tests that the accessible discussion modules having no parents do not get fetched for split modulestore.
+        """
+        course = CourseFactory.create(default_store=modulestore_type)
+
+        # Create a discussion module.
+        test_discussion = self.store.create_child(self.user.id, course.location, 'discussion', 'test_discussion')
+
+        # Assert that created discussion module is not an orphan.
+        self.assertNotIn(test_discussion.location, self.store.get_orphans(course.id))
+
+        # Assert that there is only one discussion module in the course at the moment.
+        self.assertEqual(len(utils.get_accessible_discussion_modules(course, self.user)), 1)
+
+        # Add an orphan discussion module to that course
+        orphan = course.id.make_usage_key('discussion', 'orphan_discussion')
+        self.store.create_item(self.user.id, orphan.course_key, orphan.block_type, block_id=orphan.block_id)
+
+        # Assert that the discussion module is an orphan.
+        self.assertIn(orphan, self.store.get_orphans(course.id))
+
+        self.assertEqual(len(utils.get_accessible_discussion_modules(course, self.user)), expected_discussion_modules)
 
 
 class CachedDiscussionIdMapTestCase(ModuleStoreTestCase):
@@ -637,6 +666,7 @@ class CategoryMapTestCase(CategoryMapTestMixin, ModuleStoreTestCase):
         self.create_discussion("Chapter 2 / Section 1 / Subsection 2", "Discussion", start=later)
         self.create_discussion("Chapter 3 / Section 1", "Discussion", start=later)
 
+        self.assertFalse(self.course.self_paced)
         self.assert_category_map_equals(
             {
                 "entries": {},
@@ -667,7 +697,102 @@ class CategoryMapTestCase(CategoryMapTestMixin, ModuleStoreTestCase):
                 "children": ["Chapter 1", "Chapter 2"]
             }
         )
-        self.maxDiff = None
+
+    def test_self_paced_start_date_filter(self):
+        self.course.self_paced = True
+        self.course.save()
+
+        now = datetime.datetime.now()
+        later = datetime.datetime.max
+        self.create_discussion("Chapter 1", "Discussion 1", start=now)
+        self.create_discussion("Chapter 1", "Discussion 2", start=later)
+        self.create_discussion("Chapter 2", "Discussion", start=now)
+        self.create_discussion("Chapter 2 / Section 1 / Subsection 1", "Discussion", start=later)
+        self.create_discussion("Chapter 2 / Section 1 / Subsection 2", "Discussion", start=later)
+        self.create_discussion("Chapter 3 / Section 1", "Discussion", start=later)
+
+        self.assertTrue(self.course.self_paced)
+        self.assert_category_map_equals(
+            {
+                "entries": {},
+                "subcategories": {
+                    "Chapter 1": {
+                        "entries": {
+                            "Discussion 1": {
+                                "id": "discussion1",
+                                "sort_key": None,
+                                "is_cohorted": False,
+                            },
+                            "Discussion 2": {
+                                "id": "discussion2",
+                                "sort_key": None,
+                                "is_cohorted": False,
+                            }
+                        },
+                        "subcategories": {},
+                        "children": ["Discussion 1", "Discussion 2"]
+                    },
+                    "Chapter 2": {
+                        "entries": {
+                            "Discussion": {
+                                "id": "discussion3",
+                                "sort_key": None,
+                                "is_cohorted": False,
+                            }
+                        },
+                        "subcategories": {
+                            "Section 1": {
+                                "entries": {},
+                                "subcategories": {
+                                    "Subsection 1": {
+                                        "entries": {
+                                            "Discussion": {
+                                                "id": "discussion4",
+                                                "sort_key": None,
+                                                "is_cohorted": False,
+                                            }
+                                        },
+                                        "subcategories": {},
+                                        "children": ["Discussion"]
+                                    },
+                                    "Subsection 2": {
+                                        "entries": {
+                                            "Discussion": {
+                                                "id": "discussion5",
+                                                "sort_key": None,
+                                                "is_cohorted": False,
+                                            }
+                                        },
+                                        "subcategories": {},
+                                        "children": ["Discussion"]
+                                    }
+                                },
+                                "children": ["Subsection 1", "Subsection 2"]
+                            }
+                        },
+                        "children": ["Discussion", "Section 1"]
+                    },
+                    "Chapter 3": {
+                        "entries": {},
+                        "subcategories": {
+                            "Section 1": {
+                                "entries": {
+                                    "Discussion": {
+                                        "id": "discussion6",
+                                        "sort_key": None,
+                                        "is_cohorted": False,
+                                    }
+                                },
+                                "subcategories": {},
+                                "children": ["Discussion"]
+                            }
+                        },
+                        "children": ["Section 1"]
+                    }
+                },
+                "children": ["Chapter 1", "Chapter 2", "Chapter 3"]
+            }
+        )
 
     def test_sort_inline_explicit(self):
         self.create_discussion("Chapter", "Discussion 1", sort_key="D")

@@ -8,9 +8,12 @@ import os
 from mock import patch
 from nose.plugins.attrib import attr
 from unittest import skipIf, skip
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.action_chains import ActionChains
 from ..helpers import UniqueCourseTest, is_youtube_available, YouTubeStubConfig
 from ...pages.lms.video.video import VideoPage
 from ...pages.lms.tab_nav import TabNavPage
+from ...pages.lms.courseware import CoursewarePage
 from ...pages.lms.course_nav import CourseNavPage
 from ...pages.lms.auto_auth import AutoAuthPage
 from ...pages.lms.course_info import CourseInfoPage
@@ -49,6 +52,7 @@ class VideoBaseTest(UniqueCourseTest):
         self.video = VideoPage(self.browser)
         self.tab_nav = TabNavPage(self.browser)
         self.course_nav = CourseNavPage(self.browser)
+        self.courseware = CoursewarePage(self.browser, self.course_id)
         self.course_info_page = CourseInfoPage(self.browser, self.course_id)
         self.auth_page = AutoAuthPage(self.browser, course_id=self.course_id)
 
@@ -132,7 +136,7 @@ class VideoBaseTest(UniqueCourseTest):
         self.auth_page.visit()
         self.user_info = self.auth_page.user_info
         self.course_info_page.visit()
-        self.tab_nav.go_to_tab('Courseware')
+        self.tab_nav.go_to_tab('Course')
 
     def _navigate_to_courseware_video_and_render(self):
         """ Wait for the video player to render """
@@ -190,7 +194,7 @@ class VideoBaseTest(UniqueCourseTest):
         """
         Navigate to sequential specified by `video_display_name`
         """
-        self.course_nav.go_to_sequential_position(position)
+        self.courseware.go_to_sequential_position(position)
         self.video.wait_for_video_player_render()
 
 
@@ -589,6 +593,7 @@ class YouTubeVideoTest(VideoBaseTest):
         self.video.select_language('en')
         self._verify_caption_text('Welcome to edX.')
 
+    @flaky  # TODO: Fix TNL-4304
     def test_video_language_menu_working_closed_captions(self):
         """
         Scenario: Language menu works correctly in Video component, checks closed captions
@@ -630,10 +635,11 @@ class YouTubeVideoTest(VideoBaseTest):
         """
         Scenario: Multiple videos in sequentials all load and work, switching between sequentials
         Given it has videos "A,B" in "Youtube" mode in position "1" of sequential
-        And videos "E,F" in "Youtube" mode in position "2" of sequential
+        And videos "C,D" in "Youtube" mode in position "2" of sequential
         """
         self.verticals = [
-            [{'display_name': 'A'}, {'display_name': 'B'}], [{'display_name': 'C'}, {'display_name': 'D'}]
+            [{'display_name': 'A'}, {'display_name': 'B'}],
+            [{'display_name': 'C'}, {'display_name': 'D'}]
         ]
 
         tab1_video_names = ['A', 'B']
@@ -651,15 +657,16 @@ class YouTubeVideoTest(VideoBaseTest):
 
         # go to video
         self.navigate_to_video()
-
         execute_video_steps(tab1_video_names)
 
         # go to second sequential position
+        # import ipdb; ipdb.set_trace()
         self.go_to_sequential_position(2)
         execute_video_steps(tab2_video_names)
 
         # go back to first sequential position
         # we are again playing tab 1 videos to ensure that switching didn't broke some video functionality.
+        # import ipdb; ipdb.set_trace()
         self.go_to_sequential_position(1)
         execute_video_steps(tab1_video_names)
 
@@ -679,14 +686,17 @@ class YouTubeVideoTest(VideoBaseTest):
 
         # select the "2.0" speed on video "A"
         self.course_nav.go_to_sequential('A')
+        self.video.wait_for_video_player_render()
         self.video.speed = '2.0'
 
         # select the "0.50" speed on video "B"
         self.course_nav.go_to_sequential('B')
+        self.video.wait_for_video_player_render()
         self.video.speed = '0.50'
 
         # open video "C"
         self.course_nav.go_to_sequential('C')
+        self.video.wait_for_video_player_render()
 
         # Since the playback speed was set to .5 in "B", this video will also be impacted
         # because a playback speed has never explicitly been set for it. However, this video
@@ -911,13 +921,13 @@ class YouTubeVideoTest(VideoBaseTest):
         execute_video_steps(['A'])
 
         # go to second sequential position
-        self.course_nav.go_to_sequential_position(2)
+        self.courseware.go_to_sequential_position(2)
 
         execute_video_steps(tab2_video_names)
 
         # go back to first sequential position
         # we are again playing tab 1 videos to ensure that switching didn't broke some video functionality.
-        self.course_nav.go_to_sequential_position(1)
+        self.courseware.go_to_sequential_position(1)
         execute_video_steps(tab1_video_names)
 
         self.video.browser.refresh()
@@ -1172,11 +1182,49 @@ class YouTubeQualityTest(VideoBaseTest):
 
         self.video.click_player_button('play')
 
+        self.video.wait_for(lambda: self.video.is_quality_button_visible, 'waiting for quality button to appear')
+
         self.assertFalse(self.video.is_quality_button_active)
 
         self.video.click_player_button('quality')
 
-        self.assertTrue(self.video.is_quality_button_active)
+        self.video.wait_for(lambda: self.video.is_quality_button_active, 'waiting for quality button activation')
+
+
+@attr('shard_4')
+class DragAndDropTest(VideoBaseTest):
+    """
+    Tests draggability of closed captions within videos.
+    """
+    def setUp(self):
+        super(DragAndDropTest, self).setUp()
+
+    def test_if_captions_are_draggable(self):
+        """
+        Loads transcripts so that closed-captioning is available.
+        Ensures they are draggable by checking start and dropped location.
+        """
+        self.assets.append('subs_3_yD_cEKoCk.srt.sjson')
+        data = {'sub': '3_yD_cEKoCk'}
+
+        self.metadata = self.metadata_for_mode('html5', additional_data=data)
+        self.navigate_to_video()
+        self.assertTrue(self.video.is_video_rendered('html5'))
+        self.video.show_closed_captions()
+        self.video.wait_for_closed_captions()
+        self.assertTrue(self.video.is_closed_captions_visible)
+
+        action = ActionChains(self.browser)
+        captions = self.browser.find_element(By.CLASS_NAME, 'closed-captions')
+
+        captions_start = captions.location
+        action.drag_and_drop_by_offset(captions, 0, -15).perform()
+        captions_end = captions.location
+        self.assertEqual(
+            captions_end.get('y') + 15,
+            captions_start.get('y'),
+            'Closed captions did not get dragged.'
+        )
 
 
 @attr('a11y')
@@ -1200,13 +1248,18 @@ class LMSVideoModuleA11yTest(VideoBaseTest):
             super(LMSVideoModuleA11yTest, self).setUp()
 
     def test_video_player_a11y(self):
-        self.navigate_to_video()
+        # load transcripts so we can test skipping to
+        self.assets.extend(['english_single_transcript.srt', 'subs_3_yD_cEKoCk.srt.sjson'])
+        data = {'transcripts': {"en": "english_single_transcript.srt"}, 'sub': '3_yD_cEKoCk'}
+        self.metadata = self.metadata_for_mode('youtube', additional_data=data)
 
-        # Limit the scope of the audit to the video player only.
-        self.video.a11y_audit.config.set_scope(include=["div.video"])
-        self.video.a11y_audit.config.set_rules({
-            "ignore": [
-                'link-href',  # TODO: AC-223
-            ],
-        })
+        # go to video
+        self.navigate_to_video()
+        self.video.show_captions()
+
+        # limit the scope of the audit to the video player only.
+        self.video.a11y_audit.config.set_scope(
+            include=["div.video"],
+            exclude=["a.ui-slider-handle"]
+        )
         self.video.a11y_audit.check_for_accessibility_errors()
