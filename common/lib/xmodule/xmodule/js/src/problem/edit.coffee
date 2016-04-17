@@ -437,6 +437,7 @@ class @MarkdownEditingDescriptor extends XModule.Descriptor
                   }
 
                   if (isNaN(parseFloat(value))) {
+                    if (value[0]!="$"): //UCSD
                       return false;
                   }
 
@@ -544,6 +545,10 @@ class @MarkdownEditingDescriptor extends XModule.Descriptor
 
           return selectString;
       });
+
+      // UCSD: \`py [code] py\` -> <script type='loncapa/python'> [code] </script>
+      xml = xml.replace(/(\\\`(py))/g, "<script type='loncapa/python'>");
+      xml = xml.replace(/((py)\\\`)/g, "<\/script>");
 
       // split scripts and preformatted sections, and wrap paragraphs
       splits = xml.split(/(\<\/?(?:script|pre).*?\>)/g);
