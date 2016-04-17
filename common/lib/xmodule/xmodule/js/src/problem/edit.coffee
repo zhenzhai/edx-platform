@@ -205,6 +205,10 @@ class @MarkdownEditingDescriptor extends XModule.Descriptor
       xml = xml.replace(/(^.*?$)(?=\n\=\=+$)/gm, '<h3 class="hd hd-2 problem-header">$1</h3>');
       xml = xml.replace(/\n^\=\=+$/gm, '');
 
+      // UCSD: Replace '<' with &lt; replace '>' with &gt;
+      xml = xml.replace(/(\<)/g, "&lt;");
+      xml = xml.replace(/(\>)/g, "&gt;");
+
       // Pull out demand hints,  || a hint ||
       var demandhints = '';
       xml = xml.replace(/(^\s*\|\|.*?\|\|\s*$\n?)+/gm, function(match) {  // $\n
@@ -437,6 +441,7 @@ class @MarkdownEditingDescriptor extends XModule.Descriptor
                   }
 
                   if (isNaN(parseFloat(value))) {
+                    if (value[0]!="$"): //UCSD
                       return false;
                   }
 
@@ -544,6 +549,10 @@ class @MarkdownEditingDescriptor extends XModule.Descriptor
 
           return selectString;
       });
+
+      // UCSD: \`py [code] py\` -> <script type='loncapa/python'> [code] </script>
+      xml = xml.replace(/(\\\`(py))/g, "<script type='loncapa/python'>");
+      xml = xml.replace(/((py)\\\`)/g, "<\/script>");
 
       // split scripts and preformatted sections, and wrap paragraphs
       splits = xml.split(/(\<\/?(?:script|pre).*?\>)/g);
