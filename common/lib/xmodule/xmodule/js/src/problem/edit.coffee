@@ -205,6 +205,10 @@ class @MarkdownEditingDescriptor extends XModule.Descriptor
       xml = xml.replace(/(^.*?$)(?=\n\=\=+$)/gm, '<h3 class="hd hd-2 problem-header">$1</h3>');
       xml = xml.replace(/\n^\=\=+$/gm, '');
 
+      // UCSD: Replace '<' with &lt; replace '>' with &gt;
+      xml = xml.replace(/(\<)/g, "&lt;");
+      xml = xml.replace(/(\>)/g, "&gt;");
+
       // Pull out demand hints,  || a hint ||
       var demandhints = '';
       xml = xml.replace(/(^\s*\|\|.*?\|\|\s*$\n?)+/gm, function(match) {  // $\n
