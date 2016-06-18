@@ -2,7 +2,7 @@
 Utilities related to API views
 """
 import functools
-from django.core.exceptions import NON_FIELD_ERRORS, ValidationError, ObjectDoesNotExist
+from django.core.exceptions import NON_FIELD_ERRORS, ValidationError
 from django.http import Http404
 from django.utils.translation import ugettext as _
 
@@ -68,7 +68,7 @@ class DeveloperErrorViewMixin(object):
 
         if isinstance(exc, APIException):
             return self.make_error_response(exc.status_code, exc.detail)
-        elif isinstance(exc, Http404) or isinstance(exc, ObjectDoesNotExist):
+        elif isinstance(exc, Http404):
             return self.make_error_response(404, exc.message or "Not found.")
         elif isinstance(exc, ValidationError):
             return self.make_validation_error_response(exc)
@@ -116,7 +116,7 @@ def view_course_access(depth=0, access_action='load', check_for_milestones=False
     return _decorator
 
 
-def view_auth_classes(is_user=False, is_authenticated=True):
+def view_auth_classes(is_user=False):
     """
     Function and class decorator that abstracts the authentication and permission checks for api views.
     """
@@ -129,9 +129,7 @@ def view_auth_classes(is_user=False, is_authenticated=True):
             OAuth2AuthenticationAllowInactiveUser,
             SessionAuthenticationAllowInactiveUser
         )
-        func_or_class.permission_classes = ()
-        if is_authenticated:
-            func_or_class.permission_classes += (IsAuthenticated,)
+        func_or_class.permission_classes = (IsAuthenticated,)
         if is_user:
             func_or_class.permission_classes += (IsUserInUrl,)
         return func_or_class

@@ -114,8 +114,6 @@ fixture_paths:
     - common/templates
     - teams/templates
     - support/templates
-    - js/fixtures/bookmarks
-    - templates/bookmarks
 
 requirejs:
   paths:

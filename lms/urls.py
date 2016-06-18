@@ -89,9 +89,6 @@ urlpatterns = (
     # User API endpoints
     url(r'^api/user/', include('openedx.core.djangoapps.user_api.urls')),
 
-    # Bookmarks API endpoints
-    url(r'^api/bookmarks/', include('openedx.core.djangoapps.bookmarks.urls')),
-
     # Profile Images API endpoints
     url(r'^api/profile_images/', include('openedx.core.djangoapps.profile_images.urls')),
 
@@ -550,6 +547,7 @@ urlpatterns += (
         ),
         include(COURSE_URLS)
     ),
+    # see ENABLE_INSTRUCTOR_LEGACY_DASHBOARD section for legacy dash urls
 
     # Cohorts management
     url(
@@ -753,6 +751,13 @@ if settings.FEATURES.get('ENABLE_STUDENT_HISTORY_VIEW'):
             'courseware.views.submission_history',
             name='submission_history',
         ),
+    )
+
+
+if settings.FEATURES.get('ENABLE_INSTRUCTOR_LEGACY_DASHBOARD'):
+    urlpatterns += (
+        url(r'^courses/{}/legacy_instructor_dash$'.format(settings.COURSE_ID_PATTERN),
+            'instructor.views.legacy.instructor_dashboard', name="instructor_dashboard_legacy"),
     )
 
 if settings.FEATURES.get('CLASS_DASHBOARD'):

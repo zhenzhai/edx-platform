@@ -24,13 +24,11 @@ from openedx.core.lib.api.authentication import (
     SessionAuthenticationAllowInactiveUser,
     OAuth2AuthenticationAllowInactiveUser,
 )
-from openedx.core.lib.exceptions import CourseNotFoundError
 from util.disable_rate_limit import can_disable_rate_limit
 from enrollment import api
 from enrollment.errors import (
-    CourseEnrollmentError,
-    CourseModeNotFoundError,
-    CourseEnrollmentExistsError
+    CourseNotFoundError, CourseEnrollmentError,
+    CourseModeNotFoundError, CourseEnrollmentExistsError
 )
 from student.auth import user_has_role
 from student.models import User

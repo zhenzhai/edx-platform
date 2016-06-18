@@ -13,6 +13,10 @@ class CourseEnrollmentError(Exception):
         self.data = data
 
 
+class CourseNotFoundError(CourseEnrollmentError):
+    pass
+
+
 class UserNotFoundError(CourseEnrollmentError):
     pass
 

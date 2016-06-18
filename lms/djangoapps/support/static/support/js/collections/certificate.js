@@ -6,24 +6,15 @@
                 model: CertModel,
 
                 initialize: function(options) {
-                    this.userFilter = options.userFilter || '';
-                    this.courseFilter = options.courseFilter || '';
+                    this.userQuery = options.userQuery || '';
                 },
 
-                setUserFilter: function(userFilter) {
-                    this.userFilter = userFilter;
-                },
-
-                setCourseFilter: function(courseFilter) {
-                    this.courseFilter = courseFilter;
+                setUserQuery: function(userQuery) {
+                    this.userQuery = userQuery;
                 },
 
                 url: function() {
-                    var url = '/certificates/search?user=' + this.userFilter;
-                    if (this.courseFilter) {
-                        url += '&course_id=' + this.courseFilter;
-                    }
-                    return url;
+                    return '/certificates/search?query=' + this.userQuery;
                 }
             });
     });

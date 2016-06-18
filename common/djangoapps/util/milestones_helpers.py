@@ -186,13 +186,7 @@ def fulfill_course_milestone(course_key, user):
     if not settings.FEATURES.get('MILESTONES_APP', False):
         return None
     from milestones import api as milestones_api
-    from milestones.exceptions import InvalidMilestoneRelationshipTypeException
-    try:
-        course_milestones = milestones_api.get_course_milestones(course_key=course_key, relationship="fulfills")
-    except InvalidMilestoneRelationshipTypeException:
-        # we have not seeded milestone relationship types
-        seed_milestone_relationship_types()
-        course_milestones = milestones_api.get_course_milestones(course_key=course_key, relationship="fulfills")
+    course_milestones = milestones_api.get_course_milestones(course_key=course_key, relationship="fulfills")
     for milestone in course_milestones:
         milestones_api.add_user_milestone({'id': user.id}, milestone)
 

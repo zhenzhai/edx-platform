@@ -12,27 +12,24 @@
         return Backbone.View.extend({
             events: {
                 'submit .certificates-form': 'search',
-                'click .btn-cert-regenerate': 'regenerateCertificate',
-                'click .btn-cert-generate': 'generateCertificate'
+                'click .btn-cert-regenerate': 'regenerateCertificate'
             },
 
             initialize: function(options) {
                 _.bindAll(this, 'search', 'updateCertificates', 'regenerateCertificate', 'handleSearchError');
                 this.certificates = new CertCollection({});
-                this.initialFilter = options.userFilter || null;
-                this.courseFilter = options.courseFilter || null;
+                this.initialQuery = options.userQuery || null;
             },
 
             render: function() {
                 this.$el.html(_.template(certificatesTpl));
 
-                // If there is an initial filter, then immediately trigger a search.
+                // If there is an initial query, then immediately trigger a search.
                 // This is useful because it allows users to share search results:
-                // if the URL contains ?user_filter="foo"&course_id="xyz" then anyone who loads that URL
-                // will automatically search for "foo" and course "xyz".
-                if (this.initialFilter) {
-                    this.setUserFilter(this.initialFilter);
-                    this.setCourseFilter(this.courseFilter);
+                // if the URL contains ?query="foo" then anyone who loads that URL
+                // will automatically search for "foo".
+                if (this.initialQuery) {
+                    this.setUserQuery(this.initialQuery);
                     this.triggerSearch();
                 }
 
@@ -41,7 +38,7 @@
 
             renderResults: function() {
                 var context = {
-                    certificates: this.certificates
+                    certificates: this.certificates,
                 };
 
                 this.setResults(_.template(resultsTpl, context));
@@ -55,54 +52,23 @@
             search: function(event) {
 
                 // Fetch the certificate collection for the given user
-                var url = '/support/certificates?user=' + this.getUserFilter();
-
-                //course id is optional.
-                if (this.getCourseFilter()) {
-                    url += '&course_id=' + this.getCourseFilter();
-                }
+                var query = this.getUserQuery(),
+                    url = '/support/certificates?query=' + query;
 
                 // Prevent form submission, since we're handling it ourselves.
                 event.preventDefault();
 
-                // Push a URL into history with the search filter as a GET parameter.
+                // Push a URL into history with the search query as a GET parameter.
                 // That way, if the user reloads the page or sends someone the link
                 // then the same search will be performed on page load.
                 window.history.pushState({}, window.document.title, url);
 
                 // Perform a search for the user's certificates.
                 this.disableButtons();
-                this.certificates.setUserFilter(this.getUserFilter());
-                this.certificates.setCourseFilter(this.getCourseFilter());
+                this.certificates.setUserQuery(query);
                 this.certificates.fetch({
                     success: this.updateCertificates,
                     error: this.handleSearchError
-                });
-            },
-
-
-            generateCertificate: function(event) {
-                var $button = $(event.target);
-
-                // Generate certificates for a particular user and course.
-                // If this is successful, reload the certificate results so they show
-                // the updated status.
-                this.disableButtons();
-                $.ajax({
-                    url: '/certificates/generate',
-                    type: 'POST',
-                    data: {
-                        username: $button.data('username'),
-                        course_key: $button.data('course-key')
-                    },
-                    context: this,
-                    success: function() {
-                        this.certificates.fetch({
-                            success: this.updateCertificates,
-                            error: this.handleSearchError
-                        });
-                    },
-                    error: this.handleGenerationsError
                 });
             },
 
@@ -118,16 +84,16 @@
                     type: 'POST',
                     data: {
                         username: $button.data('username'),
-                        course_key: $button.data('course-key')
+                        course_key: $button.data('course-key'),
                     },
                     context: this,
                     success: function() {
                         this.certificates.fetch({
                             success: this.updateCertificates,
-                            error: this.handleSearchError
+                            error: this.handleSearchError,
                         });
                     },
-                    error: this.handleGenerationsError
+                    error: this.handleRegenerateError
                 });
             },
 
@@ -136,12 +102,12 @@
                 this.enableButtons();
             },
 
-            handleSearchError: function(jqxhr, response) {
-                this.renderError(response.responseText);
+            handleSearchError: function(jqxhr) {
+                this.renderError(jqxhr.responseText);
                 this.enableButtons();
             },
 
-            handleGenerationsError: function(jqxhr) {
+            handleRegenerateError: function(jqxhr) {
                 // Since there are multiple "regenerate" buttons on the page,
                 // it's difficult to show the error message in the UI.
                 // Since this page is used only by internal staff, I think the
@@ -154,20 +120,12 @@
                 $('.certificates-form').submit();
             },
 
-            getUserFilter: function() {
-                return $('.certificates-form > #certificate-user-filter-input').val();
+            getUserQuery: function() {
+                return $('.certificates-form input[name="query"]').val();
             },
 
-            setUserFilter: function(filter) {
-                $('.certificates-form > #certificate-user-filter-input').val(filter);
-            },
-
-            getCourseFilter: function() {
-                return $('.certificates-form > #certificate-course-filter-input').val();
-            },
-
-            setCourseFilter: function(course_id) {
-                $('.certificates-form > #certificate-course-filter-input').val(course_id);
+            setUserQuery: function(query) {
+                $('.certificates-form input[name="query"]').val(query);
             },
 
             setResults: function(html) {

@@ -386,7 +386,7 @@ CREATE TABLE `auth_permission` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `content_type_id` (`content_type_id`,`codename`),
   CONSTRAINT `auth__content_type_id_508cf46651277a81_fk_django_content_type_id` FOREIGN KEY (`content_type_id`) REFERENCES `django_content_type` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=710 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=698 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `auth_registration`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -478,43 +478,6 @@ CREATE TABLE `auth_userprofile` (
   KEY `auth_userprofile_cc90f191` (`gender`),
   KEY `auth_userprofile_a895faa8` (`level_of_education`),
   CONSTRAINT `auth_userprofile_user_id_4c194f9b5650ad70_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `bookmarks_bookmark`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `bookmarks_bookmark` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `created` datetime(6) NOT NULL,
-  `modified` datetime(6) NOT NULL,
-  `course_key` varchar(255) NOT NULL,
-  `usage_key` varchar(255) NOT NULL,
-  `path` longtext NOT NULL,
-  `user_id` int(11) NOT NULL,
-  `xblock_cache_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `bookmarks_bookmark_user_id_7059f67cddd52c9a_uniq` (`user_id`,`usage_key`),
-  KEY `bookmarks_bookmark_c8235886` (`course_key`),
-  KEY `bookmarks_bookmark_4a93f0de` (`usage_key`),
-  KEY `bookmarks_bookmark_d452fbf6` (`xblock_cache_id`),
-  CONSTRAINT `boo_xblock_cache_id_22d48842487ba2d2_fk_bookmarks_xblockcache_id` FOREIGN KEY (`xblock_cache_id`) REFERENCES `bookmarks_xblockcache` (`id`),
-  CONSTRAINT `bookmarks_bookmark_user_id_33914fa9accf01cb_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `bookmarks_xblockcache`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `bookmarks_xblockcache` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `created` datetime(6) NOT NULL,
-  `modified` datetime(6) NOT NULL,
-  `course_key` varchar(255) NOT NULL,
-  `usage_key` varchar(255) NOT NULL,
-  `display_name` varchar(255) NOT NULL,
-  `paths` longtext NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `usage_key` (`usage_key`),
-  KEY `bookmarks_xblockcache_c8235886` (`course_key`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `branding_brandingapiconfig`;
@@ -748,9 +711,7 @@ CREATE TABLE `certificates_certificatetemplateasset` (
   `modified` datetime(6) NOT NULL,
   `description` varchar(255) DEFAULT NULL,
   `asset` varchar(255) NOT NULL,
-  `asset_slug` varchar(255),
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `asset_slug` (`asset_slug`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `certificates_certificatewhitelist`;
@@ -1012,12 +973,12 @@ CREATE TABLE `course_modes_coursemode` (
   `mode_display_name` varchar(255) NOT NULL,
   `min_price` int(11) NOT NULL,
   `currency` varchar(8) NOT NULL,
+  `expiration_datetime` datetime(6) DEFAULT NULL,
   `expiration_date` date DEFAULT NULL,
   `suggested_prices` varchar(255) NOT NULL,
   `description` longtext,
   `sku` varchar(255) DEFAULT NULL,
   `expiration_datetime_is_explicit` tinyint(1) NOT NULL,
-  `expiration_datetime` datetime(6) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `course_modes_coursemode_course_id_6fbb1796ace558b4_uniq` (`course_id`,`mode_slug`,`currency`),
   KEY `course_modes_coursemode_ea134da7` (`course_id`)
@@ -1096,38 +1057,6 @@ CREATE TABLE `course_overviews_courseoverview` (
   `short_description` longtext,
   `org` longtext NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `course_overviews_courseoverviewimageconfig`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `course_overviews_courseoverviewimageconfig` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `change_date` datetime(6) NOT NULL,
-  `enabled` tinyint(1) NOT NULL,
-  `small_width` int(11) NOT NULL,
-  `small_height` int(11) NOT NULL,
-  `large_width` int(11) NOT NULL,
-  `large_height` int(11) NOT NULL,
-  `changed_by_id` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `course_overviews__changed_by_id_54b19ba1c134af6a_fk_auth_user_id` (`changed_by_id`),
-  CONSTRAINT `course_overviews__changed_by_id_54b19ba1c134af6a_fk_auth_user_id` FOREIGN KEY (`changed_by_id`) REFERENCES `auth_user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `course_overviews_courseoverviewimageset`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `course_overviews_courseoverviewimageset` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `created` datetime(6) NOT NULL,
-  `modified` datetime(6) NOT NULL,
-  `small_url` longtext NOT NULL,
-  `large_url` longtext NOT NULL,
-  `course_overview_id` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `course_overview_id` (`course_overview_id`),
-  CONSTRAINT `D47baf904f8952eb0e1fafefd558a718` FOREIGN KEY (`course_overview_id`) REFERENCES `course_overviews_courseoverview` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `course_overviews_courseoverviewtab`;
@@ -1556,7 +1485,7 @@ CREATE TABLE `django_content_type` (
   `model` varchar(100) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `django_content_type_app_label_45f3b1d93ec8c61c_uniq` (`app_label`,`model`)
-) ENGINE=InnoDB AUTO_INCREMENT=236 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=232 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `django_migrations`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -1567,7 +1496,7 @@ CREATE TABLE `django_migrations` (
   `name` varchar(255) NOT NULL,
   `applied` datetime(6) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=97 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=90 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `django_openid_auth_association`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -2498,7 +2427,6 @@ CREATE TABLE `proctoring_proctoredexamstudentattempt` (
   `review_policy_id` int(11) DEFAULT NULL,
   `proctored_exam_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `is_status_acknowledged` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `proctoring_proctoredexamstudentatt_user_id_15d13fa8dac316a0_uniq` (`user_id`,`proctored_exam_id`),
   KEY `D5e0a120c32f715bfe04a0a57f399ec0` (`proctored_exam_id`),

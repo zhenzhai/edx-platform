@@ -38,7 +38,8 @@ class LoggerBackend(BaseBackend):
             event_str = json.dumps(event, cls=DateTimeJSONEncoder)
         except UnicodeDecodeError:
             application_log.exception(
-                "UnicodeDecodeError Event_data: %r", event
+                "UnicodeDecodeError Event_type: %r, Event_source: %r, Page: %r, Referer: %r",
+                event.get('event_type'), event.get('event_source'), event.get('page'), event.get('referer')
             )
             raise
 

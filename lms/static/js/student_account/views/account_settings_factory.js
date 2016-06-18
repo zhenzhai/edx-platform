@@ -39,9 +39,7 @@
                                 model: userAccountModel,
                                 title: gettext('Full Name'),
                                 valueAttribute: 'name',
-                                helpMessage: gettext(
-                                    'The name that is used for ID verification and appears on your certificates. Other learners never see your full name. Make sure to enter your name exactly as it appears on your government-issued photo ID, including any non-Roman characters.' /* jshint ignore:line */
-                                ),
+                                helpMessage: gettext('The name that appears on your certificates. Other learners never see your full name.'),
                                 persistChanges: true
                             })
                         },
@@ -88,7 +86,7 @@
                                 required: true,
                                 title: gettext('Country or Region'),
                                 valueAttribute: 'country',
-                                options: fieldsData.country.options,
+                                options: fieldsData['country']['options'],
                                 persistChanges: true
                             })
                         }
@@ -120,7 +118,7 @@
                                 model: userAccountModel,
                                 title: gettext('Year of Birth'),
                                 valueAttribute: 'year_of_birth',
-                                options: fieldsData.year_of_birth.options,
+                                options: fieldsData['year_of_birth']['options'],
                                 persistChanges: true
                             })
                         },

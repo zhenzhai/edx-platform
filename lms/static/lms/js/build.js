@@ -31,9 +31,8 @@
             'js/student_profile/views/learner_profile_factory',
             'js/views/message_banner',
             'teams/js/teams_tab_factory',
-            'support/js/certificates_factory',
-            'support/js/enrollment_factory',
-       ]),
+            'support/js/certificates_factory'
+        ]),
 
         /**
          * By default all the configuration for optimization happens from the command

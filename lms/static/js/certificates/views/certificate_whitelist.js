@@ -32,12 +32,7 @@
                 render: function(){
                     var template = this.loadTemplate('certificate-white-list');
                     this.$el.html(template({certificates: this.collection.models}));
-                    if (this.collection.isEmpty()) {
-                        this.$("#generate-exception-certificates").addClass("is-disabled");
-                    }
-                    else {
-                        this.$("#generate-exception-certificates").removeClass("is-disabled");
-                    }
+
                 },
 
                 loadTemplate: function(name) {

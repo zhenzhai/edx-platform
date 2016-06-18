@@ -1,9 +1,8 @@
 define(['jquery',
         'underscore',
-        'moment-with-locales',
         'teams/js/views/team_card',
         'teams/js/models/team'],
-    function ($, _, moment, TeamCardView, Team) {
+    function ($, _, TeamCardView, Team) {
         'use strict';
 
         describe('TeamCardView', function () {
@@ -36,7 +35,6 @@ define(['jquery',
             };
 
             beforeEach(function () {
-                moment.locale('en');
                 view = createTeamCardView();
                 view.render();
             });

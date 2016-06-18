@@ -504,28 +504,7 @@ class Registration(models.Model):
 
     def activate(self):
         self.user.is_active = True
-        self._track_activation()
         self.user.save()
-
-    def _track_activation(self):
-        """ Update the isActive flag in mailchimp for activated users."""
-        has_segment_key = getattr(settings, 'LMS_SEGMENT_KEY', None)
-        has_mailchimp_id = hasattr(settings, 'MAILCHIMP_NEW_USER_LIST_ID')
-        if has_segment_key and has_mailchimp_id:
-            identity_args = [
-                self.user.id,  # pylint: disable=no-member
-                {
-                    'email': self.user.email,
-                    'username': self.user.username,
-                    'activated': 1,
-                },
-                {
-                    "MailChimp": {
-                        "listId": settings.MAILCHIMP_NEW_USER_LIST_ID
-                    }
-                }
-            ]
-            analytics.identify(*identity_args)
 
 
 class PendingNameChange(models.Model):
@@ -1510,7 +1489,7 @@ class ManualEnrollmentAudit(models.Model):
         """
         saves the student manual enrollment information
         """
-        return cls.objects.create(
+        cls.objects.create(
             enrolled_by=user,
             enrolled_email=email,
             state_transition=state_transition,
