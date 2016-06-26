@@ -15,7 +15,7 @@ from django.contrib.staticfiles.storage import staticfiles_storage
 from edxmako.shortcuts import render_to_response
 import student.views
 from student.models import CourseEnrollment
-import courseware.views
+import courseware.views.views
 from microsite_configuration import microsite
 from edxmako.shortcuts import marketing_link
 from util.cache import cache_if_anonymous
@@ -97,7 +97,7 @@ def courses(request):
     """
     Render the "find courses" page. If the marketing site is enabled, redirect
     to that. Otherwise, if subdomain branding is on, this is the university
-    profile page. Otherwise, it's the edX courseware.views.courses page
+    profile page. Otherwise, it's the edX courseware.views.views.courses page
     """
     enable_mktg_site = microsite.get_value(
         'ENABLE_MKTG_SITE',
@@ -112,7 +112,7 @@ def courses(request):
 
     #  we do not expect this case to be reached in cases where
     #  marketing is enabled or the courses are not browsable
-    return courseware.views.courses(request)
+    return courseware.views.views.courses(request)
 
 
 def _footer_static_url(request, name):
@@ -148,8 +148,7 @@ def _render_footer_html(request, show_openedx_logo, include_dependencies):
 
     """
     bidi = 'rtl' if translation.get_language_bidi() else 'ltr'
-    version = 'edx' if settings.FEATURES.get('IS_EDX_DOMAIN') else 'openedx'
-    css_name = settings.FOOTER_CSS[version][bidi]
+    css_name = settings.FOOTER_CSS['openedx'][bidi]
 
     context = {
         'hide_openedx_link': not show_openedx_logo,
@@ -159,11 +158,7 @@ def _render_footer_html(request, show_openedx_logo, include_dependencies):
         'include_dependencies': include_dependencies,
     }
 
-    return (
-        render_to_response("footer-edx-v3.html", context)
-        if settings.FEATURES.get("IS_EDX_DOMAIN", False)
-        else render_to_response("footer.html", context)
-    )
+    return render_to_response("footer.html", context)
 
 
 @cache_control(must_revalidate=True, max_age=settings.FOOTER_BROWSER_CACHE_MAX_AGE)

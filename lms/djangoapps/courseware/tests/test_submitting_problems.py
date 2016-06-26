@@ -19,7 +19,7 @@ from capa.tests.response_xml_factory import (
     CodeResponseXMLFactory,
 )
 from courseware import grades
-from courseware.models import StudentModule, StudentModuleHistory
+from courseware.models import StudentModule, BaseStudentModuleHistory
 from courseware.tests.helpers import LoginEnrollmentTestCase
 from lms.djangoapps.lms_xblock.runtime import quote_slashes
 from student.tests.factories import UserFactory
@@ -121,18 +121,19 @@ class TestSubmittingProblems(ModuleStoreTestCase, LoginEnrollmentTestCase, Probl
     Check that a course gets graded properly.
     """
 
+    # Tell Django to clean out all databases, not just default
+    multi_db = True
     # arbitrary constant
     COURSE_SLUG = "100"
     COURSE_NAME = "test_course"
 
-    def setUp(self):
+    ENABLED_CACHES = ['default', 'mongo_metadata_inheritance', 'loc_cache']
 
-        super(TestSubmittingProblems, self).setUp(create_user=False)
-        # Create course
-        self.course = CourseFactory.create(display_name=self.COURSE_NAME, number=self.COURSE_SLUG)
-        assert self.course, "Couldn't load course %r" % self.COURSE_NAME
+    def setUp(self):
+        super(TestSubmittingProblems, self).setUp()
 
         # create a test student
+        self.course = CourseFactory.create(display_name=self.COURSE_NAME, number=self.COURSE_SLUG)
         self.student = 'view@test.com'
         self.password = 'foo'
         self.create_account('u1', self.student, self.password)
@@ -255,13 +256,7 @@ class TestSubmittingProblems(ModuleStoreTestCase, LoginEnrollmentTestCase, Probl
         - grade_breakdown : A breakdown of the major components that
             make up the final grade. (For display)
         """
-
-        fake_request = self.factory.get(
-            reverse('progress', kwargs={'course_id': self.course.id.to_deprecated_string()})
-        )
-
-        fake_request.user = self.student_user
-        return grades.grade(self.student_user, fake_request, self.course)
+        return grades.grade(self.student_user, self.course)
 
     def get_progress_summary(self):
         """
@@ -274,15 +269,7 @@ class TestSubmittingProblems(ModuleStoreTestCase, LoginEnrollmentTestCase, Probl
         ungraded problems, and is good for displaying a course summary with due dates,
         etc.
         """
-
-        fake_request = self.factory.get(
-            reverse('progress', kwargs={'course_id': self.course.id.to_deprecated_string()})
-        )
-
-        progress_summary = grades.progress_summary(
-            self.student_user, fake_request, self.course
-        )
-        return progress_summary
+        return grades.progress_summary(self.student_user, self.course)
 
     def check_grade_percent(self, percent):
         """
@@ -317,11 +304,14 @@ class TestSubmittingProblems(ModuleStoreTestCase, LoginEnrollmentTestCase, Probl
         return [s.earned for s in hw_section['scores']]
 
 
-@attr('shard_1')
+@attr('shard_3')
 class TestCourseGrader(TestSubmittingProblems):
     """
     Suite of tests for the course grader.
     """
+    # Tell Django to clean out all databases, not just default
+    multi_db = True
+
     def basic_setup(self, late=False, reset=False, showanswer=False):
         """
         Set up a simple course for testing basic grading functionality.
@@ -454,26 +444,20 @@ class TestCourseGrader(TestSubmittingProblems):
         self.submit_question_answer('p1', {'2_1': u'Correct'})
 
         # Now fetch the state entry for that problem.
-        student_module = StudentModule.objects.get(
+        student_module = StudentModule.objects.filter(
             course_id=self.course.id,
             student=self.student_user
         )
         # count how many state history entries there are
-        baseline = StudentModuleHistory.objects.filter(
-            student_module=student_module
-        )
-        baseline_count = baseline.count()
-        self.assertEqual(baseline_count, 3)
+        baseline = BaseStudentModuleHistory.get_history(student_module)
+        self.assertEqual(len(baseline), 3)
 
         # now click "show answer"
         self.show_question_answer('p1')
 
         # check that we don't have more state history entries
-        csmh = StudentModuleHistory.objects.filter(
-            student_module=student_module
-        )
-        current_count = csmh.count()
-        self.assertEqual(current_count, 3)
+        csmh = BaseStudentModuleHistory.get_history(student_module)
+        self.assertEqual(len(csmh), 3)
 
     def test_grade_with_max_score_cache(self):
         """
@@ -716,6 +700,8 @@ class TestCourseGrader(TestSubmittingProblems):
 @attr('shard_1')
 class ProblemWithUploadedFilesTest(TestSubmittingProblems):
     """Tests of problems with uploaded files."""
+    # Tell Django to clean out all databases, not just default
+    multi_db = True
 
     def setUp(self):
         super(ProblemWithUploadedFilesTest, self).setUp()
@@ -771,6 +757,8 @@ class TestPythonGradedResponse(TestSubmittingProblems):
     """
     Check that we can submit a schematic and custom response, and it answers properly.
     """
+    # Tell Django to clean out all databases, not just default
+    multi_db = True
 
     SCHEMATIC_SCRIPT = dedent("""
         # for a schematic response, submission[i] is the json representation

@@ -1,11 +1,16 @@
-(function (define) {
-    // VideoCaption module.
+(function(define) {
+// VideoCaption module.
     'use strict';
 
-    define(
-    'video/09_video_caption.js',
-    ['video/00_sjson.js', 'video/00_async_process.js'],
-    function (Sjson, AsyncProcess) {
+    define('video/09_video_caption.js',[
+        'video/00_sjson.js',
+        'video/00_async_process.js',
+        'draggabilly',
+        'modernizr',
+        'afontgarde',
+        'edxicons'
+    ], function (Sjson, AsyncProcess, Draggabilly) {
+
         /**
          * @desc VideoCaption module exports a function.
          *
@@ -29,50 +34,21 @@
                 'onContainerMouseEnter', 'onContainerMouseLeave', 'fetchCaption',
                 'onResize', 'pause', 'play', 'onCaptionUpdate', 'onCaptionHandler', 'destroy',
                 'handleKeypress', 'handleKeypressLink', 'openLanguageMenu', 'closeLanguageMenu',
-                'previousLanguageMenuItem', 'nextLanguageMenuItem'
+                'previousLanguageMenuItem', 'nextLanguageMenuItem', 'handleCaptionToggle',
+                'showClosedCaptions', 'hideClosedCaptions', 'toggleClosedCaptions',
+                'updateCaptioningCookie', 'handleCaptioningCookie', 'handleTranscriptToggle',
+                'listenForDragDrop'
             );
             this.state = state;
             this.state.videoCaption = this;
             this.renderElements();
+            this.handleCaptioningCookie();
+            this.listenForDragDrop();
 
             return $.Deferred().resolve().promise();
         };
 
         VideoCaption.prototype = {
-            langTemplate: [
-                '<div class="grouped-controls">',
-                    '<button class="control toggle-transcript" aria-disabled="false">',
-                        '<span class="icon-fallback-img">',
-                            '<span class="icon fa fa-quote-left" aria-hidden="true"></span>',
-                            '<span class="sr control-text">',
-                                gettext('Turn off transcript'),
-                            '</span>',
-                        '</span>',
-                    '</button>',
-                    '<div class="lang menu-container" role="application">',
-                        '<button class="control language-menu" aria-label="',
-                            /* jshint maxlen:250 */
-                            gettext('Language: Press the UP arrow key to enter the language menu, then use UP and DOWN arrow keys to navigate language options. Press ENTER to change to the selected language.'),
-                            '" aria-disabled="false">',
-                            '<span class="icon-fallback-img">',
-                                '<span class="icon fa fa-caret-left" aria-hidden="true"></span>',
-                                '<span class="sr control-text">',
-                                    gettext('Open language menu'),
-                                '</span>',
-                            '</span>',
-                        '</button>',
-                    '</div>',
-                '</div>'
-            ].join(''),
-
-            template: [
-                '<ol id="transcript-captions" class="subtitles" aria-label="',
-                    /* jshint maxlen:200 */
-                    gettext('Activating an item in this group will spool the video to the corresponding time point. To skip transcript, go to previous item.'),
-                    '">',
-                    '<li></li>',
-                '</ol>'
-            ].join(''),
 
             destroy: function () {
                 this.state.el
@@ -104,9 +80,49 @@
             renderElements: function () {
                 var languages = this.state.config.transcriptLanguages;
 
+                var langTemplate = [
+                    '<div class="grouped-controls">',
+                        '<button class="control toggle-captions" aria-disabled="false">',
+                            '<span class="icon-fallback-img">',
+                                '<span class="icon fa fa-cc" aria-hidden="true"></span>',
+                                '<span class="sr control-text"></span>',
+                            '</span>',
+                        '</button>',
+                        '<button class="control toggle-transcript" aria-disabled="false">',
+                            '<span class="icon-fallback-img">',
+                                '<span class="icon fa fa-quote-left" aria-hidden="true"></span>',
+                                '<span class="sr control-text"></span>',
+                            '</span>',
+                        '</button>',
+                        '<div class="lang menu-container" role="application">',
+                            '<p class="sr instructions" id="lang-instructions"></p>',
+                            '<button class="control language-menu" aria-disabled="false"',
+                                'aria-describedby="lang-instructions" ',
+                                'title="',
+                                    gettext('Open language menu'),
+                                '">',
+                                '<span class="icon-fallback-img">',
+                                    '<span class="icon fa fa-caret-left" aria-hidden="true"></span>',
+                                    '<span class="sr control-text"></span>',
+                                '</span>',
+                            '</button>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+                var template = [
+                    '<div class="subtitles" role="region" id="transcript-' + this.state.id + '">',
+                        '<h3 id="transcript-label-' + this.state.id + '" class="transcript-title sr"></h3>',
+                        '<ol id="transcript-captions" class="subtitles-menu" lang="' + this.state.lang + '"></ol>',
+                    '</div>'
+                ].join('');
+
                 this.loaded = false;
-                this.subtitlesEl = $(this.template);
-                this.container = $(this.langTemplate);
+                this.subtitlesEl = $(template);
+                this.subtitlesMenuEl = this.subtitlesEl.find('.subtitles-menu');
+                this.container = $(langTemplate);
+                this.captionControlEl = this.container.find('.toggle-captions');
+                this.captionDisplayEl = this.state.el.find('.closed-captions');
                 this.transcriptControlEl = this.container.find('.toggle-transcript');
                 this.languageChooserEl = this.container.find('.lang');
                 this.menuChooserEl = this.languageChooserEl.parent();
@@ -129,16 +145,26 @@
                         'keydown'
                     ].join(' ');
 
-                this.transcriptControlEl.on('click', this.toggle);
-                this.subtitlesEl
-                    .on({
-                        mouseenter: this.onMouseEnter,
-                        mouseleave: this.onMouseLeave,
-                        mousemove: this.onMovement,
-                        mousewheel: this.onMovement,
-                        DOMMouseScroll: this.onMovement
-                    })
-                    .on(events, 'li[data-index]', this.onCaptionHandler);
+                this.captionControlEl.on({
+                    click: this.toggleClosedCaptions,
+                    keydown: this.handleCaptionToggle
+                });
+                this.transcriptControlEl.on({
+                    click: this.toggle,
+                    keydown: this.handleTranscriptToggle
+                });
+                this.subtitlesMenuEl.on({
+                    mouseenter: this.onMouseEnter,
+                    mouseleave: this.onMouseLeave,
+                    mousemove: this.onMovement,
+                    mousewheel: this.onMovement,
+                    DOMMouseScroll: this.onMovement
+                })
+                .on(events, 'li[data-index]', this.onCaptionHandler);
+                this.container.on({
+                    mouseenter: this.onContainerMouseEnter,
+                    mouseleave: this.onContainerMouseLeave
+                });
 
                 if (this.showLanguageMenu) {
                     this.languageChooserEl.on({
@@ -148,11 +174,6 @@
                     this.languageChooserEl.on({
                         keydown: this.handleKeypressLink
                     }, '.control-lang');
-
-                    this.container.on({
-                        mouseenter: this.onContainerMouseEnter,
-                        mouseleave: this.onContainerMouseLeave
-                    });
                 }
 
                 state.el
@@ -168,12 +189,36 @@
                     });
 
                 if ((state.videoType === 'html5') && (state.config.autohideHtml5)) {
-                    this.subtitlesEl.on('scroll', state.videoControl.showControls);
+                    this.subtitlesMenuEl.on('scroll', state.videoControl.showControls);
                 }
             },
 
             onCaptionUpdate: function (event, time) {
                 this.updatePlayTime(time);
+            },
+
+            handleCaptionToggle: function(event) {
+                var KEY = $.ui.keyCode,
+                    keyCode = event.keyCode;
+
+                switch(keyCode) {
+                    case KEY.SPACE:
+                    case KEY.ENTER:
+                        event.preventDefault();
+                        this.toggleClosedCaptions(event);
+                }
+            },
+
+            handleTranscriptToggle: function(event) {
+                var KEY = $.ui.keyCode,
+                    keyCode = event.keyCode;
+
+                switch(keyCode) {
+                    case KEY.SPACE:
+                    case KEY.ENTER:
+                        event.preventDefault();
+                        this.toggle(event);
+                }
             },
 
             handleKeypressLink: function(event) {
@@ -188,7 +233,7 @@
                         index = this.languageChooserEl.find('li').index(focused);
                         total = this.languageChooserEl.find('li').size() - 1;
 
-                        this.previousLanguageMenuItem(event, index, total);
+                        this.previousLanguageMenuItem(event, index);
                         break;
 
                     case KEY.DOWN:
@@ -241,13 +286,13 @@
                 if (index === total) {
                     this.languageChooserEl
                         .find('.control-lang').first()
-                        .focus();
+                            .focus();
                 } else {
                     this.languageChooserEl
                         .find('li:eq(' + index + ')')
                         .next()
                             .find('.control-lang')
-                            .focus();
+                                .focus();
                 }
 
                 return false;
@@ -256,11 +301,7 @@
             previousLanguageMenuItem: function(event, index) {
                 event.preventDefault();
 
-                if (event.altKey) {
-                    return true;
-                }
-
-                if (event.shiftKey) {
+                if (event.altKey || event.shiftKey) {
                     return true;
                 }
 
@@ -285,13 +326,12 @@
                 var button = this.languageChooserEl,
                     menu = button.parent().find('.menu');
 
-
-                this.state.el.trigger('language_menu:show');
                 button
                     .addClass('is-opened');
+
                 menu
                     .find('.control-lang').last()
-                    .focus();
+                        .focus();
             },
 
             closeLanguageMenu: function(event) {
@@ -299,7 +339,6 @@
 
                 var button = this.languageChooserEl;
 
-                this.state.el.trigger('language_menu:hide');
                 button
                     .removeClass('is-opened')
                     .find('.language-menu')
@@ -338,7 +377,13 @@
             onContainerMouseEnter: function (event) {
                 event.preventDefault();
                 $(event.currentTarget).find('.lang').addClass('is-opened');
-                this.state.el.trigger('language_menu:show');
+
+                // We only want to fire the analytics event if a menu is
+                // present instead of on the container hover, since it wraps
+                // the "CC" and "Transcript" buttons as well.
+                if ($(event.currentTarget).find('.lang').length) {
+                    this.state.el.trigger('language_menu:show');
+                }
             },
 
             /**
@@ -349,7 +394,13 @@
             onContainerMouseLeave: function (event) {
                 event.preventDefault();
                 $(event.currentTarget).find('.lang').removeClass('is-opened');
-                this.state.el.trigger('language_menu:hide');
+
+                // We only want to fire the analytics event if a menu is
+                // present instead of on the container hover, since it wraps
+                // the "CC" and "Transcript" buttons as well.
+                if ($(event.currentTarget).find('.lang').length) {
+                    this.state.el.trigger('language_menu:hide');
+                }
             },
 
             /**
@@ -473,7 +524,7 @@
 
                 state.el.removeClass('is-captions-rendered');
                 // Fetch the captions file. If no file was specified, or if an error
-                // occurred, then we hide the captions panel, and the "CC" button
+                // occurred, then we hide the captions panel, and the "Transcript" button
                 this.fetchXHR = $.ajaxWithPrefix({
                     url: url,
                     notifyOnError: false,
@@ -491,12 +542,9 @@
                             }
                         } else {
                             if (state.isTouch) {
-                                self.subtitlesEl.find('li').html(
-                                    gettext(
-                                        'Caption will be displayed when ' +
-                                        'you start playing the video.'
-                                    )
-                                );
+                                self.subtitlesEl.find('.subtitles-menu')
+                                    .text(gettext('Transcript will be displayed when you start playing the video.')) // jshint ignore: line
+                                    .wrapInner('<li></li>');
                             } else {
                                 self.renderCaption(start, captions);
                             }
@@ -639,6 +687,12 @@
 
                         state.el.trigger('language_menu:change', [langCode]);
                         self.fetchCaption();
+                        
+                        // update the closed-captions lang attribute
+                        self.captionDisplayEl.attr('lang', langCode);
+                        
+                        // update the transcript lang attribute
+                        self.subtitlesMenuEl.attr('lang', langCode);
                     }
                 });
             },
@@ -703,12 +757,32 @@
                     self.isMouseFocus = false;
                     self.rendered = true;
                     self.state.el.addClass('is-captions-rendered');
+
+                    self.subtitlesEl
+                        .attr('aria-label', gettext('Activating a link in this group will skip to the corresponding point in the video.')); // jshint ignore:line
+
+                    self.subtitlesEl.find('.transcript-title')
+                        .text(gettext('Video transcript'));
+
+                    self.subtitlesEl.find('.transcript-start')
+                        .text(gettext('Start of transcript. Skip to the end.'))
+                        .attr('lang', $('html').attr('lang'));
+
+                    self.subtitlesEl.find('.transcript-end')
+                        .text(gettext('End of transcript. Skip to the start.'))
+                        .attr('lang', $('html').attr('lang'));
+
+                    self.container.find('.menu-container .instructions')
+                        .text(gettext('Press the UP arrow key to enter the language menu then use UP and DOWN arrow keys to navigate language options. Press ENTER to change to the selected language.')); // jshint ignore:line
+
+                    self.container.find('.menu-container .control .control-text')
+                        .text(gettext('Open language menu.'));
                 };
 
                 this.rendered = false;
-                this.subtitlesEl.empty();
+                this.subtitlesMenuEl.empty();
                 this.setSubtitlesHeight();
-                this.buildCaptions(this.subtitlesEl, start, captions).done(onRender);
+                this.buildCaptions(this.subtitlesMenuEl, start, captions).done(onRender);
             },
 
             /**
@@ -718,16 +792,14 @@
             */
             addPaddings: function () {
 
-                this.subtitlesEl
+                this.subtitlesMenuEl
                     .prepend(
-                        $('<li class="spacing">')
+                        $('<li class="spacing"><a href="#transcript-end-' + this.state.id + '" id="transcript-start-' + this.state.id + '" class="transcript-start"></a>') // jshint ignore: line
                             .height(this.topSpacingHeight())
-                            .attr('tabindex', -1)
                     )
                     .append(
-                        $('<li class="spacing">')
+                        $('<li class="spacing"><a href="#transcript-start-' + this.state.id + '" id="transcript-end-' + this.state.id + '" class="transcript-end"></a>') // jshint ignore: line
                             .height(this.bottomSpacingHeight())
-                            .attr('tabindex', -1)
                     );
             },
 
@@ -936,6 +1008,7 @@
                             .addClass('current');
 
                         this.currentIndex = newIndex;
+                        this.captionDisplayEl.text(this.subtitlesEl.find("li[data-index='" + newIndex + "']").text());
                         this.scrollCaption();
                     }
                 }
@@ -1017,6 +1090,100 @@
                 }
             },
 
+            handleCaptioningCookie: function() {
+                if ($.cookie('show_closed_captions') === 'true') {
+                    this.state.showClosedCaptions = true;
+                    this.showClosedCaptions();
+
+                    // keep it going until turned off
+                    $.cookie('show_closed_captions', 'true', {
+                        expires: 3650,
+                        path: '/'
+                    });
+                } else {
+                    this.hideClosedCaptions();
+                }
+            },
+
+            toggleClosedCaptions: function(event) {
+                event.preventDefault();
+
+                if (this.state.el.hasClass('has-captions')) {
+                    this.state.showClosedCaptions = false;
+                    this.updateCaptioningCookie(false);
+                    this.hideClosedCaptions();
+                } else {
+                    this.state.showClosedCaptions = true;
+                    this.updateCaptioningCookie(true);
+                    this.showClosedCaptions();
+                }
+            },
+
+            showClosedCaptions: function() {
+                this.state.el.addClass('has-captions');
+
+                this.captionDisplayEl
+                    .show()
+                    .addClass('is-visible')
+                    .attr('lang', this.state.lang);
+
+                this.captionControlEl
+                    .addClass('is-active')
+                    .attr('title', gettext('Hide closed captions'))
+                    .find('.control-text')
+                        .text(gettext('Hide closed captions'));
+
+                if (this.subtitlesEl.find('.current').text()) {
+                    this.captionDisplayEl
+                        .text(this.subtitlesEl.find('.current').text());
+                } else {
+                    this.captionDisplayEl
+                        .text(gettext('(Caption will be displayed when you start playing the video.)'));
+                }
+                
+                this.state.el.trigger('captions:show');
+            },
+
+            hideClosedCaptions: function() {
+                this.state.el.removeClass('has-captions');
+
+                this.captionDisplayEl
+                    .hide()
+                    .removeClass('is-visible');
+
+                this.captionControlEl
+                    .removeClass('is-active')
+                    .attr('title', gettext('Turn on closed captioning'))
+                    .find('.control-text')
+                        .text(gettext('Turn on closed captioning'));
+
+                this.state.el.trigger('captions:hide');
+            },
+
+            updateCaptioningCookie: function(method) {
+                if (method) {
+                    $.cookie('show_closed_captions', 'true', {
+                        expires: 3650,
+                        path: '/'
+                    });
+                } else {
+                    $.cookie('show_closed_captions', null, {
+                        path: '/'
+                    });
+                }
+            },
+
+            listenForDragDrop: function() {
+                var captions = document.querySelector('.closed-captions'),
+                    draggable;
+
+                if (typeof Draggabilly === "function") {
+                    draggable = new Draggabilly(captions, { containment: true });
+                } else {
+                    console.log('Closed captioning available but not draggable');
+                }
+            },
+
             /**
             * @desc Shows/Hides captions and updates the cookie.
             *
@@ -1038,11 +1205,12 @@
                     state.el.addClass('closed');
                     text = gettext('Turn on transcripts');
                     if (trigger_event) {
-                        this.state.el.trigger('captions:hide');
+                        this.state.el.trigger('transcript:hide');
                     }
 
                     transcriptControlEl
                         .removeClass('is-active')
+                        .attr('title', gettext(text))
                         .find('.control-text')
                             .text(gettext(text));
                 } else {
@@ -1051,11 +1219,12 @@
                     this.scrollCaption();
                     text = gettext('Turn off transcripts');
                     if (trigger_event) {
-                        this.state.el.trigger('captions:show');
+                        this.state.el.trigger('transcript:show');
                     }
 
                     transcriptControlEl
                         .addClass('is-active')
+                        .attr('title', gettext(text))
                         .find('.control-text')
                             .text(gettext(text));
                 }

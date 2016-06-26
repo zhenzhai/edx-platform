@@ -1,65 +1,83 @@
 # #-#-#-#-#  djangojs-partial.po (edx-platform)  #-#-#-#-#
 # edX translation file.
-# Copyright (C) 2015 EdX
+# Copyright (C) 2016 EdX
 # This file is distributed under the GNU AFFERO GENERAL PUBLIC LICENSE.
 # 
 # Translators:
 # shuchuanchen <am15501@163.com>, 2014
 # BertZou <turingcat@gmail.com>, 2015
+# bnw, 2014
 # 肖寒 <bookman@vip.163.com>, 2013
+# chalow <charlotteouya@hotmail.com>, 2015
 # Changyue Wang <peterwang.dut@gmail.com>, 2014-2015
 # CharlotteDing <kikyoru@hotmail.com>, 2015
 # chalow <charlotteouya@hotmail.com>, 2015
+# ckyOL, 2015
 # shuchuanchen <am15501@163.com>, 2014
+# daisybellamy <linmiaoqiqi@hotmail.com>, 2014
+# felicitychou <felicitychou@hotmail.com>, 2014
 # felicitychou <felicitychou@hotmail.com>, 2014
 # focusheart <focusheart@gmail.com>, 2014
 # focusheart <focusheart@gmail.com>, 2014
+# freakylemon <freakylemon@ymail.com>, 2014
 # freakylemon <freakylemon@ymail.com>, 2014
 # ckyOL, 2015
 # GoodLuck <1833447072@qq.com>, 2014
 # Wentao Han <wentao.han@gmail.com>, 2013
 # Harry Li <harry75369@gmail.com>, 2014
-# hohomi <hohomi@gmail.com>, 2014
+# hohomi <hohomi@gmail.com>, 2014,2016
+# hohomi <hohomi@gmail.com>, 2014,2016
 # bnw, 2014
 # Jerome Huang <canni3269@gmail.com>, 2014
+# jg Ma <jg20040308@126.com>, 2016
+# Jianfei Wang <me@thinxer.com>, 2013
+# jiangnan.hugo <jiangnan.hugo@gmail.com>, 2014
 # jiangnan.hugo <jiangnan.hugo@gmail.com>, 2014
 # jsgang <jsgang9@gmail.com>, 2014-2015
 # daisybellamy <linmiaoqiqi@hotmail.com>, 2014
 # 刘洋 <liuyang2011@tsinghua.edu.cn>, 2013
+# pku9104038 <pku9104038@hotmail.com>, 2014
 # pku9104038 <pku9104038@hotmail.com>, 2014
 # ranfish <ranfish@gmail.com>, 2015
 # ruiruillp <gaier1993@163.com>, 2015
 # Sarina Canelake <sarina@edx.org>, 2014
 # shuchuanchen <am15501@163.com>, 2014
 # skyclass443 <cyx19920829@gmail.com>, 2014
-# louyihua <supermouselyh@hotmail.com>, 2014-2015
+# louyihua <supermouselyh@hotmail.com>, 2014-2016
 # Jianfei Wang <me@thinxer.com>, 2013
 # 沈世奇 <vicapple22@gmail.com>, 2013
 # Wentao Han <wentao.han@gmail.com>, 2013
 # wzhd <wzhdev@gmail.com>, 2015
 # 熊冬升 <xdsnet@gmail.com>, 2013
+# Xuejia Tong <snowytong@hotmail.com>, 2016
+# yan9yu, 2014
 # yan9yu, 2014
 # youjialin <hackeris@qq.com>, 2014
+# Yue Fang <yfang@juilliard.edu>, 2016
 # 刘知远 <liuliudong@163.com>, 2013
 # 张太红 <zth@xjau.edu.cn>, 2014
 # 亚仑 <fl_meng@163.com>, 2014
 # 刘洋 <liuyang2011@tsinghua.edu.cn>, 2013
-# 周歆荷 <lotus351@outlook.com>, 2015
+# 刘知远 <liuliudong@163.com>, 2013
+# 周歆荷 <zhxh401@126.com>, 2015
+# 周歆荷 <zhxh401@126.com>, 2015
 # 张太红 <zth@xjau.edu.cn>, 2014
 # 汤和果 <hgtang93@163.com>, 2015
 # 沈世奇 <vicapple22@gmail.com>, 2013
 # 熊冬升 <xdsnet@gmail.com>, 2013
 # 竹轩 <fmyzjs@gmail.com>, 2014
+# 肖寒 <bookman@vip.163.com>, 2013
 # 顾翔 <c0710204@gmail.com>, 2014
 # #-#-#-#-#  djangojs-studio.po (edx-platform)  #-#-#-#-#
 # edX translation file.
-# Copyright (C) 2015 EdX
+# Copyright (C) 2016 EdX
 # This file is distributed under the GNU AFFERO GENERAL PUBLIC LICENSE.
 # 
 # Translators:
 # vingte <411029240@qq.com>, 2014
 # Anna Hu <dejilibaobao@163.com>, 2014
 # BertZou <turingcat@gmail.com>, 2015
+# bnw, 2014
 # 肖寒 <bookman@vip.163.com>, 2013
 # Changyue Wang <peterwang.dut@gmail.com>, 2015
 # shuchuanchen <am15501@163.com>, 2014
@@ -69,52 +87,69 @@
 # Wentao Han <wentao.han@gmail.com>, 2013
 # harry <i.jucao@gmail.com>, 2014
 # Harry Li <harry75369@gmail.com>, 2014
+# hohomi <hohomi@gmail.com>, 2016
+# hohomi <hohomi@gmail.com>, 2016
 # bnw, 2014
 # Jerome Huang <canni3269@gmail.com>, 2014
-# jsgang <jsgang9@gmail.com>, 2014-2015
+# Jianfei Wang <me@thinxer.com>, 2013
+# jsgang <jsgang9@gmail.com>, 2014-2016
 # 刘洋 <liuyang2011@tsinghua.edu.cn>, 2013
 # Na Liu <nanamadier@gmail.com>, 2014
 # pku9104038 <pku9104038@hotmail.com>, 2014
+# pku9104038 <pku9104038@hotmail.com>, 2014
+# Rom, 2015
 # Rom, 2015
 # ruiruillp <gaier1993@163.com>, 2015
 # San <github@zhujunsan.net>, 2015
+# shuchuanchen <am15501@163.com>, 2014
 # louyihua <supermouselyh@hotmail.com>, 2014-2015
 # Jianfei Wang <me@thinxer.com>, 2013
 # 沈世奇 <vicapple22@gmail.com>, 2013
+# vingte <411029240@qq.com>, 2014
 # wanghe <1636807295@qq.com>, 2014
-# Wentao Han <wentao.han@gmail.com>, 2015
+# Wentao Han <wentao.han@gmail.com>, 2013,2015
 # wzhd <wzhdev@gmail.com>, 2015
 # 熊冬升 <xdsnet@gmail.com>, 2013
 # xianwei yang <yetie.net@gmail.com>, 2014
 # 刘知远 <liuliudong@163.com>, 2013
 # 张太红 <zth@xjau.edu.cn>, 2014
+# 刘洋 <liuyang2011@tsinghua.edu.cn>, 2013
+# 刘知远 <liuliudong@163.com>, 2013
 # 张太红 <zth@xjau.edu.cn>, 2014
+# 沈世奇 <vicapple22@gmail.com>, 2013
+# 熊冬升 <xdsnet@gmail.com>, 2013
 # 竹轩 <fmyzjs@gmail.com>, 2014
+# 肖寒 <bookman@vip.163.com>, 2013
 # #-#-#-#-#  underscore.po (edx-platform)  #-#-#-#-#
 # edX translation file
-# Copyright (C) 2015 edX
+# Copyright (C) 2016 edX
 # This file is distributed under the GNU AFFERO GENERAL PUBLIC LICENSE.
 # 
 # Translators:
 # Bill <power_free@126.com>, 2015
 # Changyue Wang <peterwang.dut@gmail.com>, 2015
 # CharlotteDing <kikyoru@hotmail.com>, 2015
-# jsgang <jsgang9@gmail.com>, 2014-2015
+# jg Ma <jg20040308@126.com>, 2016
+# jsgang <jsgang9@gmail.com>, 2014-2016
 # Jun Hao Lin <xuxiao15994219982@gmail.com>, 2015
 # Lionel Chen <chenlinchuan@me.com>, 2014
 # LIU NIAN <lauraqq@gmail.com>, 2015
 # meelo <bbvy@qq.com>, 2015
 # Rom, 2015
+# Rom, 2015
 # louyihua <supermouselyh@hotmail.com>, 2014-2015
 # viztor <viztor@outlook.com>, 2015
+# viztor <viztor@outlook.com>, 2015
+# Yue Fang <yfang@juilliard.edu>, 2016
 # Zihui Cheng <z7cheng@ucsd.edu>, 2015
+# 代 兴旺 <525224259@qq.com>, 2016
 # 张逸涵 <jeanzhang970128@gmail.com>, 2014
 # 成羽丰 <onetwogoo@gmail.com>, 2015
 # 汤和果 <hgtang93@163.com>, 2015
 # 胡超威 <chadennishu@gmail.com>, 2014
 # #-#-#-#-#  underscore-studio.po (edx-platform)  #-#-#-#-#
 # edX translation file
-# Copyright (C) 2015 edX
+# Copyright (C) 2016 edX
 # This file is distributed under the GNU AFFERO GENERAL PUBLIC LICENSE.
 # 
 # Translators:
@@ -122,21 +157,28 @@
 # Changyue Wang <peterwang.dut@gmail.com>, 2015
 # Dustin Yu <dustintt123@hotmail.com>, 2015
 # GoodLuck <1833447072@qq.com>, 2014
-# jsgang <jsgang9@gmail.com>, 2015
+# Jiazhen Tan <jessie12@live.cn>, 2016
+# jsgang <jsgang9@gmail.com>, 2015-2016
 # LIU NIAN <lauraqq@gmail.com>, 2015
 # peipeixiang <peipei0903@gmail.com>, 2015
+# peipeixiang <peipei0903@gmail.com>, 2015
+# Rom, 2015
 # Rom, 2015
 # San <github@zhujunsan.net>, 2015
 # louyihua <supermouselyh@hotmail.com>, 2014-2015
+# Xuejia Tong <snowytong@hotmail.com>, 2016
+# yohann yang <heinerseiden@yahoo.com>, 2016
 # Yu <inactive+harrycaoyu@transifex.com>, 2015
+# Yu <inactive+harrycaoyu@transifex.com>, 2015
+# 大芳 刘 <liuxiaolinfk@gmail.com>, 2016
 # 竹轩 <fmyzjs@gmail.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: openedx-translation@googlegroups.com\n"
-"POT-Creation-Date: 2015-12-03 21:15+0000\n"
-"PO-Revision-Date: 2015-12-01 21:00+0000\n"
-"Last-Translator: Sarina Canelake <sarina@edx.org>\n"
+"POT-Creation-Date: 2016-05-26 16:38+0000\n"
+"PO-Revision-Date: 2016-06-10 02:34+0000\n"
+"Last-Translator: Xuejia Tong <snowytong@hotmail.com>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/open-edx/edx-platform/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -154,7 +196,7 @@ msgstr ""
 #: cms/static/js/views/course_info_update.js
 #: cms/static/js/views/edit_textbook.js
 #: cms/static/js/views/list_item_editor.js
-#: cms/static/js/views/modals/edit_xblock.js cms/static/js/views/overview.js
+#: cms/static/js/views/modals/edit_xblock.js
 #: cms/static/js/views/overview_assignment_grader.js
 #: cms/static/js/views/utils/xblock_utils.js lms/static/js/ccx/schedule.js
 #: lms/static/js/views/fields.js
@@ -167,6 +209,7 @@ msgstr "正在保存"
 #: cms/static/js/views/course_info_update.js
 #: common/lib/xmodule/xmodule/js/src/html/edit.js
 #: common/static/coffee/src/discussion/utils.js
+#: lms/static/js/Markdown.Editor.js
 msgid "OK"
 msgstr "是的"
 
@@ -183,6 +226,7 @@ msgstr "是的"
 #: cms/static/js/views/show_textbook.js cms/static/js/views/validation.js
 #: common/lib/xmodule/xmodule/js/src/html/edit.js
 #: common/static/common/js/components/utils/view_utils.js
+#: lms/static/js/Markdown.Editor.js
 #: cms/templates/js/add-xblock-component-menu-problem.underscore
 #: cms/templates/js/add-xblock-component-menu.underscore
 #: cms/templates/js/certificate-editor.underscore
@@ -198,6 +242,7 @@ msgstr "是的"
 #: common/static/common/templates/discussion/response-comment-edit.underscore
 #: common/static/common/templates/discussion/thread-edit.underscore
 #: common/static/common/templates/discussion/thread-response-edit.underscore
+#: lms/djangoapps/support/static/support/templates/enrollment-modal.underscore
 #: lms/djangoapps/teams/static/teams/templates/edit-team.underscore
 #: lms/templates/instructor/instructor_dashboard_2/cohort-form.underscore
 msgid "Cancel"
@@ -224,6 +269,10 @@ msgstr "上传中"
 #: common/lib/xmodule/xmodule/js/src/html/edit.js
 msgid "Name"
 msgstr "名称"
+
+#: cms/static/js/views/assets.js lms/static/js/Markdown.Editor.js
+msgid "Choose File"
+msgstr "选择文件"
 
 #. Translators: this is a message from the raw HTML editor displayed in the
 #. browser when a user needs to edit HTML
@@ -262,6 +311,13 @@ msgstr "保存"
 
 #. Translators: this is a message from the raw HTML editor displayed in the
 #. browser when a user needs to edit HTML
+#: cms/static/js/views/modals/course_outline_modals.js
+#: common/lib/xmodule/xmodule/js/src/html/edit.js
+msgid "Advanced"
+msgstr "高级"
+
+#. Translators: this is a message from the raw HTML editor displayed in the
+#. browser when a user needs to edit HTML
 #: cms/static/js/views/modals/edit_xblock.js
 #: common/lib/xmodule/xmodule/js/src/html/edit.js
 msgid "Close"
@@ -284,6 +340,16 @@ msgstr "您所作的变更已保存。"
 #: lms/static/js/views/fields.js
 msgid "Error"
 msgstr "错误"
+
+#: common/lib/xmodule/xmodule/assets/library_content/public/js/library_content_edit.js
+#: common/lib/xmodule/xmodule/js/public/js/library_content_edit.js
+msgid "Updating with latest library content"
+msgstr "更新最新的库内容"
+
+#: common/lib/xmodule/xmodule/assets/split_test/public/js/split_test_author_view.js
+#: common/lib/xmodule/xmodule/js/public/js/split_test_author_view.js
+msgid "Creating missing groups"
+msgstr "正在创建缺失的组。"
 
 #: common/lib/xmodule/xmodule/js/src/annotatable/display.js
 msgid "Show Annotations"
@@ -316,18 +382,18 @@ msgstr "回复批注"
 #: common/lib/xmodule/xmodule/js/src/capa/display.js
 msgid "(%(earned)s/%(possible)s point)"
 msgid_plural "(%(earned)s/%(possible)s points)"
-msgstr[0] "(%(earned)s/%(possible)s 分)"
+msgstr[0] "（%(earned)s/%(possible)s 分）"
 
 #. Translators: %(num_points)s is the number of points possible (examples: 1,
 #. 3, 10). There will always be at least 1 point possible.;
 #: common/lib/xmodule/xmodule/js/src/capa/display.js
 msgid "(%(num_points)s point possible)"
 msgid_plural "(%(num_points)s points possible)"
-msgstr[0] "(本题共有%(num_points)s分)"
+msgstr[0] "（可能为 %(num_points)s 分）"
 
 #: common/lib/xmodule/xmodule/js/src/capa/display.js
 msgid "The grading process is still running. Refresh the page to see updates."
-msgstr ""
+msgstr "评分过程仍在进行，请刷新页面查看更新。"
 
 #: common/lib/xmodule/xmodule/js/src/capa/display.js
 msgid "Answer:"
@@ -353,111 +419,15 @@ msgstr "答案隐藏"
 msgid "Status: unsubmitted"
 msgstr "状态：未提交"
 
-#. Translators: A "rating" is a score a student gives to indicate how well
-#. they feel they were graded on this problem
-#: common/lib/xmodule/xmodule/js/src/combinedopenended/display.js
-msgid "You need to pick a rating before you can submit."
-msgstr "你需要在提交前选择一个评价分数。"
-
-#. Translators: this message appears when transitioning between openended
-#. grading
-#. types (i.e. self assesment to peer assessment). Sometimes, if a student
-#. did not perform well at one step, they cannot move on to the next one.
-#: common/lib/xmodule/xmodule/js/src/combinedopenended/display.js
-msgid "Your score did not meet the criteria to move to the next step."
-msgstr "您的成绩达不到要求，不能进行下一步骤。"
-
-#: common/lib/xmodule/xmodule/js/src/combinedopenended/display.js
-#: lms/static/coffee/src/staff_grading/staff_grading.js
-#: common/static/common/templates/discussion/thread-response.underscore
-#: common/static/common/templates/discussion/thread.underscore
-#: lms/templates/verify_student/incourse_reverify.underscore
-msgid "Submit"
-msgstr "提交"
-
-#. Translators: one clicks this button after one has finished filling out the
-#. grading
-#. form for an openended assessment
-#: common/lib/xmodule/xmodule/js/src/combinedopenended/display.js
-msgid "Submit assessment"
-msgstr "提交评估"
-
-#: common/lib/xmodule/xmodule/js/src/combinedopenended/display.js
-msgid ""
-"Your response has been submitted. Please check back later for your grade."
-msgstr "您的回复已被提交，请稍候再查看您的成绩。"
-
-#. Translators: this button is clicked to submit a student's rating of
-#. an evaluator's assessment
-#: common/lib/xmodule/xmodule/js/src/combinedopenended/display.js
-msgid "Submit post-assessment"
-msgstr "提交评估"
-
-#: common/lib/xmodule/xmodule/js/src/combinedopenended/display.js
-msgid "Answer saved, but not yet submitted."
-msgstr "答案已经保存，但尚未提交。"
-
-#: common/lib/xmodule/xmodule/js/src/combinedopenended/display.js
-msgid ""
-"Please confirm that you wish to submit your work. You will not be able to "
-"make any changes after submitting."
-msgstr "请确认你的作业是否需要提交，提交之后就不能再做改变了。"
-
-#: common/lib/xmodule/xmodule/js/src/combinedopenended/display.js
-msgid ""
-"You are trying to upload a file that is too large for our system.  Please "
-"choose a file under 2MB or paste a link to it into the answer box."
-msgstr "您上传的文件过大，请选择小于2M的文件上传，或者将文件链接复制到答案里。"
-
-#: common/lib/xmodule/xmodule/js/src/combinedopenended/display.js
-msgid ""
-"Are you sure you want to remove your previous response to this question?"
-msgstr "您确定要删除对这个问题的原始回复吗？"
-
-#: common/lib/xmodule/xmodule/js/src/combinedopenended/display.js
-msgid "Moved to next step."
-msgstr "移到下一个步骤。"
-
-#: common/lib/xmodule/xmodule/js/src/combinedopenended/display.js
-msgid ""
-"File uploads are required for this question, but are not supported in your "
-"browser. Try the newest version of Google Chrome. Alternatively, if you have"
-" uploaded the image to another website, you can paste a link to it into the "
-"answer box."
-msgstr "这个问题需要文件上传，但您的浏览器不支持。尝试使用最新的谷歌浏览器版本。如果您上传图像到另一个网站，可以粘贴链接到答案处。"
-
-#. Translators: "Show Question" is some text that, when clicked, shows a
-#. question's
-#. content that had been hidden
-#: common/lib/xmodule/xmodule/js/src/combinedopenended/display.js
-msgid "Show Question"
-msgstr "显示问题"
-
-#: common/lib/xmodule/xmodule/js/src/combinedopenended/display.js
-msgid "Hide Question"
-msgstr "隐藏问题"
-
 #. Translators: this is a message from the raw HTML editor displayed in the
 #. browser when a user needs to edit HTML
 #: common/lib/xmodule/xmodule/js/src/html/edit.js
 msgid "Paragraph"
-msgstr "段落样式"
+msgstr "段落"
 
 #: common/lib/xmodule/xmodule/js/src/html/edit.js
 msgid "Preformatted"
 msgstr "预设格式"
-
-#. Translators: this is a message from the raw HTML editor displayed in the
-#. browser when a user needs to edit HTML
-#: common/lib/xmodule/xmodule/js/src/html/edit.js
-msgid "Heading 1"
-msgstr "标题 1"
-
-#. Translators: this is a message from the raw HTML editor displayed in the
-#. browser when a user needs to edit HTML
-#: common/lib/xmodule/xmodule/js/src/html/edit.js
-msgid "Heading 2"
-msgstr "标题 2"
 
 #. Translators: this is a message from the raw HTML editor displayed in the
 #. browser when a user needs to edit HTML
@@ -468,14 +438,26 @@ msgstr "标题 3"
 #. Translators: this is a message from the raw HTML editor displayed in the
 #. browser when a user needs to edit HTML
 #: common/lib/xmodule/xmodule/js/src/html/edit.js
-msgid "Add to Dictionary"
-msgstr "加入到字典"
+msgid "Heading 4"
+msgstr "标题 4"
 
 #. Translators: this is a message from the raw HTML editor displayed in the
 #. browser when a user needs to edit HTML
 #: common/lib/xmodule/xmodule/js/src/html/edit.js
-msgid "Advanced"
-msgstr "高级"
+msgid "Heading 5"
+msgstr "标题 5"
+
+#. Translators: this is a message from the raw HTML editor displayed in the
+#. browser when a user needs to edit HTML
+#: common/lib/xmodule/xmodule/js/src/html/edit.js
+msgid "Heading 6"
+msgstr "标题 6"
+
+#. Translators: this is a message from the raw HTML editor displayed in the
+#. browser when a user needs to edit HTML
+#: common/lib/xmodule/xmodule/js/src/html/edit.js
+msgid "Add to Dictionary"
+msgstr "加入到字典"
 
 #. Translators: this is a message from the raw HTML editor displayed in the
 #. browser when a user needs to edit HTML
@@ -548,7 +530,7 @@ msgstr "块"
 #. browser when a user needs to edit HTML
 #: common/lib/xmodule/xmodule/js/src/html/edit.js
 msgid "Body"
-msgstr "Body 标签"
+msgstr "主体"
 
 #. Translators: this is a message from the raw HTML editor displayed in the
 #. browser when a user needs to edit HTML
@@ -866,7 +848,7 @@ msgstr "字号"
 #. browser when a user needs to edit HTML
 #: common/lib/xmodule/xmodule/js/src/html/edit.js
 msgid "Footer"
-msgstr "表注"
+msgstr "脚注"
 
 #. Translators: this is a message from the raw HTML editor displayed in the
 #. browser when a user needs to edit HTML
@@ -956,20 +938,14 @@ msgstr "标题"
 #. Translators: this is a message from the raw HTML editor displayed in the
 #. browser when a user needs to edit HTML
 #: common/lib/xmodule/xmodule/js/src/html/edit.js
-msgid "Heading 4"
-msgstr "标题 4"
+msgid "Heading 1"
+msgstr "标题 1"
 
 #. Translators: this is a message from the raw HTML editor displayed in the
 #. browser when a user needs to edit HTML
 #: common/lib/xmodule/xmodule/js/src/html/edit.js
-msgid "Heading 5"
-msgstr "标题 5"
-
-#. Translators: this is a message from the raw HTML editor displayed in the
-#. browser when a user needs to edit HTML
-#: common/lib/xmodule/xmodule/js/src/html/edit.js
-msgid "Heading 6"
-msgstr "标题 6"
+msgid "Heading 2"
+msgstr "标题 2"
 
 #. Translators: this is a message from the raw HTML editor displayed in the
 #. browser when a user needs to edit HTML
@@ -981,7 +957,7 @@ msgstr "标题"
 #. browser when a user needs to edit HTML
 #: common/lib/xmodule/xmodule/js/src/html/edit.js
 msgid "Height"
-msgstr "高"
+msgstr "高度"
 
 #. Translators: this is a message from the raw HTML editor displayed in the
 #. browser when a user needs to edit HTML
@@ -1029,7 +1005,7 @@ msgstr "增加缩进"
 #. browser when a user needs to edit HTML
 #: common/lib/xmodule/xmodule/js/src/html/edit.js
 msgid "Inline"
-msgstr "内联"
+msgstr "对齐"
 
 #. Translators: this is a message from the raw HTML editor displayed in the
 #. browser when a user needs to edit HTML
@@ -1247,7 +1223,7 @@ msgstr "当前为纯文本粘贴模式，所有内容都将以纯文本形式粘
 #. browser when a user needs to edit HTML
 #: common/lib/xmodule/xmodule/js/src/html/edit.js
 msgid "Paste row after"
-msgstr "在上方粘贴行"
+msgstr "在下方粘贴行"
 
 #. Translators: this is a message from the raw HTML editor displayed in the
 #. browser when a user needs to edit HTML
@@ -1522,7 +1498,7 @@ msgstr "要显示的文字"
 msgid ""
 "The URL you entered seems to be an email address. Do you want to add the "
 "required mailto: prefix?"
-msgstr "输入的URL似乎是一个电子邮件地址，需要加上“mailto:”前缀吗？"
+msgstr "输入的URL似乎是一个电子邮件地址，您想加上必要的“mailto:”前缀吗？"
 
 #. Translators: this is a message from the raw HTML editor displayed in the
 #. browser when a user needs to edit HTML
@@ -1530,7 +1506,7 @@ msgstr "输入的URL似乎是一个电子邮件地址，需要加上“mailto:�
 msgid ""
 "The URL you entered seems to be an external link. Do you want to add the "
 "required http:// prefix?"
-msgstr "输入的 URL 似乎是一个外部链接，需要加上“http://”前缀吗？"
+msgstr "输入的 URL 似乎是一个外部链接，您想加上必要的 http:// 前缀吗？"
 
 #. Translators: this is a message from the raw HTML editor displayed in the
 #. browser when a user needs to edit HTML
@@ -1548,7 +1524,7 @@ msgstr "工具"
 #. browser when a user needs to edit HTML
 #: common/lib/xmodule/xmodule/js/src/html/edit.js
 msgid "Top"
-msgstr "顶端对齐"
+msgstr "顶端"
 
 #. Translators: this is a message from the raw HTML editor displayed in the
 #. browser when a user needs to edit HTML
@@ -1596,6 +1572,7 @@ msgstr "垂直间距"
 #. Translators: this is a message from the raw HTML editor displayed in the
 #. browser when a user needs to edit HTML
 #: common/lib/xmodule/xmodule/js/src/html/edit.js
+#: lms/templates/bookmarks/bookmarks-list.underscore
 #: lms/templates/search/course_search_item.underscore
 #: lms/templates/search/dashboard_search_item.underscore
 msgid "View"
@@ -1645,7 +1622,7 @@ msgid ""
 "\n"
 "Click Cancel to return to this page without sending your information."
 msgstr ""
-"单击确定，将你的用户名和电子邮件地址发送给第三方应用程序。\n"
+"单击确定，将您的用户名和电子邮件地址发送给第三方应用程序。\n"
 "\n"
 "单击取消，取消发送信息并返回本页。"
 
@@ -1655,7 +1632,7 @@ msgid ""
 "\n"
 "Click Cancel to return to this page without sending your information."
 msgstr ""
-"单击确定，将你的用户名向第3方应用程序发送邮件。\n"
+"单击确定，将您的用户名发送给第3方应用程序。\n"
 "\n"
 "单击取消，取消发送信息并返回本页。"
 
@@ -1695,11 +1672,19 @@ msgstr ""
 "\n"
 "要继续使用高级编辑器并将该问题转为XML吗？"
 
+#: common/lib/xmodule/xmodule/js/src/problem/edit.js
+msgid "Explanation"
+msgstr ""
+
 #: common/lib/xmodule/xmodule/js/src/sequence/display.js
 msgid ""
 "Sequence error! Cannot navigate to %(tab_name)s in the current "
 "SequenceModule. Please contact the course staff."
 msgstr "序列错误！ 无法导航到当前序列模块中的%(tab_name)s，请联系课程工作人员。"
+
+#: common/lib/xmodule/xmodule/js/src/sequence/display.js
+msgid "Bookmarked"
+msgstr ""
 
 #: common/lib/xmodule/xmodule/js/src/video/00_i18n.js
 #: common/lib/xmodule/xmodule/js/src/video/09_play_pause_control.js
@@ -1723,12 +1708,12 @@ msgstr "取消静音"
 #: common/lib/xmodule/xmodule/js/src/video/00_i18n.js
 #: common/lib/xmodule/xmodule/js/src/video/04_video_full_screen.js
 msgid "Exit full browser"
-msgstr "退出全屏浏览器"
+msgstr "退出全屏"
 
 #: common/lib/xmodule/xmodule/js/src/video/00_i18n.js
 #: common/lib/xmodule/xmodule/js/src/video/04_video_full_screen.js
 msgid "Fill browser"
-msgstr "全屏显示"
+msgstr "全屏"
 
 #: common/lib/xmodule/xmodule/js/src/video/00_i18n.js
 #: common/lib/xmodule/xmodule/js/src/video/08_video_speed_control.js
@@ -1763,12 +1748,12 @@ msgstr "平均"
 #. Translators: Volume level in range ]60,80]%
 #: common/lib/xmodule/xmodule/js/src/video/00_i18n.js
 msgid "Loud"
-msgstr "大声"
+msgstr "音量高"
 
 #. Translators: Volume level in range ]80,99]%
 #: common/lib/xmodule/xmodule/js/src/video/00_i18n.js
 msgid "Very loud"
-msgstr "很大"
+msgstr "音量很高"
 
 #. Translators: Volume level equals 100%.
 #: common/lib/xmodule/xmodule/js/src/video/00_i18n.js
@@ -1778,7 +1763,7 @@ msgstr "最大数值"
 #: common/lib/xmodule/xmodule/js/src/video/02_html5_video.js
 msgid ""
 "VideoPlayer: Element corresponding to the given selector was not found."
-msgstr "视频播放器：未找到与给定选择子对应的元素。"
+msgstr "视频播放器：未找到与给定选择对应的元素。"
 
 #: common/lib/xmodule/xmodule/js/src/video/02_html5_video.js
 msgid "This browser cannot play .mp4, .ogg, or .webm files."
@@ -1790,7 +1775,7 @@ msgstr "请试着更换一个浏览器，如谷歌的 Chrome 浏览器。"
 
 #: common/lib/xmodule/xmodule/js/src/video/05_video_quality_control.js
 msgid "High Definition"
-msgstr ""
+msgstr "高级定义"
 
 #: common/lib/xmodule/xmodule/js/src/video/05_video_quality_control.js
 msgid "off"
@@ -1821,72 +1806,101 @@ msgstr[0] "%(value)s 分钟"
 #: common/lib/xmodule/xmodule/js/src/video/06_video_progress_slider.js
 msgid "%(value)s second"
 msgid_plural "%(value)s seconds"
-msgstr[0] "%(value)s 秒"
+msgstr[0] "%(value)s 秒钟"
 
 #: common/lib/xmodule/xmodule/js/src/video/07_video_volume_control.js
 msgid ""
-"Volume: Click on this button to mute or unmute this video or press UP or "
+"Click on this button to mute or unmute this video or press UP or DOWN "
+"buttons to increase or decrease volume level."
+msgstr ""
+
+#: common/lib/xmodule/xmodule/js/src/video/07_video_volume_control.js
+msgid "Adjust video volume"
 msgstr ""
 
 #: common/lib/xmodule/xmodule/js/src/video/08_video_speed_control.js
 msgid ""
-"Speed: Press UP to enter the speed menu then use the UP and DOWN arrow keys "
-"to navigate the different speeds, then press ENTER to change to the selected"
-" speed."
+"Press UP to enter the speed menu then use the UP and DOWN arrow keys to "
+"navigate the different speeds, then press ENTER to change to the selected "
+"speed."
+msgstr ""
+
+#: common/lib/xmodule/xmodule/js/src/video/08_video_speed_control.js
+msgid "Adjust video speed"
+msgstr ""
+
+#: common/lib/xmodule/xmodule/js/src/video/08_video_speed_control.js
+msgid "Video speed: "
 msgstr ""
 
 #: common/lib/xmodule/xmodule/js/src/video/09_play_skip_control.js
 msgid "Skip"
-msgstr ""
+msgstr "跳过"
 
 #: common/lib/xmodule/xmodule/js/src/video/09_poster.js
 msgid "Play video"
-msgstr ""
+msgstr "播放视频"
 
 #: common/lib/xmodule/xmodule/js/src/video/09_skip_control.js
 msgid "Do not show again"
-msgstr ""
-
-#: common/lib/xmodule/xmodule/js/src/video/09_video_caption.js
-msgid "Turn off transcript"
-msgstr ""
-
-#: common/lib/xmodule/xmodule/js/src/video/09_video_caption.js
-msgid ""
-"Language: Press the UP arrow key to enter the language menu, then use UP and"
-" DOWN arrow keys to navigate language options. Press ENTER to change to the "
-"selected language."
-msgstr ""
+msgstr "不再显示"
 
 #: common/lib/xmodule/xmodule/js/src/video/09_video_caption.js
 msgid "Open language menu"
 msgstr ""
 
 #: common/lib/xmodule/xmodule/js/src/video/09_video_caption.js
+msgid "Transcript will be displayed when you start playing the video."
+msgstr "当你开始播放视频时将显示字幕。"
+
+#: common/lib/xmodule/xmodule/js/src/video/09_video_caption.js
 msgid ""
-"Activating an item in this group will spool the video to the corresponding "
-"time point. To skip transcript, go to previous item."
+"Activating a link in this group will skip to the corresponding point in the "
+"video."
 msgstr ""
 
 #: common/lib/xmodule/xmodule/js/src/video/09_video_caption.js
-msgid "Caption will be displayed when "
-msgstr "字幕显示于"
+msgid "Video transcript"
+msgstr "视频字幕"
+
+#: common/lib/xmodule/xmodule/js/src/video/09_video_caption.js
+msgid "Start of transcript. Skip to the end."
+msgstr ""
+
+#: common/lib/xmodule/xmodule/js/src/video/09_video_caption.js
+msgid "End of transcript. Skip to the start."
+msgstr ""
+
+#: common/lib/xmodule/xmodule/js/src/video/09_video_caption.js
+msgid ""
+"Press the UP arrow key to enter the language menu then use UP and DOWN arrow"
+" keys to navigate language options. Press ENTER to change to the selected "
+"language."
+msgstr ""
+
+#: common/lib/xmodule/xmodule/js/src/video/09_video_caption.js
+msgid "Open language menu."
+msgstr "打开语言功能菜单。"
+
+#: common/lib/xmodule/xmodule/js/src/video/09_video_caption.js
+msgid "Hide closed captions"
+msgstr ""
+
+#: common/lib/xmodule/xmodule/js/src/video/09_video_caption.js
+msgid "(Caption will be displayed when you start playing the video.)"
+msgstr "(当视频开始播放时将显示字幕)"
+
+#: common/lib/xmodule/xmodule/js/src/video/09_video_caption.js
+msgid "Turn on closed captioning"
+msgstr ""
 
 #: common/lib/xmodule/xmodule/js/src/video/09_video_caption.js
 msgid "Turn on transcripts"
-msgstr ""
+msgstr "打开字幕"
 
 #: common/lib/xmodule/xmodule/js/src/video/09_video_caption.js
 msgid "Turn off transcripts"
-msgstr ""
-
-#: common/lib/xmodule/xmodule/public/js/library_content_edit.js
-msgid "Updating with latest library content"
-msgstr "更新最新的库内容"
-
-#: common/lib/xmodule/xmodule/public/js/split_test_author_view.js
-msgid "Creating missing groups"
-msgstr "正在创建缺失的组。"
+msgstr "关闭字幕"
 
 #: common/static/coffee/src/discussion/discussion_module_view.js
 msgid "Hide Discussion"
@@ -1903,7 +1917,7 @@ msgstr "显示讨论"
 #: common/static/coffee/src/discussion/views/discussion_user_profile_view.js
 #: common/static/coffee/src/discussion/views/response_comment_view.js
 msgid "Sorry"
-msgstr "很抱歉"
+msgstr "抱歉"
 
 #: common/static/coffee/src/discussion/discussion_module_view.js
 msgid "We had some trouble loading the discussion. Please try again."
@@ -1942,7 +1956,7 @@ msgstr[0] ""
 #: common/static/coffee/src/discussion/views/discussion_content_view.js
 msgid "%(numVotes)s Vote"
 msgid_plural "%(numVotes)s Votes"
-msgstr[0] "%(numVotes)s票"
+msgstr[0] "%(numVotes)s 张选票"
 
 #: common/static/coffee/src/discussion/views/discussion_content_view.js
 msgid "We had some trouble subscribing you to this thread. Please try again."
@@ -1986,7 +2000,7 @@ msgstr "取消置顶这个帖子时出现了一些问题，请重试。"
 #: common/static/coffee/src/discussion/views/discussion_content_view.js
 msgid ""
 "We had some trouble removing your flag on this post.  Please try again."
-msgstr "移除这个帖子的报告旗帜时出现了一些问题，请重试。"
+msgstr "移除这个帖子的标记时出现了一些问题，请重试。"
 
 #: common/static/coffee/src/discussion/views/discussion_content_view.js
 msgid "We had some trouble reporting this post.  Please try again."
@@ -2040,7 +2054,7 @@ msgstr "未找到与 %(original_query)s 匹配的结果。显示的是查找 %(s
 
 #: common/static/coffee/src/discussion/views/discussion_thread_list_view.js
 msgid "No threads matched your query."
-msgstr "未找到匹配的结果"
+msgstr "未找到匹配的帖子"
 
 #: common/static/coffee/src/discussion/views/discussion_thread_list_view.js
 msgid "Show posts by %(username)s."
@@ -2049,7 +2063,7 @@ msgstr "按 %(username)s 显示帖子"
 #: common/static/coffee/src/discussion/views/discussion_thread_view.js
 msgid ""
 "The thread you selected has been deleted. Please select another thread."
-msgstr "你选中的主题已被删除，请选择其他主题。"
+msgstr "您选中的主题已被删除，请选择其他主题。"
 
 #: common/static/coffee/src/discussion/views/discussion_thread_view.js
 msgid "We had some trouble loading responses. Please reload the page."
@@ -2057,17 +2071,17 @@ msgstr "载入回复时遇到麻烦，请重试。"
 
 #: common/static/coffee/src/discussion/views/discussion_thread_view.js
 msgid "We had some trouble loading more responses. Please try again."
-msgstr "载入回复时遇到麻烦，请重试。"
+msgstr "载入更多回复时遇到麻烦，请重试。"
 
 #: common/static/coffee/src/discussion/views/discussion_thread_view.js
 msgid "%(numResponses)s other response"
 msgid_plural "%(numResponses)s other responses"
-msgstr[0] "其他回复数%(numResponses)s"
+msgstr[0] "%(numResponses)s 条其他回复"
 
 #: common/static/coffee/src/discussion/views/discussion_thread_view.js
 msgid "%(numResponses)s response"
 msgid_plural "%(numResponses)s responses"
-msgstr[0] "%(numResponses)s条回复"
+msgstr[0] "%(numResponses)s 条回复"
 
 #: common/static/coffee/src/discussion/views/discussion_thread_view.js
 msgid "Showing all responses"
@@ -2076,7 +2090,7 @@ msgstr "显示所有的回复"
 #: common/static/coffee/src/discussion/views/discussion_thread_view.js
 msgid "Showing first response"
 msgid_plural "Showing first %(numResponses)s responses"
-msgstr[0] "显示开始的%(numResponses)s条回复"
+msgstr[0] "显示前 %(numResponses)s 条回复"
 
 #: common/static/coffee/src/discussion/views/discussion_thread_view.js
 msgid "Load all responses"
@@ -2084,7 +2098,7 @@ msgstr "载入所有的回复"
 
 #: common/static/coffee/src/discussion/views/discussion_thread_view.js
 msgid "Load next %(numResponses)s responses"
-msgstr "加载下面的%(numResponses)s条回复"
+msgstr "加载接下来的%(numResponses)s条回复"
 
 #: common/static/coffee/src/discussion/views/discussion_thread_view.js
 msgid "Are you sure you want to delete this post?"
@@ -2104,7 +2118,7 @@ msgstr "匿名"
 
 #: common/static/coffee/src/discussion/views/response_comment_view.js
 msgid "Are you sure you want to delete this comment?"
-msgstr "你确定要删除这条评论吗？"
+msgstr "您确定要删除这条评论吗？"
 
 #: common/static/coffee/src/discussion/views/response_comment_view.js
 msgid "We had some trouble deleting this comment. Please try again."
@@ -2112,7 +2126,7 @@ msgstr "在删除这条评论时出错，请再试一遍。"
 
 #: common/static/coffee/src/discussion/views/thread_response_view.js
 msgid "Are you sure you want to delete this response?"
-msgstr "你确定要删除这个回复吗"
+msgstr "您确定要删除这个回复吗"
 
 #: common/static/common/js/components/utils/view_utils.js
 msgid "Required field."
@@ -2125,6 +2139,17 @@ msgstr ""
 #: common/static/common/js/components/utils/view_utils.js
 msgid "Please do not use any spaces or special characters in this field."
 msgstr ""
+
+#: common/static/common/js/components/views/paginated_view.js
+#: common/static/common/js/components/views/paging_footer.js
+msgid "Pagination"
+msgstr "页码"
+
+#: common/static/common/js/components/views/paginated_view.js
+msgid ""
+"Your request could not be completed. Reload the page and try again. If the "
+"issue persists, click the Help tab to report the problem."
+msgstr "您的请求无法完成。重新加载页面并重试。如果问题仍然存在，点击“帮助”选项报告问题。"
 
 #: common/static/common/js/components/views/paging_header.js
 msgid "Showing %(first_index)s out of %(num_items)s total"
@@ -2274,7 +2299,7 @@ msgstr "我的笔记"
 
 #: common/static/js/vendor/ova/catch/js/catch.js
 msgid "Instructor"
-msgstr "主讲教师"
+msgstr "教师"
 
 #: common/static/js/vendor/ova/catch/js/catch.js
 msgid "Public"
@@ -2333,41 +2358,61 @@ msgstr "标签："
 #. report
 #: common/static/js/vendor/ova/flagging-annotator.js
 msgid "Check the box to remove all flags."
-msgstr "查看信息栏以移除所有标记"
+msgstr "选中此选框以移除所有标记"
 
 #. Translators: 'totalFlags' is the number of flags solely for that annotation
 #: common/static/js/vendor/ova/flagging-annotator.js
 msgid "Check the box to remove %(totalFlags)s flag."
 msgid_plural "Check the box to remove %(totalFlags)s flags."
-msgstr[0] "查看信息栏以移除%(totalFlags)s条标记"
+msgstr[0] "选中此选框以移除所有 %(totalFlags)s 个标记。"
 
 #. Translators: 'count' is the number of flags solely for that annotation that
 #. will be removed
 #: common/static/js/vendor/ova/flagging-annotator.js
 msgid "Check the box to remove %(count)s flag."
 msgid_plural "Check the box to remove %(count)s flags."
-msgstr[0] "查看信息栏以移除%(count)s的标记"
+msgstr[0] "选中此选框以移除 %(count)s 个标记。"
 
 #: common/static/js/vendor/ova/flagging-annotator.js
 msgid "All flags have been removed. To undo, uncheck the box."
-msgstr "所有标记已移除。取消选中信息框以撤销。"
+msgstr "所有标记已移除。取消选中此选框以撤销。"
 
 #: common/static/js/vendor/ova/flagging-annotator.js
 msgid "You have already reported this annotation."
-msgstr "您已经报告过了该批注。"
+msgstr "您已经报告过了此批注。"
 
 #: common/static/js/vendor/ova/flagging-annotator.js
 msgid "Report annotation as inappropriate or offensive."
-msgstr "报告不恰当的或具有攻击性的批注。"
+msgstr "报告此批注不恰当或具有攻击性。"
 
 #. Translators: 'count' is the number of flags solely for that annotation
 #: common/static/js/vendor/ova/flagging-annotator.js
 msgid "This annotation has %(count)s flag."
 msgid_plural "This annotation has %(count)s flags."
-msgstr[0] "该批注包含 %(count)s 个标记。"
+msgstr[0] "此注释带有 %(count)s 个标记。"
 
 #: lms/djangoapps/support/static/support/js/views/certificates.js
 msgid "An unexpected error occurred.  Please try again."
+msgstr ""
+
+#: lms/djangoapps/support/static/support/js/views/enrollment.js
+msgid "Financial Assistance"
+msgstr ""
+
+#: lms/djangoapps/support/static/support/js/views/enrollment.js
+msgid "Upset Learner"
+msgstr ""
+
+#: lms/djangoapps/support/static/support/js/views/enrollment.js
+msgid "Teaching Assistant"
+msgstr ""
+
+#: lms/djangoapps/support/static/support/js/views/enrollment_modal.js
+msgid "Please specify a reason."
+msgstr ""
+
+#: lms/djangoapps/support/static/support/js/views/enrollment_modal.js
+msgid "Something went wrong changing this enrollment. Please try again."
 msgstr ""
 
 #: lms/djangoapps/teams/static/teams/js/collections/team.js
@@ -2379,6 +2424,7 @@ msgid "open slots"
 msgstr ""
 
 #: lms/templates/edxnotes/tab-item.underscore
+#: lms/templates/learner_dashboard/program_card.underscore
 msgid "name"
 msgstr "名称"
 
@@ -2386,6 +2432,11 @@ msgstr "名称"
 #. there are)
 #: lms/djangoapps/teams/static/teams/js/collections/topic.js
 msgid "team count"
+msgstr ""
+
+#: lms/djangoapps/teams/static/teams/js/teams_tab_factory.js
+#: lms/djangoapps/teams/static/teams/js/views/teams_tab.js
+msgid "Teams"
 msgstr ""
 
 #: lms/djangoapps/teams/static/teams/js/views/edit_team.js
@@ -2431,7 +2482,7 @@ msgstr ""
 #: lms/djangoapps/teams/static/teams/js/views/edit_team.js
 #: lms/static/js/student_profile/views/learner_profile_factory.js
 msgid "Country"
-msgstr ""
+msgstr "国家／地区"
 
 #: lms/djangoapps/teams/static/teams/js/views/edit_team.js
 #: lms/djangoapps/teams/static/teams/templates/team-profile.underscore
@@ -2511,8 +2562,8 @@ msgid ""
 msgstr ""
 
 #: lms/djangoapps/teams/static/teams/js/views/instructor_tools.js
-msgid "Team \"%(team)s\" successfully deleted."
-msgstr ""
+msgid "Team \"{team}\" successfully deleted."
+msgstr "团队 \"{team}\" 已成功删除。"
 
 #: lms/djangoapps/teams/static/teams/js/views/my_teams.js
 msgid "You are not currently a member of any team."
@@ -2570,12 +2621,12 @@ msgstr[0] ""
 msgid "All teams"
 msgstr ""
 
-#: lms/djangoapps/teams/static/teams/js/views/teams_tab.js
-msgid "Topics"
+#: lms/djangoapps/teams/static/teams/js/views/teams.js
+msgid "Teams Pagination"
 msgstr ""
 
 #: lms/djangoapps/teams/static/teams/js/views/teams_tab.js
-msgid "Teams"
+msgid "Topics"
 msgstr ""
 
 #: lms/djangoapps/teams/static/teams/js/views/teams_tab.js
@@ -2604,9 +2655,7 @@ msgstr ""
 #: lms/djangoapps/teams/static/teams/js/views/teams_tab.js
 msgid ""
 "Your request could not be completed due to a server problem. Reload the page"
-" and try again. If the issue persists, click the Help tab to report the "
-"problem."
-msgstr ""
+msgstr "由于服务器的问题，无法完成您的请求，请重新加载页面。"
 
 #: lms/djangoapps/teams/static/teams/js/views/teams_tab.js
 msgid "Team Search"
@@ -2730,17 +2779,18 @@ msgstr ""
 
 #: lms/static/coffee/src/instructor_dashboard/data_download.js
 msgid "Error generating student profile information. Please try again."
-msgstr "生成学生档案信息时出现错误，请重试。"
+msgstr "生成学生档案信息时发生错误，请重试。"
 
 #: lms/static/coffee/src/instructor_dashboard/data_download.js
+#: lms/static/js/bookmarks/views/bookmarks_list.js
 #: lms/templates/search/search_loading.underscore
-#: lms/templates/student_account/account_settings.underscore
+#: lms/templates/student_account/account_settings_section.underscore
 msgid "Loading"
 msgstr "正在加载"
 
 #: lms/static/coffee/src/instructor_dashboard/data_download.js
 msgid "Error getting student list."
-msgstr "无法获取学生列表"
+msgstr "获取学生列表时发生错误"
 
 #: lms/static/coffee/src/instructor_dashboard/data_download.js
 msgid "Error generating list of students who may enroll. Please try again."
@@ -2752,10 +2802,14 @@ msgstr "取得评分标准时错误。"
 
 #: lms/static/coffee/src/instructor_dashboard/data_download.js
 msgid "Error generating grades. Please try again."
-msgstr "生成评分结果错误，请重试。"
+msgstr "生成评分结果时发生错误，请重试。"
 
 #: lms/static/coffee/src/instructor_dashboard/data_download.js
 msgid "Error generating problem grade report. Please try again."
+msgstr ""
+
+#: lms/static/coffee/src/instructor_dashboard/data_download.js
+msgid "Error generating ORA data report. Please try again."
 msgstr ""
 
 #: lms/static/coffee/src/instructor_dashboard/membership.js
@@ -2797,7 +2851,7 @@ msgstr "错误：用户“<%= username %>”尚未激活他的账户，用户必
 
 #: lms/static/coffee/src/instructor_dashboard/membership.js
 msgid "Error: You cannot remove yourself from the Instructor group!"
-msgstr "错误：您不可以将自己从主讲教师组中删除。"
+msgstr "错误：您不可以将自己从教师组中删除。"
 
 #: lms/static/coffee/src/instructor_dashboard/membership.js
 msgid "Errors"
@@ -2858,7 +2912,7 @@ msgstr "成为beta测试者之前，需要创建并激活账户。"
 #. usernames) appears after this sentence;
 #: lms/static/coffee/src/instructor_dashboard/membership.js
 msgid "Could not find users associated with the following identifiers:"
-msgstr "未能找到与以下ID关联的用户："
+msgstr "未能找到与以下识别码关联的用户："
 
 #: lms/static/coffee/src/instructor_dashboard/membership.js
 msgid "Reason field should not be left blank."
@@ -2866,7 +2920,7 @@ msgstr ""
 
 #: lms/static/coffee/src/instructor_dashboard/membership.js
 msgid "Error enrolling/unenrolling users."
-msgstr "用户选修／放弃选修时出错。"
+msgstr "用户选课／放弃选课时出错。"
 
 #: lms/static/coffee/src/instructor_dashboard/membership.js
 msgid "The following email addresses and/or usernames are invalid:"
@@ -2874,31 +2928,31 @@ msgstr "以下电子邮件地址／用户名无效："
 
 #: lms/static/coffee/src/instructor_dashboard/membership.js
 msgid "Successfully enrolled and sent email to the following users:"
-msgstr "以下用户已成功选修，并向他们发送电子邮件："
+msgstr "以下用户已成功选课，并向他们发送电子邮件："
 
 #. Translators: A list of users appears after this sentence;
 #: lms/static/coffee/src/instructor_dashboard/membership.js
 msgid "Successfully enrolled the following users:"
-msgstr "以下用户已经成功选修："
+msgstr "以下用户已经成功选课："
 
 #. Translators: A list of users appears after this sentence;
 #: lms/static/coffee/src/instructor_dashboard/membership.js
 msgid ""
 "Successfully sent enrollment emails to the following users. They will be "
 "allowed to enroll once they register:"
-msgstr "选课邮件已发送至以下用户，他们注册后即可选课："
+msgstr "选课邮件已成功发送至以下用户，他们注册后即可选课："
 
 #. Translators: A list of users appears after this sentence;
 #: lms/static/coffee/src/instructor_dashboard/membership.js
 msgid "These users will be allowed to enroll once they register:"
-msgstr "这些用户一旦注册即可选修："
+msgstr "这些用户一旦注册即可选课："
 
 #. Translators: A list of users appears after this sentence;
 #: lms/static/coffee/src/instructor_dashboard/membership.js
 msgid ""
 "Successfully sent enrollment emails to the following users. They will be "
 "enrolled once they register:"
-msgstr "选课邮件已发送至这些用户，他们注册后即已选课："
+msgstr "选课邮件已成功发送至这些用户，他们注册后即已选课："
 
 #. Translators: A list of users appears after this sentence;
 #: lms/static/coffee/src/instructor_dashboard/membership.js
@@ -2923,7 +2977,7 @@ msgstr "以下用户已不再选修本课程："
 #: lms/static/coffee/src/instructor_dashboard/membership.js
 msgid ""
 "These users were not affiliated with the course so could not be unenrolled:"
-msgstr "这些用户并不属于本课程学员，因此无法放弃选修："
+msgstr "这些用户并不属于本课程学员，因此无法使其放弃选修："
 
 #: lms/static/coffee/src/instructor_dashboard/send_email.js
 msgid "Your message must have a subject."
@@ -2937,11 +2991,11 @@ msgstr "您的消息不能为空。"
 msgid ""
 "There are invalid keywords in your email. Please check the following "
 "keywords and try again:"
-msgstr "你的邮件中含有非法关键词。请检查下列关键词并重试："
+msgstr "您的邮件中含有无效关键词。请检查下列关键词并重试："
 
 #: lms/static/coffee/src/instructor_dashboard/send_email.js
 msgid "Your email was successfully queued for sending."
-msgstr "你的电子邮件已成功加入发送队列。"
+msgstr "您的电子邮件已成功加入发送队列。"
 
 #: lms/static/coffee/src/instructor_dashboard/send_email.js
 msgid ""
@@ -2953,13 +3007,13 @@ msgstr "你准备向自己发送一封标题为“<%= subject %>”的邮件，�
 msgid ""
 "You are about to send an email titled '<%= subject %>' to everyone who is "
 "staff or instructor on this course. Is this OK?"
-msgstr "您准备向该课程的所有教员和主讲教师发送一封标题为“<%= subject %>”的邮件，确认吗？"
+msgstr "您准备向此课程的所有工作人员和教师发送一封标题为“<%= subject %>”的邮件，确认吗？"
 
 #: lms/static/coffee/src/instructor_dashboard/send_email.js
 msgid ""
 "You are about to send an email titled '<%= subject %>' to ALL (everyone who "
 "is enrolled in this course as student, staff, or instructor). Is this OK?"
-msgstr "您即将向选修该课程的所有人(选课的学生、教员和主讲教师)发送一封标题为“<%= subject %>”的邮件，确认吗？"
+msgstr "您即将向此课程中的所有人(选课的学生、工作人员和教师)发送一封标题为“<%= subject %>”的邮件，确认吗？"
 
 #: lms/static/coffee/src/instructor_dashboard/send_email.js
 msgid ""
@@ -2967,11 +3021,11 @@ msgid ""
 "classes, it may take up to an hour (or more, if other courses are "
 "simultaneously sending email) to send all emails."
 msgstr ""
-"你的电子邮件已成功加入发送队列。需要注意的是，对于大型课程，可能需要花费一小时以上(甚至更多，如果其他课程也在同时发送邮件)来发送所有邮件。"
+"您的电子邮件已成功加入发送队列。需要注意的是，对于选课人数多的课程，可能需要花费至多一小时(或者如果其他课程也在同时发送邮件)来发送所有邮件。"
 
 #: lms/static/coffee/src/instructor_dashboard/send_email.js
 msgid "Error sending email."
-msgstr "发送电子邮件错误。"
+msgstr "发送电子邮件时出错。"
 
 #: lms/static/coffee/src/instructor_dashboard/send_email.js
 msgid "There is no email history for this course."
@@ -2979,11 +3033,11 @@ msgstr "本课程尚无发送电子邮件记录。"
 
 #: lms/static/coffee/src/instructor_dashboard/send_email.js
 msgid "There was an error obtaining email task history for this course."
-msgstr "获取该课程的邮件任务历史时发生错误。"
+msgstr "获取该课程的邮件任务历史记录时发生错误。"
 
 #: lms/static/coffee/src/instructor_dashboard/send_email.js
 msgid "There was an error obtaining email content history for this course."
-msgstr "存在能获取该课程邮件历史内容的错误"
+msgstr "存在能获取该课程邮件内容历史记录的错误"
 
 #: lms/static/coffee/src/instructor_dashboard/student_admin.js
 msgid "Please enter a student email address or username."
@@ -2993,7 +3047,7 @@ msgstr "请输入学生的邮件地址或用户名。"
 msgid ""
 "Error getting student progress url for '<%= student_id %>'. Make sure that "
 "the student identifier is spelled correctly."
-msgstr "获取学生“<%= student_id %>”的进度 URL 时出错。请确认该学生的 ID 已正确拼写。"
+msgstr "获取学生“<%= student_id %>”的进度 URL 时出错。请确认该学生的 ID 拼写正确。"
 
 #: lms/static/coffee/src/instructor_dashboard/student_admin.js
 msgid "Please enter a problem location."
@@ -3003,7 +3057,7 @@ msgstr "请输入问题的位置。"
 msgid ""
 "Success! Problem attempts reset for problem '<%= problem_id %>' and student "
 "'<%= student_id %>'."
-msgstr "成功！问题“<%= problem_id %>”与学生“<%= student_id %>”的问题尝试次数重置了。"
+msgstr "成功！学生'<%= student_id %>'对问题'<%= problem_id %>'的尝试次数已重置。"
 
 #: lms/static/coffee/src/instructor_dashboard/student_admin.js
 msgid ""
@@ -3011,13 +3065,12 @@ msgid ""
 " '<%= student_id %>'. Make sure that the problem and student identifiers are"
 " complete and correct."
 msgstr ""
-"重置学生“<%= student_id %>”对问题“<%= problem_id %>”的尝试次数时出错。请确认该问题的 ID 及学生的 ID "
-"已正确拼写。"
+"重置学生'<%= problem_id %>'对问题 '<%= student_id %>'的尝试次数时出错。请确认该问题ID及学生ID 拼写正确。"
 
 #: lms/static/coffee/src/instructor_dashboard/student_admin.js
 msgid ""
 "Delete student '<%= student_id %>'s state on problem '<%= problem_id %>'?"
-msgstr "确认删除学生“<%= student_id %>”在问题“<%= problem_id %>”上的状态?"
+msgstr "确认删除学生'<%= student_id %>'在问题'<%= problem_id %>'上的状态?"
 
 #: lms/static/coffee/src/instructor_dashboard/student_admin.js
 msgid ""
@@ -3025,7 +3078,7 @@ msgid ""
 " %>'. Make sure that the problem and student identifiers are complete and "
 "correct."
 msgstr ""
-"删除学生“<%= student_id %>”在问题“<%= problem_id %>”上的状态时出错。请确认该问题的 ID 及学生的 ID "
+"删除学生'<%= student_id %>'在问题'<%= problem_id %>'上的状态时出错。请确认该问题的 ID 及学生的 ID "
 "是完整且正确的。"
 
 #: lms/static/coffee/src/instructor_dashboard/student_admin.js
@@ -3038,8 +3091,8 @@ msgid ""
 "'<%= student_id %>'. Click the 'Show Background Task History for Student' "
 "button to see the status of the task."
 msgstr ""
-"已启动对问题“<%= problem_id %>”和学生“<%= student_id %>”的重新评分任务。点击 '显示学生的背景任务历史' "
-"按钮来查看任务状态。"
+"已启动对问题'<%= problem_id %>'和学生 '<%= student_id "
+"%>'的重新评分任务。点击“显示学生的背景任务历史”按钮来查看任务状态。"
 
 #: lms/static/coffee/src/instructor_dashboard/student_admin.js
 msgid ""
@@ -3047,8 +3100,8 @@ msgid ""
 "'<%= student_id %>'. Make sure that the the problem and student identifiers "
 "are complete and correct."
 msgstr ""
-"为学生“<%= student_id %>”启动对问题“<%= problem_id %>”的重新评分任务时出错。请确认该问题的 ID 及学生的 ID "
-"是完整且正确的。"
+"为学生 '<%= student_id %>'启动对问题'<%= problem_id %>'的重新评分任务时出错。请确认该问题的 ID 及学生的 ID"
+" 是完整且正确的。"
 
 #: lms/static/coffee/src/instructor_dashboard/student_admin.js
 msgid ""
@@ -3056,7 +3109,7 @@ msgid ""
 "student_id %>'. Make sure that the problem and student identifiers are "
 "complete and correct."
 msgstr ""
-"在获取学生“<%= student_id %>”对问题“<%= problem_id %>”的任务历史时出错。请确认该问题的 ID 及学生的 ID "
+"在获取学生'<%= student_id %>'和问题'<%= problem_id %>'的任务历史时出错。请确认该问题的 ID 及学生的 ID "
 "是完整且正确的。"
 
 #: lms/static/coffee/src/instructor_dashboard/student_admin.js
@@ -3067,21 +3120,21 @@ msgstr "正在重置学生“{student_id}”的入学考试尝试次数。"
 msgid ""
 "Error resetting entrance exam attempts for student '{student_id}'. Make sure"
 " student identifier is correct."
-msgstr "重置学生“{student_id}”的入学考试尝试次数时出错了，请确认学生编号无误。"
+msgstr "重置学生'{student_id}'的入学考试尝试次数时出错了，请确认学生编号无误。"
 
 #: lms/static/coffee/src/instructor_dashboard/student_admin.js
 msgid ""
 "Started entrance exam rescore task for student '{student_id}'. Click the "
 "'Show Background Task History for Student' button to see the status of the "
 "task."
-msgstr "已启动为学生“{student_id}”重新计算入学考试分数的任务，请点击“为学生显示后台任务历史”按钮查看任务状态。"
+msgstr "已启动为学生'{student_id}'重新计算入学考试分数的任务，请点击“为学生显示后台任务历史”按钮查看任务状态。"
 
 #: lms/static/coffee/src/instructor_dashboard/student_admin.js
 msgid ""
 "Error starting a task to rescore entrance exam for student '{student_id}'. "
 "Make sure that entrance exam has problems in it and student identifier is "
 "correct."
-msgstr "为学生“{student_id}”开始运行重新计算入学考试分数的任务时出错了，请确认该入学考试中有题目并且学生编号无误。"
+msgstr "为学生'{student_id}'开始运行重新计算入学考试分数的任务时出错了，请确认该入学考试中有题目并且学生编号无误。"
 
 #: lms/static/coffee/src/instructor_dashboard/student_admin.js
 msgid "Enter a student's username or email address."
@@ -3091,33 +3144,33 @@ msgstr "输入学生的用户名或电子邮件地址。"
 msgid ""
 "Do you want to allow this student ('{student_id}') to skip the entrance "
 "exam?"
-msgstr "您是否允许该学生(“{student_id}”)跳过入学考试？"
+msgstr "您是否允许该学生('{student_id}')跳过入学考试？"
 
 #: lms/static/coffee/src/instructor_dashboard/student_admin.js
 msgid ""
 "An error occurred. Make sure that the student's username or email address is"
 " correct and try again."
-msgstr "发生了一个错误，请确认学生用户名或电子邮件地址正确后再试一次。"
+msgstr "发生了一个错误，请确认学生用户名或电子邮件地址正确并再次尝试。"
 
 #: lms/static/coffee/src/instructor_dashboard/student_admin.js
 msgid "Entrance exam state is being deleted for student '{student_id}'."
-msgstr "学生“{student_id}”的入学考试的状态已被删除。"
+msgstr "学生'{student_id}'的入学考试的状态已被删除。"
 
 #: lms/static/coffee/src/instructor_dashboard/student_admin.js
 msgid ""
 "Error deleting entrance exam state for student '{student_id}'. Make sure "
 "student identifier is correct."
-msgstr "删除学生“{student_id}”的入学考试状态时出错了，请确认学生编号无误。"
+msgstr "删除学生'{student_id}'的入学考试状态时出错了，请确认学生编号无误。"
 
 #: lms/static/coffee/src/instructor_dashboard/student_admin.js
 msgid ""
 "Error getting entrance exam task history for student '{student_id}'. Make "
 "sure student identifier is correct."
-msgstr "获取学生“{student_id}”的入学考试任务历史时出错了，请确认学生编号无误。"
+msgstr "获取学生'{student_id}'的入学考试任务历史时出错了，请确认学生编号无误。"
 
 #: lms/static/coffee/src/instructor_dashboard/student_admin.js
 msgid "Reset attempts for all students on problem '<%= problem_id %>'?"
-msgstr "确认重置所有学生在问题“<%= problem_id %>”的尝试次数？"
+msgstr "确认重置所有学生在问题'<%= problem_id %>'的尝试次数？"
 
 #: lms/static/coffee/src/instructor_dashboard/student_admin.js
 msgid ""
@@ -3131,28 +3184,28 @@ msgid ""
 "Error starting a task to reset attempts for all students on problem '<%= "
 "problem_id %>'. Make sure that the problem identifier is complete and "
 "correct."
-msgstr "启动重置所有学生在问题“<%= problem_id %>”上尝试次数的任务时出错。请确认该问题的 ID 是完整且正确的。"
+msgstr "启动重置所有学生在问题'<%= problem_id %>'上尝试次数的任务时出错。请确认该问题的 ID 是完整且正确的。"
 
 #: lms/static/coffee/src/instructor_dashboard/student_admin.js
 msgid "Rescore problem '<%= problem_id %>' for all students?"
-msgstr "确认对所有学生回答问题“<%= problem_id %>”重新评分？"
+msgstr "确认对所有学生回答问题'<%= problem_id %>'重新评分？"
 
 #: lms/static/coffee/src/instructor_dashboard/student_admin.js
 msgid ""
 "Successfully started task to rescore problem '<%= problem_id %>' for all "
 "students. Click the 'Show Background Task History for Problem' button to see"
 " the status of the task."
-msgstr "成功启动所有学生回答问题 “<%= problem_id %>”重新评分的任务。点击“显示问题的背景任务历史”按钮来查看任务状态。"
+msgstr "成功启动所有学生回答问题 '<%= problem_id %>'重新评分的任务。点击“显示问题的背景任务历史”按钮来查看任务状态。"
 
 #: lms/static/coffee/src/instructor_dashboard/student_admin.js
 msgid ""
 "Error starting a task to rescore problem '<%= problem_id %>'. Make sure that"
 " the problem identifier is complete and correct."
-msgstr "启动对问题“<%= problem_id %>”的重新评分任务时出错。请确认该问题的 ID 是完整且正确的。"
+msgstr "启动对问题'<%= problem_id %>'的重新评分任务时出错。请确认该问题的 ID 是完整且正确的。"
 
 #: lms/static/coffee/src/instructor_dashboard/student_admin.js
 msgid "Error listing task history for this student and problem."
-msgstr "列表显示该名学生与问题的任务历史时发生错误。"
+msgstr "显示此学生与问题的任务历史时发生错误。"
 
 #. Translators: a "Task" is a background process such as grading students or
 #. sending email
@@ -3216,7 +3269,7 @@ msgstr "获取邮件发生错误，请稍后重试。如问题持续发生，请
 
 #: lms/static/coffee/src/instructor_dashboard/util.js
 msgid "Subject"
-msgstr "科目"
+msgstr "标题"
 
 #: lms/static/coffee/src/instructor_dashboard/util.js
 msgid "Sent By"
@@ -3236,7 +3289,7 @@ msgstr "复制邮件至编辑器"
 
 #: lms/static/coffee/src/instructor_dashboard/util.js
 msgid "Subject:"
-msgstr "科目"
+msgstr "标题"
 
 #: lms/static/coffee/src/instructor_dashboard/util.js
 msgid "Sent By:"
@@ -3266,88 +3319,81 @@ msgstr "文件名"
 msgid ""
 "Links are generated on demand and expire within 5 minutes due to the "
 "sensitive nature of student information."
-msgstr "由于涉及学生的敏感信息，生成的链接将在5分钟后失效。"
-
-#: lms/static/coffee/src/staff_grading/staff_grading.js
-msgid "Grades saved.  Fetching the next submission to grade."
-msgstr "评价已保存。提取下一个待评价作业。"
-
-#: lms/static/coffee/src/staff_grading/staff_grading.js
-msgid "Problem Name"
-msgstr "问题名称"
-
-#: lms/static/coffee/src/staff_grading/staff_grading.js
-msgid "Graded"
-msgstr "已评价"
-
-#: lms/static/coffee/src/staff_grading/staff_grading.js
-msgid "Available to Grade"
-msgstr "可评价"
-
-#: lms/static/coffee/src/staff_grading/staff_grading.js
-msgid "Required"
-msgstr "需要评价"
-
-#: lms/static/coffee/src/staff_grading/staff_grading.js
-msgid "Progress"
-msgstr "进度"
-
-#: lms/static/coffee/src/staff_grading/staff_grading.js
-msgid "Back to problem list"
-msgstr "返回问题列表"
-
-#: lms/static/coffee/src/staff_grading/staff_grading.js
-msgid "Try loading again"
-msgstr "尝试重新加载"
-
-#: lms/static/coffee/src/staff_grading/staff_grading.js
-msgid "<%= num %> available "
-msgstr "<%= num %> 有效"
-
-#: lms/static/coffee/src/staff_grading/staff_grading.js
-msgid "<%= num %> graded "
-msgstr "<%= num %> 已评分"
-
-#: lms/static/coffee/src/staff_grading/staff_grading.js
-msgid "<%= num %> more needed to start ML"
-msgstr "<%= num %> 以上是启动ML所必需的"
-
-#: lms/static/coffee/src/staff_grading/staff_grading.js
-msgid "Re-check for submissions"
-msgstr "提交前再次确认"
-
-#: lms/static/coffee/src/staff_grading/staff_grading.js
-msgid "System got into invalid state: <%= state %>"
-msgstr "系统处于非正常状态：<%= state %>"
-
-#: lms/static/coffee/src/staff_grading/staff_grading.js
-msgid "System got into invalid state for submission: "
-msgstr "系统状态失效无法提交："
-
-#: lms/static/coffee/src/staff_grading/staff_grading.js
-msgid "(Hide)"
-msgstr "(隐藏)"
-
-#: lms/static/coffee/src/staff_grading/staff_grading.js
-msgid "(Show)"
-msgstr "(显示)"
+msgstr "由于包含涉及学生的敏感信息，生成的链接将在5分钟后失效。"
 
 #: lms/static/js/Markdown.Editor.js
 msgid "Insert Hyperlink"
 msgstr "插入超链接"
 
-#. Translators: Please keep the quotation marks (") around this text
-#: lms/static/js/Markdown.Editor.js lms/static/js/Markdown.Editor.js.c
-msgid "\"optional title\""
-msgstr "“可选标题”"
+#: lms/static/js/Markdown.Editor.js
+msgid "e.g. 'http://google.com/'"
+msgstr "例如'http://google.com/'"
 
 #: lms/static/js/Markdown.Editor.js
-msgid "Insert Image (upload file or type url)"
-msgstr "插入图片(上传文件或输入图片的链接url)"
+msgid "Link Description"
+msgstr "链接的描述"
+
+#: lms/static/js/Markdown.Editor.js
+msgid "e.g. 'google'"
+msgstr "例如'google'"
+
+#: lms/static/js/Markdown.Editor.js
+msgid "Please provide a description of the link destination."
+msgstr "请提供链接的描述。"
+
+#: lms/static/js/Markdown.Editor.js
+msgid "Insert Image (upload file or type URL)"
+msgstr "插入图片 (上传文件或输入URL)"
+
+#: lms/static/js/Markdown.Editor.js
+msgid ""
+"Type in a URL or use the \"Choose File\" button to upload a file from your "
+"machine. (e.g. 'http://example.com/img/clouds.jpg')"
+msgstr ""
+
+#: lms/static/js/Markdown.Editor.js
+msgid "Image Description"
+msgstr "图片描述"
+
+#: lms/static/js/Markdown.Editor.js
+msgid ""
+"Please describe this image or agree that it has no contextual value by "
+"checking the checkbox."
+msgstr ""
+
+#: lms/static/js/Markdown.Editor.js
+msgid ""
+"e.g. 'Sky with clouds'. The description is helpful for users who cannot see "
+"the image."
+msgstr ""
+
+#: lms/static/js/Markdown.Editor.js
+msgid "How to create useful text alternatives."
+msgstr ""
+
+#: lms/static/js/Markdown.Editor.js
+msgid ""
+"This image is for decorative purposes only and does not require a "
+"description."
+msgstr ""
 
 #: lms/static/js/Markdown.Editor.js
 msgid "Markdown Editing Help"
 msgstr "Markdown编辑帮助"
+
+#: lms/static/js/Markdown.Editor.js
+msgid "URL"
+msgstr "URL"
+
+#: lms/static/js/Markdown.Editor.js
+msgid "Please provide a valid URL."
+msgstr ""
+
+#. Translators: 'errorCount' is the number of errors found in the form.
+#: lms/static/js/Markdown.Editor.js
+msgid "%(errorCount)s error found in form."
+msgid_plural "%(errorCount)s errors found in form."
+msgstr[0] "表格中发现 %(errorCount)s 个错误。"
 
 #: lms/static/js/Markdown.Editor.js
 msgid "Bold (Ctrl+B)"
@@ -3410,10 +3456,6 @@ msgid "emphasized text"
 msgstr "强调文字"
 
 #: lms/static/js/Markdown.Editor.js
-msgid "enter image description here"
-msgstr "此处输入图像的描述"
-
-#: lms/static/js/Markdown.Editor.js
 msgid "enter link description here"
 msgstr "此处输入链接的描述"
 
@@ -3432,6 +3474,24 @@ msgstr "标题"
 #: lms/static/js/ajax-error.js
 msgid "You have been logged out of your edX account. "
 msgstr "您已从您的 edX  账户登出。"
+
+#: lms/static/js/api_admin/views/catalog_preview.js
+msgid "Preview this query"
+msgstr "预览该查询"
+
+#: lms/static/js/bookmarks/views/bookmark_button.js
+#: lms/static/js/bookmarks/views/bookmarks_list.js
+#: lms/static/js/verify_student/views/make_payment_step_view.js
+msgid "An error has occurred. Please try again."
+msgstr "发生了一个未知错误，请重试。"
+
+#: lms/static/js/bookmarks/views/bookmark_button.js
+msgid "Click to add"
+msgstr ""
+
+#: lms/static/js/bookmarks/views/bookmark_button.js
+msgid "Click to remove"
+msgstr ""
 
 #: lms/static/js/ccx/schedule.js
 msgid "All subsections"
@@ -3471,11 +3531,12 @@ msgid "Enter Start Date and Time"
 msgstr ""
 
 #: lms/static/js/certificates/models/certificate_exception.js
+#: lms/static/js/certificates/models/certificate_invalidation.js
 msgid "Student username/email field is required and can not be empty. "
 msgstr ""
 
 #: lms/static/js/certificates/views/certificate_bulk_whitelist.js
-msgid "Errors!"
+msgid "Uploaded file issues. Click on \"+\" to view."
 msgstr ""
 
 #: lms/static/js/certificates/views/certificate_bulk_whitelist.js
@@ -3487,40 +3548,88 @@ msgid " learner is successfully added to the exception list"
 msgstr ""
 
 #: lms/static/js/certificates/views/certificate_bulk_whitelist.js
-msgid " records are not in correct format"
+msgid " records are not in correct format and not added to"
 msgstr ""
 
 #: lms/static/js/certificates/views/certificate_bulk_whitelist.js
-msgid " record is not in correct format"
+msgid " record is not in correct format and not added to the exception"
 msgstr ""
 
 #: lms/static/js/certificates/views/certificate_bulk_whitelist.js
-msgid " learners do not exist in LMS"
+msgid " learners do not exist in LMS and not added to the"
 msgstr ""
 
 #: lms/static/js/certificates/views/certificate_bulk_whitelist.js
-msgid " learner does not exist in LMS"
+msgid " learner does not exist in LMS and not added to the exception list"
 msgstr ""
 
 #: lms/static/js/certificates/views/certificate_bulk_whitelist.js
-msgid " learners are already white listed"
+msgid " learners are already white listed and not added to"
 msgstr ""
 
 #: lms/static/js/certificates/views/certificate_bulk_whitelist.js
-msgid " learner is already white listed"
+msgid " learner is already white listed and not added to the exception "
 msgstr ""
 
 #: lms/static/js/certificates/views/certificate_bulk_whitelist.js
-msgid " learners are not enrolled in course"
+msgid " learners are not enrolled in course and not added to"
 msgstr ""
 
 #: lms/static/js/certificates/views/certificate_bulk_whitelist.js
-msgid " learner is not enrolled in course"
+msgid " learner is not enrolled in course and not added to the exception"
+msgstr ""
+
+#: lms/static/js/certificates/views/certificate_invalidation_view.js
+msgid ""
+"Certificate of <%= user %> has already been invalidated. Please check your "
+"spelling and retry."
+msgstr ""
+
+#: lms/static/js/certificates/views/certificate_invalidation_view.js
+msgid "Certificate has been successfully invalidated for <%= user %>."
+msgstr ""
+
+#: lms/static/js/certificates/views/certificate_invalidation_view.js
+#: lms/static/js/certificates/views/certificate_whitelist.js
+#: lms/static/js/certificates/views/certificate_whitelist_editor.js
+msgid "Server Error, Please refresh the page and try again."
+msgstr ""
+
+#: lms/static/js/certificates/views/certificate_invalidation_view.js
+msgid ""
+"The certificate for this learner has been re-validated and the system is re-"
+"running the grade for this learner."
+msgstr ""
+
+#: lms/static/js/certificates/views/certificate_invalidation_view.js
+msgid ""
+"Could not find Certificate Invalidation in the list. Please refresh the page"
+" and try again"
+msgstr ""
+
+#: lms/static/js/certificates/views/certificate_whitelist.js
+msgid "Student Removed from certificate white list successfully."
+msgstr ""
+
+#: lms/static/js/certificates/views/certificate_whitelist.js
+msgid ""
+"Could not find Certificate Exception in white list. Please refresh the page "
+"and try again"
+msgstr ""
+
+#: lms/static/js/certificates/views/certificate_whitelist_editor.js
+msgid "<%= user %> already in exception list."
+msgstr ""
+
+#: lms/static/js/certificates/views/certificate_whitelist_editor.js
+msgid ""
+"<%= user %> has been successfully added to the exception list. Click "
+"Generate Exception Certificate below to send the certificate."
 msgstr ""
 
 #: lms/static/js/course_survey.js
 msgid "There has been an error processing your survey."
-msgstr "在处理你的调查的时候出现了一个错误。"
+msgstr "在处理您的调查时出现了一个错误。"
 
 #: lms/static/js/courseware/credit_progress.js
 #: lms/templates/discovery/facet.underscore
@@ -3538,7 +3647,7 @@ msgstr "您的捐款无法提交。"
 
 #: lms/static/js/dashboard/legacy.js
 msgid "An error occurred. Please try again later."
-msgstr "出现了未知错误，请稍后重试。"
+msgstr "出现了一个错误，请稍后重试。"
 
 #: lms/static/js/discovery/views/search_form.js
 #, c-format
@@ -3564,7 +3673,7 @@ msgstr "焦点采集器"
 msgid ""
 "An error has occurred. Make sure that you are connected to the Internet, and"
 " then try refreshing the page."
-msgstr "出现了一个错误。请确保你已联网，然后刷新页面。"
+msgstr "出现了一个错误。请确保您已联网，然后刷新页面。"
 
 #: lms/static/js/edxnotes/views/notes_visibility_factory.js
 msgid "Hide notes"
@@ -3589,7 +3698,7 @@ msgstr "请在 %(anchor_start)s 搜索字段%(anchor_end)s输入一个关键词�
 
 #: lms/static/js/edxnotes/views/tab_item.js
 msgid "Current tab"
-msgstr "当前选项"
+msgstr "当前标签"
 
 #: lms/static/js/edxnotes/views/tabs/course_structure.js
 msgid "Location in Course"
@@ -3601,7 +3710,7 @@ msgstr "近期活动"
 
 #: lms/static/js/edxnotes/views/tabs/search_results.js
 msgid "No results found for \"%(query_string)s\". Please try searching again."
-msgstr "未找到“%(query_string)s”。请重新搜索。"
+msgstr "未找到有关\"%(query_string)s\"的任何结果。请重新搜索。"
 
 #. Translators: this is a title shown before all Notes that have no associated
 #. tags. It is put within
@@ -3611,13 +3720,22 @@ msgstr "未找到“%(query_string)s”。请重新搜索。"
 msgid "[no tags]"
 msgstr ""
 
+#: lms/static/js/financial-assistance/views/financial_assistance_form_view.js
+msgid "Choose one"
+msgstr ""
+
+#: lms/static/js/financial-assistance/views/financial_assistance_form_view.js
+#: lms/static/js/student_account/views/LoginView.js
+msgid "An error has occurred. Check your Internet connection and try again."
+msgstr ""
+
 #: lms/static/js/groups/views/cohort_discussions.js
 #: lms/static/js/groups/views/cohort_discussions_course_wide.js
 #: lms/static/js/groups/views/cohort_discussions_inline.js
 #: lms/static/js/groups/views/cohort_form.js
 #: lms/static/js/groups/views/cohorts.js
 msgid "We've encountered an error. Refresh your browser and then try again."
-msgstr "我们遇到了一个错误。请刷新你的浏览器并重试。"
+msgstr "我们遇到了一个错误。请刷新您的浏览器并重试。"
 
 #: lms/static/js/groups/views/cohort_editor.js
 #: lms/templates/instructor/instructor_dashboard_2/cohort-editor.underscore
@@ -3639,17 +3757,17 @@ msgstr "输入用户名或电子邮件地址。"
 #: lms/static/js/groups/views/cohort_editor.js
 msgid "{numUsersAdded} student has been added to this cohort"
 msgid_plural "{numUsersAdded} students have been added to this cohort"
-msgstr[0] "{numUsersAdded} 名学生已被添加到该群组中"
+msgstr[0] "{numUsersAdded} 个学生已添加至此队列"
 
 #: lms/static/js/groups/views/cohort_editor.js
 msgid "{numMoved} student was removed from {oldCohort}"
 msgid_plural "{numMoved} students were removed from {oldCohort}"
-msgstr[0] "{numMoved} 名学生已从{oldCohort}中移除"
+msgstr[0] "{numMoved} 学生已被移出 {oldCohort}"
 
 #: lms/static/js/groups/views/cohort_editor.js
 msgid "{numPresent} student was already in the cohort"
 msgid_plural "{numPresent} students were already in the cohort"
-msgstr[0] "{numPresent} 名学生已在该群组中"
+msgstr[0] "{numPresent} 个学生已在此队列"
 
 #: lms/static/js/groups/views/cohort_editor.js
 msgid "Unknown user: {user}"
@@ -3658,7 +3776,7 @@ msgstr "未知用户： {user}"
 #: lms/static/js/groups/views/cohort_editor.js
 msgid "There was an error when trying to add students:"
 msgid_plural "There were {numErrors} errors when trying to add students:"
-msgstr[0] "添加学生时出现 {numErrors} 个错误："
+msgstr[0] "尝试添加学生时出现 {numErrors} 个错误："
 
 #: lms/static/js/groups/views/cohort_editor.js
 msgid "View all errors"
@@ -3718,7 +3836,7 @@ msgstr "上传文件并为学生分组"
 #: lms/static/js/groups/views/cohorts.js
 msgid ""
 "Your file '{file}' has been uploaded. Allow a few minutes for processing."
-msgstr "你的文件“{file}”已经上传。需要几分钟时间进行处理。"
+msgstr "你的文件'{file}'已经上传。需要几分钟时间进行处理。"
 
 #: lms/static/js/groups/views/course_cohort_settings_notification.js
 msgid "Cohorts Enabled"
@@ -3727,6 +3845,27 @@ msgstr "群组已启用"
 #: lms/static/js/groups/views/course_cohort_settings_notification.js
 msgid "Cohorts Disabled"
 msgstr "群组已禁用"
+
+#: lms/static/js/groups/views/verified_track_settings_notification.js
+msgid ""
+"This course uses automatic cohorting for verified track learners. You cannot"
+" disable cohorts, and you cannot rename the manual cohort named "
+"'{verifiedCohortName}'. To change the configuration for verified track "
+"cohorts, contact your edX partner manager."
+msgstr ""
+
+#: lms/static/js/groups/views/verified_track_settings_notification.js
+msgid ""
+"This course has automatic cohorting enabled for verified track learners, but"
+" the required cohort does not exist. You must create a manually-assigned "
+"cohort named '{verifiedCohortName}' for the feature to work."
+msgstr ""
+
+#: lms/static/js/groups/views/verified_track_settings_notification.js
+msgid ""
+"This course has automatic cohorting enabled for verified track learners, but"
+" cohorts are disabled. You must enable cohorts for the feature to work."
+msgstr ""
 
 #: lms/static/js/instructor_dashboard/certificates.js
 msgid "Allow students to generate certificates for this course?"
@@ -3778,7 +3917,7 @@ msgstr ""
 #, c-format
 msgid "%s result"
 msgid_plural "%s results"
-msgstr[0] "%s个结果"
+msgstr[0] "%s 个结果"
 
 #: lms/static/js/staff_debug_actions.js
 msgid "Unknown Error Occurred."
@@ -3851,17 +3990,18 @@ msgid "Loading your courses"
 msgstr ""
 
 #: lms/static/js/student_account/views/LoginView.js
-msgid "An error has occurred. Check your Internet connection and try again."
-msgstr ""
-
-#: lms/static/js/student_account/views/LoginView.js
 msgid ""
 "An error has occurred. Try refreshing the page, or check your Internet "
 "connection."
 msgstr ""
 
 #: lms/static/js/student_account/views/account_settings_factory.js
-msgid "Basic Account Information (required)"
+msgid "Basic Account Information"
+msgstr ""
+
+#: lms/static/js/student_account/views/account_settings_factory.js
+msgid ""
+"These settings include basic information about your account. You can also "
 msgstr ""
 
 #: lms/static/js/student_account/views/account_settings_factory.js
@@ -3876,8 +4016,10 @@ msgstr ""
 
 #: lms/static/js/student_account/views/account_settings_factory.js
 msgid ""
-"The name that appears on your certificates. Other learners never see your "
-"full name."
+"The name that is used for ID verification and appears on your certificates. "
+"Other learners never see your full name. Make sure to enter your name "
+"exactly as it appears on your government-issued photo ID, including any non-"
+"Roman characters."
 msgstr ""
 
 #: lms/static/js/student_account/views/account_settings_factory.js
@@ -3895,17 +4037,11 @@ msgid "Password"
 msgstr "密码"
 
 #: lms/static/js/student_account/views/account_settings_factory.js
-msgid "Reset your Password"
+msgid "Reset Your Password"
 msgstr ""
 
-#: lms/templates/student_account/account.underscore
-msgid "Reset Password"
-msgstr "重设密码"
-
 #: lms/static/js/student_account/views/account_settings_factory.js
-msgid ""
-"When you click \"Reset Password\", a message will be sent to your email "
-"address. Click the link in the message to reset your password."
+msgid "When you click \"Reset Your Password\", edX will send a message "
 msgstr ""
 
 #: lms/static/js/student_account/views/account_settings_factory.js
@@ -3919,7 +4055,7 @@ msgid "Country or Region"
 msgstr ""
 
 #: lms/static/js/student_account/views/account_settings_factory.js
-msgid "Additional Information (optional)"
+msgid "Additional Information"
 msgstr ""
 
 #: lms/static/js/student_account/views/account_settings_factory.js
@@ -3940,17 +4076,20 @@ msgid "Preferred Language"
 msgstr ""
 
 #: lms/static/js/student_account/views/account_settings_factory.js
-msgid "Connected Accounts"
+#: lms/static/js/student_account/views/account_settings_view.js
+msgid "Linked Accounts"
 msgstr ""
 
 #: lms/static/js/student_account/views/account_settings_factory.js
-msgid "Connect your {accountName} account"
+msgid ""
+"You can link your social media accounts to your edX account to make signing "
+"in to edx.org "
 msgstr ""
 
 #: lms/static/js/student_account/views/account_settings_fields.js
 msgid ""
 "We've sent a confirmation message to {new_email_address}. Click the link in "
-"the message to update your email address."
+"the "
 msgstr ""
 
 #: lms/static/js/student_account/views/account_settings_fields.js
@@ -3961,15 +4100,31 @@ msgstr ""
 #: lms/static/js/student_account/views/account_settings_fields.js
 msgid ""
 "We've sent a message to {email_address}. Click the link in the message to "
-"reset your password."
+"reset "
 msgstr ""
 
 #: lms/static/js/student_account/views/account_settings_fields.js
-msgid "Unlink"
+msgid "Link your {accountName} account"
 msgstr ""
 
 #: lms/static/js/student_account/views/account_settings_fields.js
-msgid "Link"
+msgid "Unlink This Account"
+msgstr ""
+
+#: lms/static/js/student_account/views/account_settings_fields.js
+msgid "You can use your {accountName} account to sign in to your edX account."
+msgstr ""
+
+#: lms/static/js/student_account/views/account_settings_fields.js
+msgid "Unlink your {accountName} account"
+msgstr ""
+
+#: lms/static/js/student_account/views/account_settings_fields.js
+msgid "Link Your Account"
+msgstr ""
+
+#: lms/static/js/student_account/views/account_settings_fields.js
+msgid "Link your {accountName} account to your edX account and "
 msgstr ""
 
 #: lms/static/js/student_account/views/account_settings_fields.js
@@ -3982,6 +4137,14 @@ msgstr ""
 
 #: lms/static/js/student_account/views/account_settings_fields.js
 msgid "Successfully unlinked."
+msgstr ""
+
+#: lms/static/js/student_account/views/account_settings_view.js
+msgid "Account Information"
+msgstr ""
+
+#: lms/static/js/student_profile/views/badge_list_container.js
+msgid "Accomplishments Pagination"
 msgstr ""
 
 #: lms/static/js/student_profile/views/learner_profile_factory.js
@@ -4038,18 +4201,30 @@ msgstr ""
 msgid "Profile image for {username}"
 msgstr ""
 
+#: lms/static/js/student_profile/views/learner_profile_view.js
+msgid "About Me"
+msgstr ""
+
+#: lms/static/js/student_profile/views/learner_profile_view.js
+msgid "Accomplishments"
+msgstr ""
+
+#: lms/static/js/student_profile/views/learner_profile_view.js
+msgid "Profile"
+msgstr ""
+
 #: lms/static/js/verify_student/views/image_input_view.js
 msgid "Image Upload Error"
 msgstr "图片上传错误"
 
 #: lms/static/js/verify_student/views/image_input_view.js
 msgid "Please verify that you have uploaded a valid image (PNG and JPEG)."
-msgstr "请验证你已上传了一张有效的图片(PNG或JPEG格式)。"
+msgstr "请验证您已上传了一张有效的图片(PNG或JPEG格式)。"
 
 #: lms/static/js/verify_student/views/incourse_reverify_view.js
 #: lms/static/js/verify_student/views/review_photos_step_view.js
 msgid "An error has occurred. Please try again later."
-msgstr "发生了一个未知错误，请稍后重试。"
+msgstr "发生了一个错误，请稍后重试。"
 
 #: lms/static/js/verify_student/views/incourse_reverify_view.js
 #: lms/static/js/verify_student/views/review_photos_step_view.js
@@ -4095,10 +4270,6 @@ msgid "Try the transaction again in a few minutes."
 msgstr ""
 
 #: lms/static/js/verify_student/views/make_payment_step_view.js
-msgid "An error has occurred. Please try again."
-msgstr "发生了一个未知错误，请重试。"
-
-#: lms/static/js/verify_student/views/make_payment_step_view.js
 msgid "Could not submit order"
 msgstr "订单提交失败"
 
@@ -4126,7 +4297,7 @@ msgstr "视频捕获失败"
 msgid ""
 "Please verify that your webcam is connected and that you have allowed your "
 "browser to access it."
-msgstr "请检查你的摄像头已连接并且你的浏览器可以访问。"
+msgstr "请检查您的摄像头已连接并且允许浏览器使用它。"
 
 #: lms/static/js/verify_student/views/webcam_photo_view.js
 msgid "No Webcam Detected"
@@ -4134,11 +4305,11 @@ msgstr "没有检测到摄像头"
 
 #: lms/static/js/verify_student/views/webcam_photo_view.js
 msgid "You don't seem to have a webcam connected."
-msgstr "貌似你还没有一个可使用的摄像头。"
+msgstr "您似乎没有连接一个摄像头。"
 
 #: lms/static/js/verify_student/views/webcam_photo_view.js
 msgid "Double-check that your webcam is connected and working to continue."
-msgstr "再次确认你的摄像头已经连接并且正常工作以继续。"
+msgstr "继续前请再次确认您的摄像头已经连接并且可以正常使用。"
 
 #: lms/static/js/verify_student/views/webcam_photo_view.js
 msgid "Photo Captured successfully."
@@ -4172,11 +4343,11 @@ msgstr ""
 
 #: lms/static/js/views/file_uploader.js
 msgid "Your upload of '{file}' succeeded."
-msgstr "你的文件“{file}”上传成功。"
+msgstr "您的文件'{file}'上传成功。"
 
 #: lms/static/js/views/file_uploader.js
 msgid "Your upload of '{file}' failed."
-msgstr "你的文件“{file}”上传失败。"
+msgstr "您的文件'{file}'上传失败。"
 
 #: lms/static/js/views/image_field.js
 msgid "Upload an image"
@@ -4233,7 +4404,7 @@ msgstr "无法读取数据，请稍后再试试。"
 #: lms/templates/class_dashboard/d3_stacked_bar_graph.js
 msgid "%(num_students)s student opened Subsection"
 msgid_plural "%(num_students)s students opened Subsection"
-msgstr[0] "%(num_students)s 名学生打开了小节"
+msgstr[0] "%(num_students)s 个学生已打开分项"
 
 #: lms/templates/class_dashboard/d3_stacked_bar_graph.js
 msgid "%(num_students)s student"
@@ -4243,7 +4414,7 @@ msgstr[0] "%(num_students)s 个学生"
 #: lms/templates/class_dashboard/d3_stacked_bar_graph.js
 msgid "%(num_questions)s question"
 msgid_plural "%(num_questions)s questions"
-msgstr[0] "%(num_questions)s个问题"
+msgstr[0] "%(num_questions)s 个问题"
 
 #: lms/templates/class_dashboard/d3_stacked_bar_graph.js
 msgid "Number of Students"
@@ -4280,7 +4451,7 @@ msgstr "删除中"
 msgid "OpenAssessment Save Error"
 msgstr "开放式评估保存错误"
 
-#: cms/static/js/base.js cms/templates/js/checklist.underscore
+#: cms/static/js/base.js
 msgid "This link will open in a new browser window/tab"
 msgstr ""
 
@@ -4508,9 +4679,25 @@ msgstr "上传完成"
 msgid "Upload failed"
 msgstr "上传失败"
 
+#: cms/static/js/models/chapter.js
+msgid "Chapter name and asset_path are both required"
+msgstr ""
+
+#: cms/static/js/models/chapter.js
+msgid "Chapter name is required"
+msgstr ""
+
+#: cms/static/js/models/chapter.js
+msgid "asset_path is required"
+msgstr ""
+
 #: cms/static/js/models/course.js cms/static/js/models/section.js
 msgid "You must specify a name"
 msgstr "您必须指定一个名称"
+
+#: cms/static/js/models/course_update.js
+msgid "Action required: Enter a valid date."
+msgstr ""
 
 #: cms/static/js/models/group.js
 msgid "Group name is required"
@@ -4585,8 +4772,8 @@ msgid "Please enter non-negative integer."
 msgstr "请输入非负整数。"
 
 #: cms/static/js/models/settings/course_grader.js
-msgid "Cannot drop more <% attrs.types %> than will assigned."
-msgstr "删除的<% attrs.types %>不能超过将分配的数量。"
+msgid "Cannot drop more <%= types %> assignments than are assigned."
+msgstr ""
 
 #: cms/static/js/models/settings/course_grading_policy.js
 msgid "Grace period must be specified in HH:MM format."
@@ -4594,6 +4781,18 @@ msgstr "宽限时间必须以 HH:MM 格式设定。"
 
 #: cms/static/js/models/settings/course_grading_policy.js
 msgid "Not able to set passing grade to less than %(minimum_grade_cutoff)s%."
+msgstr ""
+
+#: cms/static/js/models/textbook.js
+msgid "Textbook name is required"
+msgstr ""
+
+#: cms/static/js/models/textbook.js
+msgid "Please add at least one chapter"
+msgstr ""
+
+#: cms/static/js/models/textbook.js
+msgid "All chapters must have a name and asset"
 msgstr ""
 
 #: cms/static/js/models/uploads.js
@@ -4609,6 +4808,10 @@ msgstr "或者"
 #: cms/static/js/models/xblock_validation.js
 msgid "This component has validation issues."
 msgstr "该组件存在验证问题。"
+
+#: cms/static/js/views/active_video_upload_list.js
+msgid "Your video uploads are not complete."
+msgstr ""
 
 #: cms/static/js/views/asset.js
 msgid "Delete File Confirmation"
@@ -4655,10 +4858,6 @@ msgstr "您的文件无法上传。"
 msgid "Max file size exceeded"
 msgstr "文件大小超出限制"
 
-#: cms/static/js/views/assets.js
-msgid "Choose File"
-msgstr "选择文件"
-
 #: cms/static/js/views/assets.js cms/static/js/views/assets.js.c
 msgid "Upload New File"
 msgstr "上传新文件"
@@ -4681,22 +4880,9 @@ msgstr "未使用"
 #. configuration is used in.
 #: cms/static/js/views/content_group_details.js
 #: cms/static/js/views/group_configuration_details.js
-msgid "Used in %(count)s unit"
-msgid_plural "Used in %(count)s units"
-msgstr[0] "在%(count)s个单元中使用"
-
-#. Translators: 'outlineAnchor' is an anchor pointing to
-#. the course outline page.
-#: cms/static/js/views/content_group_details.js
-msgid ""
-"This content group is not in use. Add a content group to any unit from the "
-"%(outlineAnchor)s."
-msgstr "该内容组未在使用，可从%(outlineAnchor)s将内容组添加到任意单元中。"
-
-#: cms/static/js/views/content_group_details.js
-#: cms/static/js/views/group_configuration_details.js
-msgid "Course Outline"
-msgstr "课程大纲"
+msgid "Used in {count} unit"
+msgid_plural "Used in {count} units"
+msgstr[0] ""
 
 #. Translators: This refers to a content group that can be linked to a student
 #. cohort.
@@ -4736,17 +4922,9 @@ msgstr "请选择上传一个PDF文件。"
 #. Translators: 'count' is number of groups that the group
 #. configuration contains.
 #: cms/static/js/views/group_configuration_details.js
-msgid "Contains %(count)s group"
-msgid_plural "Contains %(count)s groups"
-msgstr[0] "包含 %(count)s 个组"
-
-#. Translators: 'outlineAnchor' is an anchor pointing to
-#. the course outline page.
-#: cms/static/js/views/group_configuration_details.js
-msgid ""
-"This Group Configuration is not in use. Start by adding a content experiment"
-" to any Unit via the %(outlineAnchor)s."
-msgstr "该组配置未在使用。可通过%(outlineAnchor)s将内容实验添加到任意单元中。"
+msgid "Contains {count} group"
+msgid_plural "Contains {count} groups"
+msgstr[0] ""
 
 #. Translators: this refers to a collection of groups.
 #: cms/static/js/views/group_configuration_item.js
@@ -4773,6 +4951,14 @@ msgstr "导入课程过程中出现错误"
 #: cms/static/js/views/import.js
 msgid "There was an error with the upload"
 msgstr "文件上传错误"
+
+#: cms/static/js/views/instructor_info.js
+msgid "Upload instructor image."
+msgstr ""
+
+#: cms/static/js/views/instructor_info.js cms/static/js/views/settings/main.js
+msgid "Files must be in JPEG or PNG format."
+msgstr "文件必须是JPEG或者PNG格式。"
 
 #: cms/static/js/views/license.js cms/templates/js/license-selector.underscore
 msgid "All Rights Reserved"
@@ -4913,6 +5099,15 @@ msgstr "要发布此%(item)s中所有尚未发布的更改吗？"
 msgid "Publish"
 msgstr "发布"
 
+#: cms/static/js/views/modals/course_outline_modals.js
+msgid "Basic"
+msgstr ""
+
+#. Translators: This label refers to access to course content.
+#: cms/static/js/views/modals/course_outline_modals.js
+msgid "Access"
+msgstr ""
+
 #. Translators: "title" is the name of the current component being edited.
 #: cms/static/js/views/modals/edit_xblock.js
 msgid "Editing: %(title)s"
@@ -4933,26 +5128,6 @@ msgstr "撤销更改"
 #: cms/static/js/views/modals/validation_error_modal.js
 msgid "Change Manually"
 msgstr "手动更改"
-
-#: cms/static/js/views/overview.js
-msgid "Collapse All Sections"
-msgstr "折叠所有章节"
-
-#: cms/static/js/views/overview.js
-msgid "Expand All Sections"
-msgstr "展开所有章节"
-
-#: cms/static/js/views/overview.js
-msgid "Release date:"
-msgstr "发布日期："
-
-#: cms/static/js/views/overview.js
-msgid "{month}/{day}/{year} at {hour}:{minute} UTC"
-msgstr "{year} 年{month}月{day}日  {hour}时{minute}分 国际标准时间"
-
-#: cms/static/js/views/overview.js
-msgid "Edit section release date"
-msgstr "修改章节发布日期"
 
 #: cms/static/js/views/overview_assignment_grader.js
 msgid "Not Graded"
@@ -5091,10 +5266,14 @@ msgstr "您的策略变更已保存。"
 
 #: cms/static/js/views/settings/advanced.js
 msgid ""
-"Please note that validation of your policy key and value pairs is not "
-"currently in place yet. If you are having difficulties, please review your "
-"policy pairs."
-msgstr "请注意：当前策略键值对并未校验。如果遇到问题，请重新检查策略键值对设置。"
+"No validation is performed on policy keys or value pairs. If you are having "
+"difficulties, check your formatting."
+msgstr ""
+
+#: cms/static/js/views/settings/grader.js
+msgid ""
+"For grading to work, you must change all {oldName} subsections to {newName}."
+msgstr ""
 
 #: cms/static/js/views/settings/main.js
 msgid "Course Credit Requirements"
@@ -5109,16 +5288,20 @@ msgid "Course pacing cannot be changed once a course has started."
 msgstr ""
 
 #: cms/static/js/views/settings/main.js
-msgid "%(hours)s:%(minutes)s (current UTC time)"
-msgstr "%(hours)s:%(minutes)s (当前 UTC 时间)"
+msgid "{hours}:{minutes} (current UTC time)"
+msgstr ""
 
 #: cms/static/js/views/settings/main.js
 msgid "Upload your course image."
 msgstr "上传您的课程图片。"
 
 #: cms/static/js/views/settings/main.js
-msgid "Files must be in JPEG or PNG format."
-msgstr "文件必须是JPEG或者PNG格式。"
+msgid "Upload your banner image."
+msgstr ""
+
+#: cms/static/js/views/settings/main.js
+msgid "Upload your video thumbnail image."
+msgstr ""
 
 #: cms/static/js/views/show_textbook.js
 msgid "Delete “<%= name %>”?"
@@ -5151,20 +5334,26 @@ msgid ""
 msgstr "机构和知识库编号字段合在一起不能超过 <%=limit%> 个字符"
 
 #: cms/static/js/views/utils/xblock_utils.js
-msgid "component"
-msgstr "组件"
-
-#: cms/static/js/views/utils/xblock_utils.js
-msgid "Delete this %(xblock_type)s?"
-msgstr "要删除该%(xblock_type)s吗？"
-
-#: cms/static/js/views/utils/xblock_utils.js
 msgid "Deleting this %(xblock_type)s is permanent and cannot be undone."
 msgstr "将永久删除该%(xblock_type)s，无法撤销。"
 
 #: cms/static/js/views/utils/xblock_utils.js
+msgid ""
+"Any content that has listed this content as a prerequisite will also have "
+"access limitations removed."
+msgstr ""
+
+#: cms/static/js/views/utils/xblock_utils.js
+msgid "Delete this %(xblock_type)s (and prerequisite)?"
+msgstr ""
+
+#: cms/static/js/views/utils/xblock_utils.js
 msgid "Yes, delete this %(xblock_type)s"
 msgstr "是的，删除该%(xblock_type)s"
+
+#: cms/static/js/views/utils/xblock_utils.js
+msgid "Delete this %(xblock_type)s?"
+msgstr "要删除该%(xblock_type)s吗？"
 
 #: cms/static/js/views/utils/xblock_utils.js
 msgid "section"
@@ -5269,10 +5458,33 @@ msgstr "新建%(component_type)s"
 msgid "Warning"
 msgstr "警告"
 
+#: cms/static/js/xblock_asides/structured_tags.js
+msgid "Updating Tags"
+msgstr ""
+
 #: cms/templates/js/asset-library.underscore
 #: cms/templates/js/basic-modal.underscore
 #: lms/templates/instructor/instructor_dashboard_2/enrollment-code-lookup-links.underscore
 msgid "Actions"
+msgstr ""
+
+#: cms/templates/js/course-outline.underscore
+#: cms/templates/js/publish-xblock.underscore
+#: lms/templates/ccx/schedule.underscore
+msgid "Unscheduled"
+msgstr ""
+
+#: cms/templates/js/course_info_update.underscore
+#: lms/templates/commerce/receipt.underscore
+#: lms/templates/verify_student/payment_confirmation_step.underscore
+msgid "Date"
+msgstr "日期"
+
+#: cms/templates/js/edit-chapter.underscore
+#: lms/templates/ccx/schedule.underscore
+#: lms/templates/commerce/receipt.underscore
+#: lms/templates/learner_dashboard/program_card.underscore
+msgid "gettext("
 msgstr ""
 
 #: cms/templates/js/paging-header.underscore
@@ -5300,7 +5512,8 @@ msgid "Zoom Out"
 msgstr ""
 
 #: common/static/common/templates/components/paging-footer.underscore
-msgid "Page number"
+#, python-format
+msgid "Page number out of %(total_pages)s"
 msgstr ""
 
 #: common/static/common/templates/components/paging-footer.underscore
@@ -5329,15 +5542,15 @@ msgid "Find discussions"
 msgstr "搜索讨论帖"
 
 #: common/static/common/templates/discussion/discussion-home.underscore
-msgid "Focus in on specific topics"
+msgid "Use the Discussion Topics menu to find specific topics."
 msgstr ""
 
 #: common/static/common/templates/discussion/discussion-home.underscore
-msgid "Search for specific posts"
+msgid "Search all posts"
 msgstr ""
 
 #: common/static/common/templates/discussion/discussion-home.underscore
-msgid "Sort by date, vote, or comments"
+msgid "Filter and sort topics"
 msgstr ""
 
 #: common/static/common/templates/discussion/discussion-home.underscore
@@ -5345,15 +5558,15 @@ msgid "Engage with posts"
 msgstr ""
 
 #: common/static/common/templates/discussion/discussion-home.underscore
-msgid "Upvote posts and good responses"
+msgid "Vote for good posts and responses"
 msgstr ""
 
 #: common/static/common/templates/discussion/discussion-home.underscore
-msgid "Report Forum Misuse"
+msgid "Report abuse, topics, and responses"
 msgstr ""
 
 #: common/static/common/templates/discussion/discussion-home.underscore
-msgid "Follow posts for updates"
+msgid "Follow or unfollow posts"
 msgstr ""
 
 #: common/static/common/templates/discussion/discussion-home.underscore
@@ -5596,6 +5809,12 @@ msgstr ""
 msgid "Add a comment"
 msgstr ""
 
+#: common/static/common/templates/discussion/thread-response.underscore
+#: common/static/common/templates/discussion/thread.underscore
+#: lms/templates/verify_student/incourse_reverify.underscore
+msgid "Submit"
+msgstr "提交"
+
 #: common/static/common/templates/discussion/thread-show.underscore
 #, python-format
 msgid "%(post_type)s posted %(time_ago)s by %(author)s"
@@ -5635,7 +5854,7 @@ msgstr "讨论"
 msgid ""
 "Questions raise issues that need answers. Discussions share ideas and start "
 "conversations."
-msgstr "“问题”提出需要答案的议题，“讨论”分享想法并开始会话。"
+msgstr "“问题”提出需要答案的议题，“讨论”分享想法并开始交流。"
 
 #: common/static/common/templates/discussion/thread.underscore
 msgid "Add a Response"
@@ -5658,7 +5877,7 @@ msgid "Topic Area:"
 msgstr ""
 
 #: common/static/common/templates/discussion/topic.underscore
-msgid "Discussion topics; current selection is: "
+msgid "Discussion topics; currently listing: "
 msgstr ""
 
 #: common/static/common/templates/discussion/topic.underscore
@@ -5677,7 +5896,12 @@ msgstr ""
 msgid "username or email"
 msgstr ""
 
+#: lms/djangoapps/support/static/support/templates/certificates.underscore
+msgid "course id"
+msgstr ""
+
 #: lms/djangoapps/support/static/support/templates/certificates_results.underscore
+#: lms/templates/instructor/instructor_dashboard_2/certificate-invalidation.underscore
 #: lms/templates/instructor/instructor_dashboard_2/certificate-white-list.underscore
 msgid "No results"
 msgstr ""
@@ -5712,6 +5936,92 @@ msgstr ""
 
 #: lms/djangoapps/support/static/support/templates/certificates_results.underscore
 msgid "Regenerate the user's certificate"
+msgstr ""
+
+#: lms/djangoapps/support/static/support/templates/certificates_results.underscore
+msgid "Generate"
+msgstr ""
+
+#: lms/djangoapps/support/static/support/templates/certificates_results.underscore
+msgid "Generate the user's certificate"
+msgstr ""
+
+#: lms/djangoapps/support/static/support/templates/enrollment-modal.underscore
+msgid "Current enrollment mode:"
+msgstr ""
+
+#: lms/djangoapps/support/static/support/templates/enrollment-modal.underscore
+msgid "New enrollment mode:"
+msgstr ""
+
+#: lms/djangoapps/support/static/support/templates/enrollment-modal.underscore
+msgid "Reason for change:"
+msgstr ""
+
+#: lms/djangoapps/support/static/support/templates/enrollment-modal.underscore
+msgid "Choose One"
+msgstr ""
+
+#: lms/djangoapps/support/static/support/templates/enrollment-modal.underscore
+msgid "Explain if other."
+msgstr ""
+
+#: lms/djangoapps/support/static/support/templates/enrollment-modal.underscore
+msgid "Submit enrollment change"
+msgstr ""
+
+#: lms/djangoapps/support/static/support/templates/enrollment.underscore
+#: lms/templates/instructor/instructor_dashboard_2/certificate-invalidation.underscore
+msgid "Username or email address"
+msgstr ""
+
+#: lms/djangoapps/support/static/support/templates/enrollment.underscore
+msgid "Course ID"
+msgstr ""
+
+#: lms/djangoapps/support/static/support/templates/enrollment.underscore
+msgid "Course Start"
+msgstr ""
+
+#: lms/djangoapps/support/static/support/templates/enrollment.underscore
+msgid "Course End"
+msgstr ""
+
+#: lms/djangoapps/support/static/support/templates/enrollment.underscore
+msgid "Upgrade Deadline"
+msgstr ""
+
+#: lms/djangoapps/support/static/support/templates/enrollment.underscore
+msgid "Verification Deadline"
+msgstr ""
+
+#: lms/djangoapps/support/static/support/templates/enrollment.underscore
+msgid "Enrollment Date"
+msgstr ""
+
+#: lms/djangoapps/support/static/support/templates/enrollment.underscore
+msgid "Enrollment Mode"
+msgstr ""
+
+#: lms/djangoapps/support/static/support/templates/enrollment.underscore
+msgid "Verified mode price"
+msgstr ""
+
+#: lms/djangoapps/support/static/support/templates/enrollment.underscore
+msgid "Reason"
+msgstr ""
+
+#: lms/djangoapps/support/static/support/templates/enrollment.underscore
+msgid "Last modified by"
+msgstr ""
+
+#: lms/djangoapps/support/static/support/templates/enrollment.underscore
+#: lms/templates/ccx/schedule.underscore
+msgid "N/A"
+msgstr ""
+
+#: lms/djangoapps/support/static/support/templates/enrollment.underscore
+msgid "Change Enrollment"
 msgstr ""
 
 #: lms/djangoapps/teams/static/teams/templates/edit-team.underscore
@@ -5810,7 +6120,37 @@ msgstr ""
 #: lms/static/js/fixtures/donation.underscore
 #: lms/templates/dashboard/donation.underscore
 msgid "Donate"
-msgstr "捐助"
+msgstr "捐献"
+
+#: lms/templates/api_admin/catalog-error.underscore
+msgid ""
+"There was an error retrieving preview results for this catalog. Please check"
+" that your query is correct and try again."
+msgstr ""
+
+#: lms/templates/api_admin/catalog-results.underscore
+msgid "This catalog's courses:"
+msgstr ""
+
+#: lms/templates/bookmarks/bookmarks-list.underscore
+msgid "My Bookmarks"
+msgstr ""
+
+#: lms/templates/bookmarks/bookmarks-list.underscore
+msgid "Bookmarked on"
+msgstr ""
+
+#: lms/templates/bookmarks/bookmarks-list.underscore
+msgid "You have not bookmarked any courseware pages yet."
+msgstr ""
+
+#: lms/templates/bookmarks/bookmarks-list.underscore
+msgid ""
+"Use bookmarks to help you easily return to courseware pages. To bookmark a "
+"page, select Bookmark in the upper right corner of that page. To see a list "
+"of all your bookmarks, select Bookmarks in the upper left corner of any "
+"courseware page."
+msgstr ""
 
 #: lms/templates/ccx/schedule.underscore
 msgid "Expand All"
@@ -5837,11 +6177,12 @@ msgid "remove all"
 msgstr "全部移除"
 
 #: lms/templates/ccx/schedule.underscore
-msgid "toggle chapter"
+msgid "Section"
 msgstr ""
 
 #: lms/templates/ccx/schedule.underscore
-msgid "Section"
+#, python-format
+msgid "Remove chapter %(chapterDisplayName)s"
 msgstr ""
 
 #: lms/templates/ccx/schedule.underscore
@@ -5849,11 +6190,17 @@ msgid "remove"
 msgstr "移除"
 
 #: lms/templates/ccx/schedule.underscore
-msgid "toggle subsection"
+msgid "Subsection"
 msgstr ""
 
 #: lms/templates/ccx/schedule.underscore
-msgid "Subsection"
+#, python-format
+msgid "Remove subsection %(subsectionDisplayName)s"
+msgstr ""
+
+#: lms/templates/ccx/schedule.underscore
+#, python-format
+msgid "Remove unit %(unitName)s"
 msgstr ""
 
 #: lms/templates/commerce/provider.underscore
@@ -5905,15 +6252,11 @@ msgstr "订单号："
 
 #: lms/templates/commerce/receipt.underscore
 #: lms/templates/verify_student/payment_confirmation_step.underscore
-msgid "Date"
-msgstr "日期"
-
-#: lms/templates/commerce/receipt.underscore
-#: lms/templates/verify_student/payment_confirmation_step.underscore
 msgid "Amount"
 msgstr "金额"
 
 #: lms/templates/commerce/receipt.underscore
+#: lms/templates/verify_student/make_payment_step_ab_testing.underscore
 #: lms/templates/verify_student/payment_confirmation_step.underscore
 msgid "Total"
 msgstr "总计"
@@ -5936,25 +6279,21 @@ msgstr "账单寄给"
 #: lms/templates/commerce/receipt.underscore
 #: lms/templates/verify_student/payment_confirmation_step.underscore
 msgid "No receipt available"
-msgstr "没有可用的收据。"
+msgstr "没有可提供的收据。"
 
 #: lms/templates/commerce/receipt.underscore
+#: lms/templates/financial-assistance/financial_assessment_submitted.underscore
 msgid "Go to Dashboard"
 msgstr ""
 
 #: lms/templates/commerce/receipt.underscore
 #: lms/templates/verify_student/payment_confirmation_step.underscore
-#, python-format
-msgid ""
-"If you don't verify your identity now, you can still explore your course "
-"from your dashboard. You will receive periodic reminders from "
-"%(platformName)s to verify your identity."
-msgstr "如果你现在不验证你的身份，你仍可以通过课程面板浏览课程。但你会定期从%(platformName)s收到身份验证提醒。"
+msgid "Want to confirm your identity later?"
+msgstr "希望稍后再验证你的身份？"
 
 #: lms/templates/commerce/receipt.underscore
-#: lms/templates/verify_student/payment_confirmation_step.underscore
-msgid "Want to confirm your identity later?"
-msgstr "希望以后再验证你的身份？"
+msgid "/verify_student/verify-now/{courseKey}/"
+msgstr ""
 
 #: lms/templates/commerce/receipt.underscore
 msgid "Verify Now"
@@ -5966,6 +6305,12 @@ msgstr ""
 
 #: lms/templates/courseware/proctored-exam-status.underscore
 msgid "timed"
+msgstr ""
+
+#: lms/templates/courseware/proctored-exam-status.underscore
+msgid ""
+"To receive credit on a problem, you must click \"Check\" or \"Final Check\" "
+"on it before you select \"End My Exam\"."
 msgstr ""
 
 #: lms/templates/courseware/proctored-exam-status.underscore
@@ -6014,6 +6359,7 @@ msgid "Clear search results"
 msgstr "清空搜索结果"
 
 #: lms/templates/fields/field_dropdown.underscore
+#: lms/templates/fields/field_dropdown_account.underscore
 #: lms/templates/fields/field_textarea.underscore
 msgid "Click to edit"
 msgstr ""
@@ -6022,14 +6368,62 @@ msgstr ""
 msgid "title"
 msgstr ""
 
+#: lms/templates/financial-assistance/financial_assessment_form.underscore
+#: lms/templates/financial-assistance/financial_assessment_submitted.underscore
+msgid "Financial Assistance Application"
+msgstr ""
+
+#: lms/templates/financial-assistance/financial_assessment_form.underscore
+msgid "Unable to submit application"
+msgstr ""
+
+#: lms/templates/financial-assistance/financial_assessment_form.underscore
+msgid "About You"
+msgstr ""
+
+#: lms/templates/financial-assistance/financial_assessment_form.underscore
+msgid ""
+"The following information is already a part of your {platform} profile. "
+"We\\'ve included it here for your application."
+msgstr ""
+
+#: lms/templates/financial-assistance/financial_assessment_form.underscore
+msgid "Email address"
+msgstr ""
+
+#: lms/templates/financial-assistance/financial_assessment_form.underscore
+msgid "Legal name"
+msgstr ""
+
+#: lms/templates/financial-assistance/financial_assessment_form.underscore
+msgid "Country of residence"
+msgstr ""
+
+#: lms/templates/financial-assistance/financial_assessment_form.underscore
+msgid "Back to {platform} FAQs"
+msgstr ""
+
+#: lms/templates/financial-assistance/financial_assessment_form.underscore
+msgid "Submit Application"
+msgstr ""
+
+#: lms/templates/financial-assistance/financial_assessment_submitted.underscore
+msgid ""
+"Thank you for submitting your financial assistance application for "
+"{course_name}! You can expect a response in 2-4 business days."
+msgstr ""
+
 #: lms/templates/instructor/instructor_dashboard_2/certificate-bulk-white-list.underscore
 msgid "Bulk Exceptions"
 msgstr ""
 
 #: lms/templates/instructor/instructor_dashboard_2/certificate-bulk-white-list.underscore
 msgid ""
-"You can upload a CSV file of usernames or email addresses to be added to the"
-" certificate exceptions white list."
+"Upload a comma separated values (.csv) file that contains the usernames or "
+"email addresses of learners who have been given exceptions. Include the "
+"username or email address in the first comma separated field. You can "
+"include an optional note describing the reason for the exception in the "
+"second comma separated field."
 msgstr ""
 
 #: lms/templates/instructor/instructor_dashboard_2/certificate-bulk-white-list.underscore
@@ -6037,7 +6431,48 @@ msgid "Browse"
 msgstr ""
 
 #: lms/templates/instructor/instructor_dashboard_2/certificate-bulk-white-list.underscore
-msgid "Upload CSV"
+#: lms/templates/instructor/instructor_dashboard_2/certificate-white-list-editor.underscore
+msgid "Add to Exception List"
+msgstr ""
+
+#: lms/templates/instructor/instructor_dashboard_2/certificate-invalidation.underscore
+msgid ""
+"To invalidate a certificate for a particular learner, add the username or "
+"email address below."
+msgstr ""
+
+#: lms/templates/instructor/instructor_dashboard_2/certificate-invalidation.underscore
+msgid "Add notes about this learner"
+msgstr ""
+
+#: lms/templates/instructor/instructor_dashboard_2/certificate-invalidation.underscore
+msgid "Invalidate Certificate"
+msgstr ""
+
+#: lms/templates/instructor/instructor_dashboard_2/certificate-invalidation.underscore
+msgid "Student"
+msgstr ""
+
+#: lms/templates/instructor/instructor_dashboard_2/certificate-invalidation.underscore
+msgid "Invalidated By"
+msgstr ""
+
+#: lms/templates/instructor/instructor_dashboard_2/certificate-invalidation.underscore
+msgid "Invalidated"
+msgstr ""
+
+#: lms/templates/instructor/instructor_dashboard_2/certificate-invalidation.underscore
+#: lms/templates/instructor/instructor_dashboard_2/certificate-white-list.underscore
+msgid "Notes"
+msgstr ""
+
+#: lms/templates/instructor/instructor_dashboard_2/certificate-invalidation.underscore
+#: lms/templates/instructor/instructor_dashboard_2/certificate-white-list.underscore
+msgid "Action"
+msgstr ""
+
+#: lms/templates/instructor/instructor_dashboard_2/certificate-invalidation.underscore
+msgid "Remove from Invalidation Table"
 msgstr ""
 
 #: lms/templates/instructor/instructor_dashboard_2/certificate-white-list-editor.underscore
@@ -6046,24 +6481,8 @@ msgstr ""
 
 #: lms/templates/instructor/instructor_dashboard_2/certificate-white-list-editor.underscore
 msgid ""
-"You can add a username or email address to be added to the certificate "
-"exceptions white list."
-msgstr ""
-
-#: lms/templates/instructor/instructor_dashboard_2/certificate-white-list.underscore
-msgid "Generate a Certificate for all "
-msgstr ""
-
-#: lms/templates/instructor/instructor_dashboard_2/certificate-white-list.underscore
-msgid "New"
-msgstr ""
-
-#: lms/templates/instructor/instructor_dashboard_2/certificate-white-list.underscore
-msgid "additions to the Exception list"
-msgstr ""
-
-#: lms/templates/instructor/instructor_dashboard_2/certificate-white-list.underscore
-msgid "Generate a Certificate for all users on the Exception list"
+"Enter the username or email address of each learner that you want to add as "
+"an exception."
 msgstr ""
 
 #: lms/templates/instructor/instructor_dashboard_2/certificate-white-list.underscore
@@ -6071,7 +6490,13 @@ msgid "Generate Exception Certificates"
 msgstr ""
 
 #: lms/templates/instructor/instructor_dashboard_2/certificate-white-list.underscore
-msgid "User ID"
+msgid ""
+"Generate certificates for all users on the Exception list who do not yet "
+"have a certificate"
+msgstr ""
+
+#: lms/templates/instructor/instructor_dashboard_2/certificate-white-list.underscore
+msgid "Generate a Certificate for all users on the Exception list"
 msgstr ""
 
 #: lms/templates/instructor/instructor_dashboard_2/certificate-white-list.underscore
@@ -6079,15 +6504,11 @@ msgid "User Email"
 msgstr ""
 
 #: lms/templates/instructor/instructor_dashboard_2/certificate-white-list.underscore
-msgid "Date Exception Granted"
+msgid "Exception Granted"
 msgstr ""
 
 #: lms/templates/instructor/instructor_dashboard_2/certificate-white-list.underscore
-msgid "Notes"
-msgstr ""
-
-#: lms/templates/instructor/instructor_dashboard_2/certificate-white-list.underscore
-msgid "Action"
+msgid "Certificate Generated"
 msgstr ""
 
 #: lms/templates/instructor/instructor_dashboard_2/certificate-white-list.underscore
@@ -6097,41 +6518,41 @@ msgstr ""
 #: lms/templates/instructor/instructor_dashboard_2/cohort-discussions-course-wide.underscore
 #: lms/templates/instructor/instructor_dashboard_2/cohorts.underscore
 msgid "Specify whether discussion topics are divided by cohort"
-msgstr "指定是否由群组对讨论主题进行划分。"
+msgstr "指定是否按群组划分讨论话题。"
 
 #: lms/templates/instructor/instructor_dashboard_2/cohort-discussions-course-wide.underscore
 msgid "Course-Wide Discussion Topics"
-msgstr "全课程范围内的讨论主题"
+msgstr "全课程范围内的讨论话题"
 
 #: lms/templates/instructor/instructor_dashboard_2/cohort-discussions-course-wide.underscore
 msgid ""
 "Select the course-wide discussion topics that you want to divide by cohort."
-msgstr "选择您希望由群组划分的全课程范围内的讨论主题。"
+msgstr "选择您希望由群组划分的全课程范围内的讨论话题。"
 
 #: lms/templates/instructor/instructor_dashboard_2/cohort-discussions-inline.underscore
 msgid "Content-Specific Discussion Topics"
-msgstr "特定于内容的讨论主题"
+msgstr "特定内容的讨论话题"
 
 #: lms/templates/instructor/instructor_dashboard_2/cohort-discussions-inline.underscore
 msgid ""
 "Specify whether content-specific discussion topics are divided by cohort."
-msgstr "指定是否要由群组对特定于内容的讨论主题进行划分。"
+msgstr "指定是否由群组划分特定内容的讨论话题。"
 
 #: lms/templates/instructor/instructor_dashboard_2/cohort-discussions-inline.underscore
 msgid "Always cohort content-specific discussion topics"
-msgstr "总是群组化特定于内容的讨论主题"
+msgstr "总是根据特定内容的讨论话题分组"
 
 #: lms/templates/instructor/instructor_dashboard_2/cohort-discussions-inline.underscore
 msgid "Cohort selected content-specific discussion topics"
-msgstr "群组化所选的特定于内容的讨论主题"
+msgstr "根据选定的特定内容的讨论话题分组"
 
 #: lms/templates/instructor/instructor_dashboard_2/cohort-discussions-inline.underscore
 msgid "No content-specific discussion topics exist."
-msgstr "不存在特定于内容的讨论主题。"
+msgstr "无特定内容的讨论话题"
 
 #: lms/templates/instructor/instructor_dashboard_2/cohort-discussions-subcategory.underscore
 msgid "Cohorted"
-msgstr "已群组化"
+msgstr "已分组"
 
 #: lms/templates/instructor/instructor_dashboard_2/cohort-editor.underscore
 msgid "Manage Students"
@@ -6145,13 +6566,13 @@ msgstr "将学生加入到该群组中"
 msgid ""
 "Note: Students can be in only one cohort. Adding students to this group "
 "overrides any previous group assignment."
-msgstr "注意：每个学生只能加入一个群组，将学生加入该组会覆盖之前对该学生所有的群组分配。"
+msgstr "注意：每个学生只能加入一个群组，将学生加入这个组会让他们自动退出前一组。"
 
 #: lms/templates/instructor/instructor_dashboard_2/cohort-editor.underscore
 msgid ""
 "Enter email addresses and/or usernames, separated by new lines or commas, "
 "for the students you want to add. *"
-msgstr "请输入要添加的学生的电子地址和／或用户名，每行一个或用逗号隔开。*"
+msgstr "请输入要添加的学生的电子地址和／或用户名，学生之间用新行或逗号隔开。*"
 
 #: lms/templates/instructor/instructor_dashboard_2/cohort-editor.underscore
 #: lms/templates/instructor/instructor_dashboard_2/cohort-form.underscore
@@ -6199,11 +6620,11 @@ msgstr "手动"
 #: lms/templates/instructor/instructor_dashboard_2/cohort-form.underscore
 msgid ""
 "There must be one cohort to which students can automatically be assigned."
-msgstr "必须存在一个可以将学生自动分配进去的群组。"
+msgstr "必须存在一个学生可被自动分配进去的群组。"
 
 #: lms/templates/instructor/instructor_dashboard_2/cohort-form.underscore
 msgid "Associated Content Group"
-msgstr "已关联的内容组"
+msgstr "已加入的内容组"
 
 #: lms/templates/instructor/instructor_dashboard_2/cohort-form.underscore
 msgid "No Content Group"
@@ -6226,17 +6647,14 @@ msgid "Deleted Content Group"
 msgstr "删除内容组"
 
 #: lms/templates/instructor/instructor_dashboard_2/cohort-form.underscore
-#, python-format
 msgid ""
-"%(screen_reader_start)sWarning:%(screen_reader_end)s The previously selected"
-" content group was deleted. Select another content group."
+"{screen_reader_start}Warning:{screen_reader_end} The previously selected "
+"content group was deleted. Select another content group."
 msgstr ""
 
 #: lms/templates/instructor/instructor_dashboard_2/cohort-form.underscore
-#, python-format
 msgid ""
-"%(screen_reader_start)sWarning:%(screen_reader_end)s No content groups "
-"exist."
+"{screen_reader_start}Warning:{screen_reader_end} No content groups exist."
 msgstr ""
 
 #: lms/templates/instructor/instructor_dashboard_2/cohort-form.underscore
@@ -6247,21 +6665,21 @@ msgstr "创建一个内容组"
 #, python-format
 msgid "(contains %(student_count)s student)"
 msgid_plural "(contains %(student_count)s students)"
-msgstr[0] "(包含 %(student_count)s名学生)"
+msgstr[0] "（包括 %(student_count)s 个学生）"
 
 #: lms/templates/instructor/instructor_dashboard_2/cohort-group-header.underscore
 msgid ""
-"Students are added to this cohort only when you provide their email "
+"Learners are added to this cohort only when you provide their email "
 "addresses or usernames on this page."
-msgstr "只有当你在本页面提供了学生们的邮件地址或用户名，他们才会被添加到该群组中。"
+msgstr ""
 
 #: lms/templates/instructor/instructor_dashboard_2/cohort-group-header.underscore
 msgid "What does this mean?"
 msgstr "这是什么意思？"
 
 #: lms/templates/instructor/instructor_dashboard_2/cohort-group-header.underscore
-msgid "Students are added to this cohort automatically."
-msgstr "学生们已被自动添加到该群组中。"
+msgid "Learners are added to this cohort automatically."
+msgstr ""
 
 #: lms/templates/instructor/instructor_dashboard_2/cohort-selector.underscore
 msgid "Select a cohort"
@@ -6289,13 +6707,11 @@ msgid "Assign students to cohorts by uploading a CSV file"
 msgstr "通过上传一个CSV文件来将学生们分配到群组中。"
 
 #: lms/templates/instructor/instructor_dashboard_2/cohorts.underscore
-#, python-format
 msgid ""
 "To review student cohort assignments or see the results of uploading a CSV "
-"file, download course profile information or cohort results on "
-"%(link_start)s the Data Download page. %(link_end)s"
+"file, download course profile information or cohort results on {link_start} "
+"the Data Download page. {link_end}"
 msgstr ""
-"要检查为学生分配群组的结果，或者查看上传CSV文件的结果，请通过%(link_start)s数据下载页面%(link_end)s下载课程档案信息或群组分配结果。"
 
 #: lms/templates/instructor/instructor_dashboard_2/enrollment-code-lookup-links.underscore
 msgid "Used"
@@ -6305,12 +6721,71 @@ msgstr ""
 msgid "Valid"
 msgstr ""
 
+#: lms/templates/learner_dashboard/certificate.underscore
+msgid "XSeries Program Certificates"
+msgstr ""
+
+#: lms/templates/learner_dashboard/certificate.underscore
+msgid "certificate.credential_url"
+msgstr ""
+
+#: lms/templates/learner_dashboard/certificate.underscore
+msgid "certificate.display_name"
+msgstr ""
+
+#: lms/templates/learner_dashboard/empty_programs_list.underscore
+msgid "You are not enrolled in any XSeries Programs yet."
+msgstr ""
+
+#: lms/templates/learner_dashboard/empty_programs_list.underscore
+msgid "Explore XSeries Programs"
+msgstr ""
+
+#: lms/templates/learner_dashboard/explore_new_programs.underscore
+msgid ""
+"Browse recently launched courses and see what\\'s new in your favorite "
+"subjects"
+msgstr ""
+
+#: lms/templates/learner_dashboard/explore_new_programs.underscore
+msgid "Explore New XSeries"
+msgstr ""
+
+#: lms/templates/learner_dashboard/program_card.underscore
+msgid "type"
+msgstr ""
+
+#: lms/templates/learner_dashboard/program_card.underscore
+#, python-format
+msgid ""
+"You have earned certificates in %(completed_courses)s of the "
+"%(total_courses)s courses so far."
+msgstr ""
+
+#: lms/templates/learner_dashboard/program_header_view.underscore
+msgid "Programs"
+msgstr ""
+
+#: lms/templates/learner_dashboard/program_header_view.underscore
+msgid "{category}\\'s program"
+msgstr ""
+
+#: lms/templates/learner_dashboard/program_header_view.underscore
+msgid "{organization}\\'s logo"
+msgstr ""
+
+#: lms/templates/learner_dashboard/program_header_view.underscore
+msgid ""
+"To complete the {program} XSeries and earn an XSeries Certificate you must "
+"successfully earn a Verified Certificate in all courses shown below."
+msgstr ""
+
 #: lms/templates/search/course_search_results.underscore
 #: lms/templates/search/dashboard_search_results.underscore
 #, python-format
 msgid "Load next %(num_items)s result"
 msgid_plural "Load next %(num_items)s results"
-msgstr[0] "加载下%(num_items)s项结果"
+msgstr[0] "加载后 %(num_items)s 个结果"
 
 #: lms/templates/search/course_search_results.underscore
 #: lms/templates/search/dashboard_search_results.underscore
@@ -6327,25 +6802,25 @@ msgstr "新地址"
 
 #: lms/templates/student_account/account.underscore
 msgid "Change My Email Address"
-msgstr "更改我的电子邮件地址"
+msgstr "更改我的电子邮件"
+
+#: lms/templates/student_account/account.underscore
+msgid "Reset Password"
+msgstr "重设密码"
 
 #: lms/templates/student_account/account_settings.underscore
 msgid "Account Settings"
 msgstr ""
 
-#: lms/templates/student_account/account_settings.underscore
-msgid ""
-"These settings include basic information about your account. You can also "
-"specify additional information and see your linked social accounts on this "
-"page."
+#: lms/templates/student_account/account_settings_section.underscore
+msgid "section.subtitle"
 msgstr ""
 
-#: lms/templates/student_account/account_settings.underscore
+#: lms/templates/student_account/account_settings_section.underscore
 msgid "section.title"
 msgstr ""
 
-#: lms/templates/student_account/account_settings.underscore
-#: lms/templates/student_profile/learner_profile.underscore
+#: lms/templates/student_account/account_settings_section.underscore
 msgid "An error occurred. Please reload the page."
 msgstr ""
 
@@ -6410,11 +6885,11 @@ msgstr "密码重置邮件已发送"
 msgid ""
 "We've sent instructions for resetting your password to the email address you"
 " provided."
-msgstr "我们已经向你提供的电子邮件地址发送了重置密码的说明。"
+msgstr "我们已经向您提供的电子邮件发送了重置密码的说明。"
 
 #: lms/templates/student_account/login.underscore
 msgid "We couldn't sign you in."
-msgstr "我们无法让您登录。"
+msgstr "登录失败。"
 
 #: lms/templates/student_account/login.underscore
 #, python-format
@@ -6465,13 +6940,13 @@ msgstr "发生了一个错误。"
 
 #: lms/templates/student_account/password_reset.underscore
 msgid "Password assistance"
-msgstr "密码取回帮助"
+msgstr "密码帮助"
 
 #: lms/templates/student_account/password_reset.underscore
 msgid ""
 "Please enter your email address below and we will send you instructions for "
 "setting a new password."
-msgstr "请在下面输入你的电子邮件地址以便我们给你发送如何设置新密码的说明。"
+msgstr "请在下面输入您的电子邮件以便我们给您发送如何设置新密码的说明。"
 
 #: lms/templates/student_account/password_reset.underscore
 msgid "Reset my password"
@@ -6479,7 +6954,7 @@ msgstr "重设我的密码"
 
 #: lms/templates/student_account/register.underscore
 msgid "We couldn't create your account."
-msgstr "我们无法创建你的账户。"
+msgstr "我们无法创建您的账户。"
 
 #: lms/templates/student_account/register.underscore
 #, python-format
@@ -6491,7 +6966,7 @@ msgstr "您已成功登录%(currentProvider)s。"
 msgid ""
 "We just need a little more information before you start learning with "
 "%(platformName)s."
-msgstr "你只需再多提供一点信息就可以开始在%(platformName)s学习了。"
+msgstr "您只需再多提供一点信息就可以开始在%(platformName)s学习了。"
 
 #: lms/templates/student_account/register.underscore
 msgid "Create an account using"
@@ -6512,36 +6987,92 @@ msgstr "创建新账户"
 
 #: lms/templates/student_account/register.underscore
 msgid "Create your account"
-msgstr "创建你的账户"
+msgstr "创建您的账户"
 
 #: lms/templates/student_account/register.underscore
 msgid "Required field"
-msgstr "必填字段"
+msgstr "必填项目"
 
 #: lms/templates/student_account/register.underscore
 msgid "Already have an account?"
-msgstr "已经有账户了？"
+msgstr "已有账户？"
 
-#: lms/templates/student_profile/learner_profile.underscore
-msgid "You are currently sharing a limited profile."
+#: lms/templates/student_profile/badge.underscore
+#, python-format
+msgid "Share your \"%(display_name)s\" award"
+msgstr ""
+
+#: lms/templates/student_profile/badge.underscore
+msgid "Share"
+msgstr ""
+
+#: lms/templates/student_profile/badge.underscore
+#, python-format
+msgid "Earned %(created)s."
+msgstr ""
+
+#: lms/templates/student_profile/badge_placeholder.underscore
+msgid "What's Your Next Accomplishment?"
+msgstr ""
+
+#: lms/templates/student_profile/badge_placeholder.underscore
+msgid "Start working toward your next learning goal."
+msgstr ""
+
+#: lms/templates/student_profile/badge_placeholder.underscore
+msgid "Find a course"
 msgstr ""
 
 #: lms/templates/student_profile/learner_profile.underscore
-msgid "This edX learner is currently sharing a limited profile."
+msgid "An error occurred. Try loading the page again."
+msgstr ""
+
+#: lms/templates/student_profile/section_two.underscore
+msgid "You are currently sharing a limited profile."
+msgstr ""
+
+#: lms/templates/student_profile/section_two.underscore
+msgid "This learner is currently sharing a limited profile."
+msgstr ""
+
+#: lms/templates/student_profile/share_modal.underscore
+msgid "Share on Mozilla Backpack"
+msgstr ""
+
+#: lms/templates/student_profile/share_modal.underscore
+msgid ""
+"To share your certificate on Mozilla Backpack, you must first have a "
+"Backpack account. Complete the following steps to add your certificate to "
+"Backpack."
+msgstr ""
+
+#: lms/templates/student_profile/share_modal.underscore
+#, python-format
+msgid ""
+"Create a %(link_start)sMozilla Backpack%(link_end)s account, or log in to "
+"your existing account"
+msgstr ""
+
+#: lms/templates/student_profile/share_modal.underscore
+#, python-format
+msgid ""
+"%(download_link_start)sDownload this image (right-click or option-click, "
+"save as)%(link_end)s and then %(upload_link_start)supload%(link_end)s it to "
+"your backpack.</li>"
 msgstr ""
 
 #: lms/templates/verify_student/enrollment_confirmation_step.underscore
 #, python-format
 msgid "Congratulations! You are now verified on %(platformName)s!"
-msgstr "恭喜！你已经在%(platformName)s上认证成功！"
+msgstr "恭喜！您在%(platformName)s上认证成功！"
 
 #: lms/templates/verify_student/enrollment_confirmation_step.underscore
 msgid "You are now enrolled as a verified student for:"
-msgstr "你现在正以已认证学生的身份选修："
+msgstr "您已经已认证学生的身份选择了课程："
 
 #: lms/templates/verify_student/enrollment_confirmation_step.underscore
 msgid "A list of courses you have just enrolled in as a verified student"
-msgstr "你以已认证学生的身份选修的课程列表"
+msgstr "你以认证学生的身份选修的课程列表"
 
 #: lms/templates/verify_student/enrollment_confirmation_step.underscore
 msgid "Course"
@@ -6558,7 +7089,7 @@ msgstr "探索你的课程！"
 
 #: lms/templates/verify_student/enrollment_confirmation_step.underscore
 msgid "Go to your Dashboard"
-msgstr "前往你的课程面板"
+msgstr "前往你的控制面板"
 
 #: lms/templates/verify_student/enrollment_confirmation_step.underscore
 msgid "Verified Status"
@@ -6572,7 +7103,7 @@ msgid ""
 "certificates. Verification is good for one year. After one year, you must "
 "submit photos for verification again."
 msgstr ""
-"感谢你提交照片，我们将于稍后进行审核。你现在就可以注册%(platformName)s上任意提供认证证书的课程。认证只在一年内有效，一年后，你必须要提交照片重新认证。"
+"感谢提交您的照片，我们将于稍后进行审核。您现在就可以注册%(platformName)s上任一提供认证证书的课程。认证有效期为一年。一年后，您必须要提交照片重新认证。"
 
 #: lms/templates/verify_student/error.underscore
 msgid "Error:"
@@ -6585,6 +7116,7 @@ msgstr ""
 #: lms/templates/verify_student/face_photo_step.underscore
 #: lms/templates/verify_student/intro_step.underscore
 #: lms/templates/verify_student/make_payment_step.underscore
+#: lms/templates/verify_student/make_payment_step_ab_testing.underscore
 #: lms/templates/verify_student/payment_confirmation_step.underscore
 msgid "Webcam"
 msgstr "摄像头"
@@ -6611,9 +7143,8 @@ msgid "Take Your Photo"
 msgstr "给自己拍照"
 
 #: lms/templates/verify_student/face_photo_step.underscore
-#, python-format
 msgid ""
-"When your face is in position, use the camera button %(icon)s below to take "
+"When your face is in position, use the camera button {icon} below to take "
 "your photo."
 msgstr ""
 
@@ -6634,10 +7165,9 @@ msgid "The photo of your face matches the photo on your ID."
 msgstr ""
 
 #: lms/templates/verify_student/face_photo_step.underscore
-#, python-format
 msgid ""
-"To use the current photo, select the camera button %(icon)s. To take another"
-" photo, select the retake button %(icon)s."
+"To use the current photo, select the camera button {icon}. To take another "
+"photo, select the retake button {icon}."
 msgstr ""
 
 #: lms/templates/verify_student/face_photo_step.underscore
@@ -6661,14 +7191,14 @@ msgid ""
 "a government-issued photo ID. Our authorization service confirms your "
 "identity by comparing the photo you take with the photo on your ID."
 msgstr ""
-"作为认证过程中一部分，你需要拍摄两张照片：一张你的面部照片，以及一张身份证件的照片（该证件须由政府签发且有你的照片）。我们的授权服务将通过对比你拍摄的照片和你身份证件上的照片来确认你的身份。"
+"作为认证过程中一部分，您需要拍摄两张照片：您的面部以及您的身份证件（该证件须由政府签发且有您的照片）。我们的授权服务部将通过对比您的面部照片和您的证件上的照片来确认您的身份。"
 
 #: lms/templates/verify_student/face_photo_step.underscore
 #: lms/templates/verify_student/id_photo_step.underscore
 #: lms/templates/verify_student/incourse_reverify.underscore
 #, python-format
 msgid "What does %(platformName)s do with this photo?"
-msgstr "%(platformName)s用这些照片做什么？"
+msgstr "%(platformName)s用这张照片做什么？"
 
 #: lms/templates/verify_student/face_photo_step.underscore
 #: lms/templates/verify_student/id_photo_step.underscore
@@ -6692,19 +7222,19 @@ msgstr "下一步：%(nextStepTitle)s"
 
 #: lms/templates/verify_student/id_photo_step.underscore
 msgid "Take a Photo of Your ID"
-msgstr "拍摄一张你身份证件的照片"
+msgstr "拍摄您的身份证件"
 
 #: lms/templates/verify_student/id_photo_step.underscore
 msgid ""
 "Use your webcam to take a photo of your ID. We will match this photo with "
 "the photo of your face and the name on your account."
-msgstr "请用摄像头拍摄一张你身份证件的照片，我们将用该照片与你的面部照片及你在账户中填写的姓名进行匹配。"
+msgstr "请用摄像头拍摄一张您身份证件的照片，我们将查看该照片是否与您的面部照片及您在账户中填写的姓名匹配。"
 
 #: lms/templates/verify_student/id_photo_step.underscore
 msgid ""
 "You need an ID with your name and photo. A driver's license, passport, or "
 "other government-issued IDs are all acceptable."
-msgstr "你需要一份带有你姓名和照片的证件，我们可以接受驾照、护照以及其他由政府签发的身份证件。"
+msgstr "您需要一份带有您姓名和照片的身份证件，我们可以接受驾照、护照以及其他由政府签发的身份证件。"
 
 #: lms/templates/verify_student/id_photo_step.underscore
 #: lms/templates/verify_student/incourse_reverify.underscore
@@ -6713,21 +7243,20 @@ msgstr "成功拍摄的小技巧"
 
 #: lms/templates/verify_student/id_photo_step.underscore
 msgid "Ensure that you can see your photo and read your name"
-msgstr "请确保你的照片和名字清晰可见"
+msgstr "请确保您的照片和名字清晰可见"
 
 #: lms/templates/verify_student/id_photo_step.underscore
 msgid "Make sure your ID is well-lit"
 msgstr "请确保你的身份证件光线充足"
 
 #: lms/templates/verify_student/id_photo_step.underscore
-#, python-format
-msgid "Once in position, use the camera button %(icon)s to capture your ID"
-msgstr "一旦你将身份证件摆放妥当，请用相机按钮%(icon)s来拍照"
+msgid "Once in position, use the camera button {icon} to capture your ID"
+msgstr ""
 
 #: lms/templates/verify_student/id_photo_step.underscore
 #: lms/templates/verify_student/incourse_reverify.underscore
 msgid "Use the retake photo button if you are not pleased with your photo"
-msgstr "如果你对照片不满意，请使用重拍按钮重新拍一张照片"
+msgstr "如果您对照片不满意，请使用重拍按钮重新拍一张照片"
 
 #: lms/templates/verify_student/image_input.underscore
 msgid "Preview of uploaded image"
@@ -6735,35 +7264,33 @@ msgstr "预览已上传的图片"
 
 #: lms/templates/verify_student/image_input.underscore
 msgid "Upload an image or capture one with your web or phone camera."
-msgstr "上传照片或通过使用你的网络／手机摄像头拍照上传。"
+msgstr "上传照片或通过使用您的网络／手机摄像头拍照上传。"
 
 #: lms/templates/verify_student/incourse_reverify.underscore
 msgid ""
 "Use your webcam to take a photo of your face. We will match this photo with "
 "the photo on your ID."
-msgstr "请用摄像头拍摄一张你的面部照片，我们将用该照片与你身份证件上的照片进行匹配。"
+msgstr "请用摄像头拍摄一张您的面部照片，我们将对比该照片与您身份证件上的照片。"
 
 #: lms/templates/verify_student/incourse_reverify.underscore
 msgid "Make sure your face is well-lit"
-msgstr "请确保你的面部光线充足"
+msgstr "请确保您的面部光线充足"
 
 #: lms/templates/verify_student/incourse_reverify.underscore
 msgid "Be sure your entire face is inside the frame"
-msgstr "请确保你的整张脸都在方框以内"
+msgstr "请确保您的整张脸都在框内"
 
 #: lms/templates/verify_student/incourse_reverify.underscore
-#, python-format
-msgid "Once in position, use the camera button %(icon)s to capture your photo"
-msgstr "一但你已经就位，请用相机按钮%(icon)s来拍照"
+msgid "Once in position, use the camera button {icon} to capture your photo"
+msgstr ""
 
 #: lms/templates/verify_student/incourse_reverify.underscore
 msgid "Can we match the photo you took with the one on your ID?"
-msgstr "我们能否将你拍的照片与你身份证件上的照片进行比对？"
+msgstr "我们能否将您拍的照片与您身份证件上的照片进行比对？"
 
 #: lms/templates/verify_student/intro_step.underscore
-#, python-format
-msgid "Thanks for returning to verify your ID in: %(courseName)s"
-msgstr "感谢你回来为%(courseName)s验证你的身份证件"
+msgid "Thanks for returning to verify your ID in: {courseName}"
+msgstr ""
 
 #: lms/templates/verify_student/intro_step.underscore
 #: lms/templates/verify_student/make_payment_step.underscore
@@ -6785,6 +7312,7 @@ msgid "Check Your Email"
 msgstr "检查你的电子邮件"
 
 #: lms/templates/verify_student/intro_step.underscore
+#: lms/templates/verify_student/make_payment_step_ab_testing.underscore
 #: lms/templates/verify_student/payment_confirmation_step.underscore
 msgid "Photo ID"
 msgstr "有照片的身份证件"
@@ -6793,17 +7321,16 @@ msgstr "有照片的身份证件"
 msgid ""
 "A driver's license, passport, or other government-issued ID with your name "
 "and photo"
-msgstr "驾照、护照或者其他由政府签发的带有你姓名和照片的身份证件"
+msgstr "驾照、护照或者其他由政府签发的带有您姓名和照片的身份证件"
 
 #: lms/templates/verify_student/make_payment_step.underscore
-#, python-format
-msgid "You are enrolling in: %(courseName)s"
-msgstr "你即将选修：%(courseName)s"
+#: lms/templates/verify_student/make_payment_step_ab_testing.underscore
+msgid "You are enrolling in: {courseName}"
+msgstr ""
 
 #: lms/templates/verify_student/make_payment_step.underscore
-#, python-format
-msgid "You are upgrading your enrollment for: %(courseName)s"
-msgstr "你正在为%(courseName)s升级你的选课类型"
+msgid "You are upgrading your enrollment for: {courseName}"
+msgstr ""
 
 #: lms/templates/verify_student/make_payment_step.underscore
 msgid ""
@@ -6816,13 +7343,13 @@ msgid ""
 "You can pay now even if you don't have the following items available, but "
 "you will need to have these by %(date)s to qualify to earn a Verified "
 "Certificate."
-msgstr "即使你没有满足下面这些要求，你也可以现在就付款；但是你只有在%(date)s之前满足这些要求才有资格获得一份已认证的证书。"
+msgstr "即使你没有满足下面这些要求，你也可以现在就付款；但是你只有在%(date)s之前满足这些要求才有资格获得认证证书。"
 
 #: lms/templates/verify_student/make_payment_step.underscore
 msgid ""
 "You can pay now even if you don't have the following items available, but "
 "you will need to have these to qualify to earn a Verified Certificate."
-msgstr "即使你没有满足下面这些要求，你也可以现在就付款；但是你只有满足了这些要求才有资格获得一份已认证的证书。"
+msgstr "即使你没有满足下面这些要求，你也可以现在就付款；但是你只有满足了这些要求才有资格获得认证证书。"
 
 #: lms/templates/verify_student/make_payment_step.underscore
 msgid "Government-Issued Photo ID"
@@ -6831,7 +7358,7 @@ msgstr "政府签发的带有照片的身份证件"
 #: lms/templates/verify_student/make_payment_step.underscore
 msgid ""
 "ID-Verification is not required for this Professional Education course."
-msgstr "该专业教育课程不强制要求验证身份证件。"
+msgstr "该专业教育课程不强制要求身份认证。"
 
 #: lms/templates/verify_student/make_payment_step.underscore
 msgid ""
@@ -6844,18 +7371,68 @@ msgid "You have already verified your ID!"
 msgstr "您已经成功验证了您的身份证件！"
 
 #: lms/templates/verify_student/make_payment_step.underscore
-#, python-format
-msgid "Your verification status is good until %(verificationGoodUntil)s."
-msgstr "在%(verificationGoodUntil)s之前您的验证状态都有效。"
+msgid "Your verification status is good until {verificationGoodUntil}."
+msgstr ""
 
 #: lms/templates/verify_student/make_payment_step.underscore
 msgid "price"
 msgstr ""
 
-#: lms/templates/verify_student/payment_confirmation_step.underscore
+#: lms/templates/verify_student/make_payment_step_ab_testing.underscore
+msgid "Account Not Activated"
+msgstr ""
+
+#: lms/templates/verify_student/make_payment_step_ab_testing.underscore
+msgid "Upgrade to a Verified Certificate for {courseName}"
+msgstr ""
+
+#: lms/templates/verify_student/make_payment_step_ab_testing.underscore
+msgid ""
+"Before you upgrade to a certificate track, you must activate your account."
+msgstr ""
+
+#: lms/templates/verify_student/make_payment_step_ab_testing.underscore
+msgid "Check your email for an activation message."
+msgstr ""
+
+#: lms/templates/verify_student/make_payment_step_ab_testing.underscore
+msgid "Professional Certificate for {courseName}"
+msgstr ""
+
+#: lms/templates/verify_student/make_payment_step_ab_testing.underscore
+msgid "Verified Certificate for {courseName}"
+msgstr ""
+
+#: lms/templates/verify_student/make_payment_step_ab_testing.underscore
 #, python-format
-msgid "Thank you! We have received your payment for %(courseName)s."
-msgstr "谢谢！我们已经收到你对%(courseName)s的付款。"
+msgid ""
+"To receive a certificate, you must also verify your identity before "
+"%(date)s."
+msgstr ""
+
+#: lms/templates/verify_student/make_payment_step_ab_testing.underscore
+msgid "To receive a certificate, you must also verify your identity."
+msgstr ""
+
+#: lms/templates/verify_student/make_payment_step_ab_testing.underscore
+msgid ""
+"To verify your identity, you need a webcam and a government-issued photo ID."
+msgstr ""
+
+#: lms/templates/verify_student/make_payment_step_ab_testing.underscore
+msgid ""
+"Your ID must be a government-issued photo ID that clearly shows your face."
+msgstr ""
+
+#: lms/templates/verify_student/make_payment_step_ab_testing.underscore
+msgid ""
+"You will use your webcam to take a picture of your face and of your "
+"government-issued photo ID."
+msgstr ""
+
+#: lms/templates/verify_student/payment_confirmation_step.underscore
+msgid "Thank you! We have received your payment for {courseName}."
+msgstr ""
 
 #: lms/templates/verify_student/payment_confirmation_step.underscore
 msgid "Next Step: Confirm your identity"
@@ -6877,6 +7454,14 @@ msgid ""
 "photo."
 msgstr "驾照、护照或者由政府签发的带有你姓名和照片的身份证件。"
 
+#: lms/templates/verify_student/payment_confirmation_step.underscore
+#, python-format
+msgid ""
+"If you don't verify your identity now, you can still explore your course "
+"from your dashboard. You will receive periodic reminders from "
+"%(platformName)s to verify your identity."
+msgstr "如果你现在不验证你的身份，你仍可以通过控制面板浏览课程。但你会定期从%(platformName)s收到身份验证提醒。"
+
 #: lms/templates/verify_student/reverify_success_step.underscore
 msgid "Identity Verification In Progress"
 msgstr ""
@@ -6895,7 +7480,7 @@ msgstr ""
 
 #: lms/templates/verify_student/review_photos_step.underscore
 msgid "Review Your Photos"
-msgstr "复核你的照片"
+msgstr "检查你的照片"
 
 #: lms/templates/verify_student/review_photos_step.underscore
 msgid ""
@@ -6927,7 +7512,7 @@ msgstr "这张照片和你身份证件上的照片相匹配吗？"
 
 #: lms/templates/verify_student/review_photos_step.underscore
 msgid "Is your name on your ID readable?"
-msgstr "你身份证件上的名字是清晰的吗？"
+msgstr "你身份证件上的名字是否清晰可见？"
 
 #: lms/templates/verify_student/review_photos_step.underscore
 #, python-format
@@ -6959,7 +7544,7 @@ msgstr "在进行下一步之前，请确认你提供的信息之间相符"
 msgid ""
 "Don't see your picture? Make sure to allow your browser to use your camera "
 "when it asks for permission."
-msgstr "没有看到你自己？请确认当浏览器请求使用摄像头权限的时候你允许了该请求。"
+msgstr "没有看到你自己？请确认当浏览器请求使用摄像头权限的时候你选择了允许。"
 
 #: lms/templates/verify_student/webcam_photo.underscore
 msgid "Live view of webcam"
@@ -6973,8 +7558,46 @@ msgstr "重新拍照"
 msgid "Take Photo"
 msgstr "拍照"
 
+#: cms/templates/js/access-editor.underscore
+msgid "Limit Access"
+msgstr ""
+
+#: cms/templates/js/access-editor.underscore
+msgid ""
+"Select a prerequisite subsection and enter a minimum score percentage to "
+"limit access to this subsection."
+msgstr ""
+
+#: cms/templates/js/access-editor.underscore
+msgid "Prerequisite:"
+msgstr ""
+
+#: cms/templates/js/access-editor.underscore
+msgid "No prerequisite"
+msgstr ""
+
+#: cms/templates/js/access-editor.underscore
+msgid "Minimum Score:"
+msgstr ""
+
+#: cms/templates/js/access-editor.underscore
+msgid "The minimum score percentage must be a whole number between 0 and 100."
+msgstr ""
+
+#: cms/templates/js/access-editor.underscore
+msgid "Use as a Prerequisite"
+msgstr ""
+
+#: cms/templates/js/access-editor.underscore
+msgid "Make this subsection available as a prerequisite to other content"
+msgstr ""
+
 #: cms/templates/js/active-video-upload-list.underscore
 msgid "Drag and drop or click here to upload video files."
+msgstr ""
+
+#: cms/templates/js/active-video-upload-list.underscore
+msgid "Active Uploads"
 msgstr ""
 
 #: cms/templates/js/active-video-upload.underscore
@@ -7012,7 +7635,11 @@ msgid "- Sortable"
 msgstr ""
 
 #: cms/templates/js/asset-library.underscore
-msgid "URL"
+msgid "Show All"
+msgstr ""
+
+#: cms/templates/js/asset-library.underscore
+msgid "Other"
 msgstr ""
 
 #: cms/templates/js/asset-library.underscore
@@ -7062,6 +7689,7 @@ msgid "ID"
 msgstr ""
 
 #: cms/templates/js/certificate-details.underscore
+#: cms/templates/js/certificate-editor.underscore
 msgid "Certificate Details"
 msgstr ""
 
@@ -7086,6 +7714,14 @@ msgstr ""
 #: cms/templates/js/certificate-details.underscore
 #: cms/templates/js/certificate-editor.underscore
 msgid "Certificate Signatories"
+msgstr ""
+
+#: cms/templates/js/certificate-details.underscore
+#: cms/templates/js/certificate-editor.underscore
+msgid ""
+"It is strongly recommended that you include four or fewer signatories. If "
+"you include additional signatories, preview the certificate in Print View to"
+" ensure the certificate will print correctly on one page."
 msgstr ""
 
 #: cms/templates/js/certificate-editor.underscore
@@ -7145,18 +7781,6 @@ msgstr ""
 msgid "Deactivate"
 msgstr ""
 
-#: cms/templates/js/checklist.underscore
-msgid "{number}{pct_sign} of checklists completed"
-msgstr ""
-
-#: cms/templates/js/checklist.underscore
-msgid "%"
-msgstr ""
-
-#: cms/templates/js/checklist.underscore
-msgid "Tasks Completed:"
-msgstr ""
-
 #: cms/templates/js/container-message.underscore
 msgid ""
 "Caution: The last published version of this unit is live. By publishing "
@@ -7170,6 +7794,17 @@ msgstr ""
 
 #: cms/templates/js/content-group-details.underscore
 msgid "This content group is used in:"
+msgstr ""
+
+#: cms/templates/js/content-group-details.underscore
+msgid ""
+"This content group is not in use. Add a content group to any unit from the "
+"{linkStart}Course Outline{linkEnd}."
+msgstr ""
+
+#: cms/templates/js/content-group-details.underscore
+#: cms/templates/js/group-configuration-details.underscore
+msgid "Course Outline"
 msgstr ""
 
 #: cms/templates/js/content-group-editor.underscore
@@ -7186,6 +7821,74 @@ msgstr ""
 
 #: cms/templates/js/content-group-editor.underscore
 msgid "This content group is used in one or more units."
+msgstr ""
+
+#: cms/templates/js/course-instructor-details.underscore
+msgid "Instructor Name"
+msgstr ""
+
+#: cms/templates/js/course-instructor-details.underscore
+msgid "Please add the instructor's name"
+msgstr ""
+
+#: cms/templates/js/course-instructor-details.underscore
+msgid "Instructor Title"
+msgstr ""
+
+#: cms/templates/js/course-instructor-details.underscore
+msgid "Please add the instructor's title"
+msgstr ""
+
+#: cms/templates/js/course-instructor-details.underscore
+#: cms/templates/js/signatory-details.underscore
+msgid "Organization"
+msgstr ""
+
+#: cms/templates/js/course-instructor-details.underscore
+msgid "Organization Name"
+msgstr ""
+
+#: cms/templates/js/course-instructor-details.underscore
+msgid "Please add the institute where the instructor is associated"
+msgstr ""
+
+#: cms/templates/js/course-instructor-details.underscore
+msgid "Biography"
+msgstr ""
+
+#: cms/templates/js/course-instructor-details.underscore
+msgid "Instructor Biography"
+msgstr ""
+
+#: cms/templates/js/course-instructor-details.underscore
+msgid "Please add the instructor's biography"
+msgstr ""
+
+#: cms/templates/js/course-instructor-details.underscore
+msgid "Photo"
+msgstr ""
+
+#: cms/templates/js/course-instructor-details.underscore
+msgid "Instructor Photo"
+msgstr ""
+
+#: cms/templates/js/course-instructor-details.underscore
+msgid "Instructor Photo URL"
+msgstr ""
+
+#: cms/templates/js/course-instructor-details.underscore
+msgid ""
+"Please add a photo of the instructor (Note: only JPEG or PNG format "
+"supported)"
+msgstr ""
+
+#: cms/templates/js/course-instructor-details.underscore
+msgid "Upload Photo"
+msgstr ""
+
+#: cms/templates/js/course-outline.underscore
+#, python-format
+msgid "Prerequisite: %(prereq_display_name)s"
 msgstr ""
 
 #: cms/templates/js/course-outline.underscore
@@ -7254,16 +7957,19 @@ msgid "Scheduled:"
 msgstr ""
 
 #: cms/templates/js/course-outline.underscore
-#: cms/templates/js/publish-xblock.underscore
-msgid "Unscheduled"
-msgstr ""
-
-#: cms/templates/js/course-outline.underscore
 msgid "Graded as:"
 msgstr ""
 
 #: cms/templates/js/course-outline.underscore
 msgid "Due:"
+msgstr ""
+
+#: cms/templates/js/course-outline.underscore
+msgid "Exam will remain hidden after due date"
+msgstr ""
+
+#: cms/templates/js/course-outline.underscore
+msgid "Exam will be visible after due date"
 msgstr ""
 
 #: cms/templates/js/course-outline.underscore
@@ -7277,12 +7983,22 @@ msgstr ""
 msgid "Click to add a new %(xblock_type)s"
 msgstr ""
 
+#: cms/templates/js/course-settings-learning-fields.underscore
+msgid "Learning Outcome"
+msgstr ""
+
+#: cms/templates/js/course-settings-learning-fields.underscore
+msgid "Add a learning outcome here"
+msgstr ""
+
 #: cms/templates/js/course_grade_policy.underscore
 msgid "Assignment Type Name"
 msgstr ""
 
 #: cms/templates/js/course_grade_policy.underscore
-msgid "e.g. Homework, Midterm Exams"
+msgid ""
+"The general category for this type of assignment, for example, Homework or "
+"Midterm Exam. This name is visible to learners."
 msgstr ""
 
 #: cms/templates/js/course_grade_policy.underscore
@@ -7290,7 +8006,9 @@ msgid "Abbreviation"
 msgstr ""
 
 #: cms/templates/js/course_grade_policy.underscore
-msgid "e.g. HW, Midterm"
+msgid ""
+"This short name for the assignment type (for example, HW or Midterm) appears"
+" next to assignments on a learner's Progress page."
 msgstr ""
 
 #: cms/templates/js/course_grade_policy.underscore
@@ -7298,7 +8016,9 @@ msgid "Weight of Total Grade"
 msgstr ""
 
 #: cms/templates/js/course_grade_policy.underscore
-msgid "as a percent, e.g. 40"
+msgid ""
+"The weight of all assignments of this type as a percentage of the total "
+"grade, for example, 40. Do not include the percent symbol."
 msgstr ""
 
 #: cms/templates/js/course_grade_policy.underscore
@@ -7306,7 +8026,9 @@ msgid "Total Number"
 msgstr ""
 
 #: cms/templates/js/course_grade_policy.underscore
-msgid "total exercises assigned"
+msgid ""
+"The number of subsections in the course that contain problems of this "
+"assignment type."
 msgstr ""
 
 #: cms/templates/js/course_grade_policy.underscore
@@ -7314,7 +8036,9 @@ msgid "Number of Droppable"
 msgstr ""
 
 #: cms/templates/js/course_grade_policy.underscore
-msgid "total exercises that won't be graded"
+msgid ""
+"The number of assignments of this type that will be dropped. The lowest "
+"scoring assignments are dropped first."
 msgstr ""
 
 #: cms/templates/js/course_info_handouts.underscore
@@ -7360,21 +8084,11 @@ msgid "Chapter Name"
 msgstr ""
 
 #: cms/templates/js/edit-chapter.underscore
-#, python-format
-msgid "Chapter %s"
-msgstr ""
-
-#: cms/templates/js/edit-chapter.underscore
 msgid "provide the title/name of the chapter that will be used in navigating"
 msgstr ""
 
 #: cms/templates/js/edit-chapter.underscore
 msgid "Chapter Asset"
-msgstr ""
-
-#: cms/templates/js/edit-chapter.underscore
-#, python-format
-msgid "path/to/introductionToCookieBaking-CH%d.pdf"
 msgstr ""
 
 #: cms/templates/js/edit-chapter.underscore
@@ -7430,6 +8144,12 @@ msgstr ""
 
 #: cms/templates/js/group-configuration-details.underscore
 msgid "This Group Configuration is used in:"
+msgstr ""
+
+#: cms/templates/js/group-configuration-details.underscore
+msgid ""
+"This Group Configuration is not in use. Start by adding a content experiment"
+" to any Unit via the {linkStart}Course Outline{linkEnd}."
 msgstr ""
 
 #: cms/templates/js/group-configuration-editor.underscore
@@ -7588,7 +8308,6 @@ msgid "Last published %(last_published_date)s by %(publish_username)s"
 msgstr ""
 
 #: cms/templates/js/publish-history.underscore
-#: cms/templates/js/publish-xblock.underscore
 #: cms/templates/js/staff-lock-editor.underscore
 msgid "message"
 msgstr ""
@@ -7687,7 +8406,13 @@ msgid "View Live"
 msgstr ""
 
 #: cms/templates/js/signatory-details.underscore
-msgid "Organization"
+#: cms/templates/js/signatory-editor.underscore
+msgid "Signatory"
+msgstr ""
+
+#: cms/templates/js/signatory-details.underscore
+#: cms/templates/js/signatory-editor.underscore
+msgid "Signature Image"
 msgstr ""
 
 #: cms/templates/js/signatory-editor.underscore
@@ -7735,15 +8460,15 @@ msgid ""
 msgstr ""
 
 #: cms/templates/js/signatory-editor.underscore
-msgid "Signature Image"
-msgstr ""
-
-#: cms/templates/js/signatory-editor.underscore
 msgid "Path to Signature Image"
 msgstr ""
 
 #: cms/templates/js/signatory-editor.underscore
 msgid "Image must be in PNG format"
+msgstr ""
+
+#: cms/templates/js/signatory-editor.underscore
+msgid "Upload Signature Image"
 msgstr ""
 
 #: cms/templates/js/staff-lock-editor.underscore
@@ -7805,7 +8530,11 @@ msgid "Delete the user, {username}"
 msgstr ""
 
 #: cms/templates/js/timed-examination-preference-editor.underscore
-msgid "Additional Options:"
+msgid "Set as a Special Exam"
+msgstr ""
+
+#: cms/templates/js/timed-examination-preference-editor.underscore
+msgid "Exam Types"
 msgstr ""
 
 #: cms/templates/js/timed-examination-preference-editor.underscore
@@ -7816,7 +8545,8 @@ msgstr ""
 msgid ""
 "Use a timed exam to limit the time learners can spend on problems in this "
 "subsection. Learners must submit answers before the time expires. You can "
-"allow additional time on per learner basis through the Instructor Dashboard."
+"allow additional time for individual learners through the Instructor "
+"Dashboard."
 msgstr ""
 
 #: cms/templates/js/timed-examination-preference-editor.underscore
@@ -7825,8 +8555,9 @@ msgstr ""
 
 #: cms/templates/js/timed-examination-preference-editor.underscore
 msgid ""
-"Proctored exams are timed, and software records video of each learner taking"
-" the exam. These videos are then reviewed by a third party."
+"Proctored exams are timed and they record video of each learner taking the "
+"exam. The videos are then reviewed to ensure that learners follow all "
+"examination rules."
 msgstr ""
 
 #: cms/templates/js/timed-examination-preference-editor.underscore
@@ -7836,8 +8567,7 @@ msgstr ""
 #: cms/templates/js/timed-examination-preference-editor.underscore
 msgid ""
 "Use a practice proctored exam to introduce learners to the proctoring tools "
-"and processes. Results of the practice exam do not count towards the "
-"learner's grade."
+"and processes. Results of a practice exam do not affect a learner's grade."
 msgstr ""
 
 #: cms/templates/js/timed-examination-preference-editor.underscore
@@ -7845,11 +8575,31 @@ msgid "Time Allotted (HH:MM):"
 msgstr ""
 
 #: cms/templates/js/timed-examination-preference-editor.underscore
-#, python-format
 msgid ""
-"Learners see warnings when 20% and 5% of the allotted time remains. You can "
-"grant learners extra time to complete the exam through the Instructor "
-"Dashboard."
+"Select a time allotment for the exam. If it is over 24 hours, type in the "
+"amount of time. You can grant individual learners extra time to complete the"
+" exam through the Instructor Dashboard."
+msgstr ""
+
+#: cms/templates/js/timed-examination-preference-editor.underscore
+msgid "Review Rules"
+msgstr ""
+
+#: cms/templates/js/timed-examination-preference-editor.underscore
+msgid ""
+"Specify any additional rules or rule exceptions that the proctoring review "
+"team should enforce when reviewing the videos. For example, you could "
+"specify that calculators are allowed."
+msgstr ""
+
+#: cms/templates/js/timed-examination-preference-editor.underscore
+msgid "Hide Exam After Due Date"
+msgstr ""
+
+#: cms/templates/js/timed-examination-preference-editor.underscore
+msgid ""
+"By default, submitted exams are available for review after the due date has "
+"passed. Select this option to keep exams hidden after that date."
 msgstr ""
 
 #: cms/templates/js/upload-dialog.underscore

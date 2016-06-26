@@ -190,6 +190,7 @@ def show_cart(request):
         'form_html': form_html,
         'currency_symbol': settings.PAID_COURSE_REGISTRATION_CURRENCY[1],
         'currency': settings.PAID_COURSE_REGISTRATION_CURRENCY[0],
+        'enable_bulk_purchase': microsite.get_value('ENABLE_SHOPPING_CART_BULK_PURCHASE', True)
     }
     return render_to_response("shoppingcart/shopping_cart.html", context)
 
@@ -217,7 +218,7 @@ def remove_item(request):
     """
     This will remove an item from the user cart and also delete the corresponding coupon codes redemption.
     """
-    item_id = request.REQUEST.get('id', '-1')
+    item_id = request.GET.get('id') or request.POST.get('id') or '-1'
 
     items = OrderItem.objects.filter(id=item_id, status='cart').select_subclasses()
 

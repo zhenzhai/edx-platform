@@ -1,7 +1,7 @@
 """
 Split Test Block Transformer
 """
-from openedx.core.lib.block_cache.transformer import BlockStructureTransformer
+from openedx.core.lib.block_structure.transformer import BlockStructureTransformer
 
 
 class SplitTestTransformer(BlockStructureTransformer):
@@ -66,7 +66,7 @@ class SplitTestTransformer(BlockStructureTransformer):
             for child_location in xblock.children:
                 child = block_structure.get_xblock(child_location)
                 group = child_to_group.get(child_location, None)
-                child.group_access[partition_for_this_block.id] = [group] if group else []
+                child.group_access[partition_for_this_block.id] = [group] if group is not None else []
 
     def transform(self, usage_info, block_structure):
         """

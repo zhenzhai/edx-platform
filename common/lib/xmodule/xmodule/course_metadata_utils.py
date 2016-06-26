@@ -32,42 +32,6 @@ def clean_course_key(course_key, padding_char):
     )
 
 
-def url_name_for_course_location(location):
-    """
-    Given a course's usage locator, returns the course's URL name.
-
-    Arguments:
-        location (BlockUsageLocator): The course's usage locator.
-    """
-    return location.name
-
-
-def display_name_with_default(course):
-    """
-    Calculates the display name for a course.
-
-    Default to the display_name if it isn't None, else fall back to creating
-    a name based on the URL.
-
-    Unlike the rest of this module's functions, this function takes an entire
-    course descriptor/overview as a parameter. This is because a few test cases
-    (specifically, {Text|Image|Video}AnnotationModuleTestCase.test_student_view)
-    create scenarios where course.display_name is not None but course.location
-    is None, which causes calling course.url_name to fail. So, although we'd
-    like to just pass course.display_name and course.url_name as arguments to
-    this function, we can't do so without breaking those tests.
-
-    Arguments:
-        course (CourseDescriptor|CourseOverview): descriptor or overview of
-            said course.
-    """
-    # TODO: Consider changing this to use something like xml.sax.saxutils.escape
-    return (
-        course.display_name if course.display_name is not None
-        else course.url_name.replace('_', ' ')
-    ).replace('<', '&lt;').replace('>', '&gt;')
-
-
 def number_for_course_location(location):
     """
     Given a course's block usage locator, returns the course's number.

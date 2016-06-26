@@ -3,14 +3,16 @@ Asset compilation and collection.
 """
 
 from __future__ import print_function
-
+from datetime import datetime
+from functools import wraps
+from threading import Timer
 import argparse
 import glob
 import traceback
 
 from paver import tasks
 from paver.easy import sh, path, task, cmdopts, needs, consume_args, call_task, no_help
-from watchdog.observers import Observer
+from watchdog.observers.polling import PollingObserver
 from watchdog.events import PatternMatchingEventHandler
 
 from .utils.envs import Env
@@ -18,17 +20,43 @@ from .utils.cmd import cmd, django_cmd
 
 # setup baseline paths
 
+ALL_SYSTEMS = ['lms', 'studio']
 COFFEE_DIRS = ['lms', 'cms', 'common']
 # A list of directories.  Each will be paired with a sibling /css directory.
-SASS_DIRS = [
+COMMON_SASS_DIRECTORIES = [
+    path("common/static/sass"),
+]
+LMS_SASS_DIRECTORIES = [
     path("lms/static/sass"),
     path("lms/static/themed_sass"),
-    path("cms/static/sass"),
-    path("common/static/sass"),
     path("lms/static/certificates/sass"),
 ]
-SASS_LOAD_PATHS = ['common/static', 'common/static/sass']
-SASS_CACHE_PATH = '/tmp/sass-cache'
+CMS_SASS_DIRECTORIES = [
+    path("cms/static/sass"),
+]
+THEME_SASS_DIRECTORIES = []
+SASS_LOAD_PATHS = [
+    'common/static',
+    'common/static/sass',
+    'node_modules',
+    'node_modules/edx-pattern-library/node_modules',
+]
+
+# A list of NPM installed libraries that should be copied into the common
+# static directory.
+NPM_INSTALLED_LIBRARIES = [
+    'jquery/dist/jquery.js',
+    'jquery-migrate/dist/jquery-migrate.js',
+    'jquery.scrollto/jquery.scrollTo.js',
+    'underscore/underscore.js',
+    'underscore.string/dist/underscore.string.js',
+    'picturefill/dist/picturefill.js',
+    'backbone/backbone.js',
+    'edx-ui-toolkit/node_modules/backbone.paginator/lib/backbone.paginator.js',
+]
+
+# Directory to install static vendor files
+NPM_VENDOR_DIRECTORY = path("common/static/common/js/vendor")
 
 
 def configure_paths():
@@ -43,7 +71,7 @@ def configure_paths():
         css_dir = theme_root / "static" / "css"
         if sass_dir.isdir():
             css_dir.mkdir_p()
-            SASS_DIRS.append(sass_dir)
+            THEME_SASS_DIRECTORIES.append(sass_dir)
 
     if edxapp_env.env_tokens.get("COMPREHENSIVE_THEME_DIR", ""):
         theme_dir = path(edxapp_env.env_tokens["COMPREHENSIVE_THEME_DIR"])
@@ -51,14 +79,60 @@ def configure_paths():
         lms_css = theme_dir / "lms" / "static" / "css"
         if lms_sass.isdir():
             lms_css.mkdir_p()
-            SASS_DIRS.append(lms_sass)
+            THEME_SASS_DIRECTORIES.append(lms_sass)
         cms_sass = theme_dir / "cms" / "static" / "sass"
         cms_css = theme_dir / "cms" / "static" / "css"
         if cms_sass.isdir():
             cms_css.mkdir_p()
-            SASS_DIRS.append(cms_sass)
+            THEME_SASS_DIRECTORIES.append(cms_sass)
 
 configure_paths()
+
+
+def applicable_sass_directories(systems=None):
+    """
+    Determine the applicable set of SASS directories to be
+    compiled for the specified list of systems.
+
+    Args:
+        systems: A list of systems (defaults to all)
+
+    Returns:
+        A list of SASS directories to be compiled.
+    """
+    if not systems:
+        systems = ALL_SYSTEMS
+    applicable_directories = []
+    applicable_directories.extend(COMMON_SASS_DIRECTORIES)
+    if "lms" in systems:
+        applicable_directories.extend(LMS_SASS_DIRECTORIES)
+    if "studio" in systems or "cms" in systems:
+        applicable_directories.extend(CMS_SASS_DIRECTORIES)
+    applicable_directories.extend(THEME_SASS_DIRECTORIES)
+    return applicable_directories
+
+
+def debounce(seconds=1):
+    """
+    Prevents the decorated function from being called more than every `seconds`
+    seconds. Waits until calls stop coming in before calling the decorated
+    function.
+    """
+    def decorator(func):  # pylint: disable=missing-docstring
+        func.timer = None
+
+        @wraps(func)
+        def wrapper(*args, **kwargs):  # pylint: disable=missing-docstring
+            def call():  # pylint: disable=missing-docstring
+                func(*args, **kwargs)
+                func.timer = None
+            if func.timer:
+                func.timer.cancel()
+            func.timer = Timer(seconds, call)
+            func.timer.start()
+
+        return wrapper
+    return decorator
 
 
 class CoffeeScriptWatcher(PatternMatchingEventHandler):
@@ -78,7 +152,8 @@ class CoffeeScriptWatcher(PatternMatchingEventHandler):
         for dirname in dirnames:
             observer.schedule(self, dirname)
 
-    def on_modified(self, event):
+    @debounce()
+    def on_any_event(self, event):
         print('\tCHANGED:', event.src_path)
         try:
             compile_coffeescript(event.src_path)
@@ -98,7 +173,7 @@ class SassWatcher(PatternMatchingEventHandler):
         """
         register files with observer
         """
-        for dirname in SASS_LOAD_PATHS + SASS_DIRS:
+        for dirname in SASS_LOAD_PATHS + applicable_sass_directories():
             paths = []
             if '*' in dirname:
                 paths.extend(glob.glob(dirname))
@@ -107,7 +182,8 @@ class SassWatcher(PatternMatchingEventHandler):
             for dirname in paths:
                 observer.schedule(self, dirname, recursive=True)
 
-    def on_modified(self, event):
+    @debounce()
+    def on_any_event(self, event):
         print('\tCHANGED:', event.src_path)
         try:
             compile_sass()      # pylint: disable=no-value-for-parameter
@@ -122,13 +198,8 @@ class XModuleSassWatcher(SassWatcher):
     ignore_directories = True
     ignore_patterns = []
 
-    def register(self, observer):
-        """
-        register files with observer
-        """
-        observer.schedule(self, 'common/lib/xmodule/', recursive=True)
-
-    def on_modified(self, event):
+    @debounce()
+    def on_any_event(self, event):
         print('\tCHANGED:', event.src_path)
         try:
             process_xmodule_assets()
@@ -149,7 +220,8 @@ class XModuleAssetsWatcher(PatternMatchingEventHandler):
         """
         observer.schedule(self, 'common/lib/xmodule/', recursive=True)
 
-    def on_modified(self, event):
+    @debounce()
+    def on_any_event(self, event):
         print('\tCHANGED:', event.src_path)
         try:
             process_xmodule_assets()
@@ -184,6 +256,7 @@ def compile_coffeescript(*files):
 @task
 @no_help
 @cmdopts([
+    ('system=', 's', 'The system to compile sass for (defaults to all)'),
     ('debug', 'd', 'Debug mode'),
     ('force', '', 'Force full compilation'),
 ])
@@ -191,31 +264,59 @@ def compile_sass(options):
     """
     Compile Sass to CSS.
     """
+
+    # Note: import sass only when it is needed and not at the top of the file.
+    # This allows other paver commands to operate even without libsass being
+    # installed. In particular, this allows the install_prereqs command to be
+    # used to install the dependency.
+    import sass
+
     debug = options.get('debug')
-    parts = ["sass"]
-    parts.append("--update")
-    parts.append("--cache-location {cache}".format(cache=SASS_CACHE_PATH))
-    parts.append("--default-encoding utf-8")
+    force = options.get('force')
+    systems = getattr(options, 'system', ALL_SYSTEMS)
+    if isinstance(systems, basestring):
+        systems = systems.split(',')
     if debug:
-        parts.append("--sourcemap")
+        source_comments = True
+        output_style = 'nested'
     else:
-        parts.append("--style compressed --quiet")
-    if options.get('force'):
-        parts.append("--force")
-    parts.append("--load-path .")
-    for load_path in SASS_LOAD_PATHS + SASS_DIRS:
-        parts.append("--load-path {path}".format(path=load_path))
+        source_comments = False
+        output_style = 'compressed'
 
-    for sass_dir in SASS_DIRS:
+    timing_info = []
+    system_sass_directories = applicable_sass_directories(systems)
+    all_sass_directories = applicable_sass_directories()
+    dry_run = tasks.environment.dry_run
+    for sass_dir in system_sass_directories:
+        start = datetime.now()
         css_dir = sass_dir.parent / "css"
-        if css_dir:
-            parts.append("{sass}:{css}".format(sass=sass_dir, css=css_dir))
+
+        if force:
+            if dry_run:
+                tasks.environment.info("rm -rf {css_dir}/*.css".format(
+                    css_dir=css_dir,
+                ))
+            else:
+                sh("rm -rf {css_dir}/*.css".format(css_dir=css_dir))
+
+        if dry_run:
+            tasks.environment.info("libsass {sass_dir}".format(
+                sass_dir=sass_dir,
+            ))
         else:
-            parts.append(sass_dir)
+            sass.compile(
+                dirname=(sass_dir, css_dir),
+                include_paths=SASS_LOAD_PATHS + all_sass_directories,
+                source_comments=source_comments,
+                output_style=output_style,
+            )
+            duration = datetime.now() - start
+            timing_info.append((sass_dir, css_dir, duration))
 
-    sh(cmd(*parts))
-
-    print("\t\tFinished compiling sass.")
+    print("\t\tFinished compiling Sass:")
+    if not dry_run:
+        for sass_dir, css_dir, duration in timing_info:
+            print(">> {} -> {} in {}s".format(sass_dir, css_dir, duration))
 
 
 def compile_templated_sass(systems, settings):
@@ -224,15 +325,35 @@ def compile_templated_sass(systems, settings):
     `systems` is a list of systems (e.g. 'lms' or 'studio' or both)
     `settings` is the Django settings module to use.
     """
-    for sys in systems:
-        if sys == "studio":
-            sys = "cms"
+    for system in systems:
+        if system == "studio":
+            system = "cms"
         sh(django_cmd(
-            sys, settings, 'preprocess_assets',
-            '{sys}/static/sass/*.scss'.format(sys=sys),
-            '{sys}/static/themed_sass'.format(sys=sys)
+            system, settings, 'preprocess_assets',
+            '{system}/static/sass/*.scss'.format(system=system),
+            '{system}/static/themed_sass'.format(system=system)
         ))
-        print("\t\tFinished preprocessing {} assets.".format(sys))
+        print("\t\tFinished preprocessing {} assets.".format(system))
+
+
+def process_npm_assets():
+    """
+    Process vendor libraries installed via NPM.
+    """
+    # Skip processing of the libraries if this is just a dry run
+    if tasks.environment.dry_run:
+        tasks.environment.info("install npm_assets")
+        return
+
+    # Ensure that the vendor directory exists
+    NPM_VENDOR_DIRECTORY.mkdir_p()
+
+    # Copy each file to the vendor directory, overwriting any existing file.
+    for library in NPM_INSTALLED_LIBRARIES:
+        sh('/bin/cp -rf node_modules/{library} {vendor_dir}'.format(
+            library=library,
+            vendor_dir=NPM_VENDOR_DIRECTORY,
+        ))
 
 
 def process_xmodule_assets():
@@ -276,7 +397,7 @@ def watch_assets(options):
     if tasks.environment.dry_run:
         return
 
-    observer = Observer()
+    observer = PollingObserver()
 
     CoffeeScriptWatcher().register(observer)
     SassWatcher().register(observer)
@@ -298,7 +419,6 @@ def watch_assets(options):
 
 @task
 @needs(
-    'pavelib.prereqs.install_ruby_prereqs',
     'pavelib.prereqs.install_node_prereqs',
 )
 @consume_args
@@ -308,7 +428,7 @@ def update_assets(args):
     """
     parser = argparse.ArgumentParser(prog='paver update_assets')
     parser.add_argument(
-        'system', type=str, nargs='*', default=['lms', 'studio'],
+        'system', type=str, nargs='*', default=ALL_SYSTEMS,
         help="lms or studio",
     )
     parser.add_argument(
@@ -331,8 +451,9 @@ def update_assets(args):
 
     compile_templated_sass(args.system, args.settings)
     process_xmodule_assets()
+    process_npm_assets()
     compile_coffeescript()
-    call_task('pavelib.assets.compile_sass', options={'debug': args.debug})
+    call_task('pavelib.assets.compile_sass', options={'system': args.system, 'debug': args.debug})
 
     if args.collect:
         collect_assets(args.system, args.settings)

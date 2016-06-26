@@ -138,7 +138,7 @@ $yellow-u1: desaturate($yellow,15%);
 $yellow-u2: desaturate($yellow,30%);
 $yellow-u3: desaturate($yellow,45%);
 
-$blue: rgb(0, 120, 176);
+$blue: rgb(0, 121, 188);
 $blue-l1: tint($blue,20%);
 $blue-l2: tint($blue,40%);
 $blue-l3: tint($blue,60%);
@@ -188,6 +188,8 @@ $ui-notification-height: ($baseline*10);
 $twitter-blue: #55ACEE;
 $facebook-blue: #3B5998;
 $linkedin-blue: #0077B5;
+$google-red: #DD4B39;
+$microsoft-blue: #00BCF2;
 
 // shadows
 $shadow: rgba(0,0,0,0.2) !default;
@@ -199,7 +201,7 @@ $shadow-d2: rgba($black, 0.6) !default;
 // system feedback-based colors
 $error-color: rgb(253, 87, 87) !default;
 $warning-color: rgb(181,42,103) !default;
-$confirm-color: rgb(0, 136, 1) !default;
+$confirm-color: rgb(0, 132, 1) !default;
 $active-color: $blue !default;
 $highlight-color: rgb(255,255,0) !default;
 $alert-color: rgb(212, 64, 64) !default;
@@ -211,6 +213,7 @@ $dark-gray1: rgb(74,74,74);
 $light-gray1: rgb(242,242,242);
 $light-gray2: rgb(171,171,171);
 $light-gray3: rgb(249,249,249);
+$light-gray4: rgb(252,252,252);
 $dark-gray2: rgb(151,151,151);
 $blue1: rgb(74,144,226);
 $blue2: rgb(0,161,229);
@@ -465,6 +468,7 @@ $courseware-navigation-color: $blue !default;
 $homepage__header--gradient__color--alpha: lighten($gray, 15%) !default;
 $homepage__header--gradient__color--bravo: saturate($gray, 30%) !default;
 $homepage__header--background: lighten($gray, 15%) !default;
+$homepage-background: rgb(252, 252, 252);
 $course-card-height: ($baseline*18) !default;
 $course-image-height: ($baseline*8) !default;
 $course-info-height: ($baseline*10) !default;
@@ -486,7 +490,6 @@ $dashboard-course-cover-border: rgb(221, 221, 221) !default;
 // course elements
 $content-wrapper-bg: $white !default;
 $course-bg-color: #f2f2f2 !default;
-$course-bg-image: url('#{$static-path}/images/bg-texture.png') !default;
 $account-content-wrapper-bg: shade($body-bg, 2%) !default;
 $course-profile-bg: rgb(245,245,245) !default;
 $course-header-bg: rgba(255,255,255, 0.93) !default;
@@ -514,8 +517,7 @@ $light-gray: rgb(221, 221, 221) !default;
 $dark-gray: rgb(51, 51, 51) !default;
 $border-color: rgb(200, 200, 200) !default;
 $sidebar-color: rgb(246, 246, 246) !default;
-$outer-border-color: rgb(170, 170, 170);
-$light-gray: rgb(221,221,221) !default;
+$outer-border-color: $gray-l3;
 
 // used by descriptor css
 $lightGrey: rgb(237,241,245) !default;

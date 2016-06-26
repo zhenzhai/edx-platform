@@ -14,7 +14,7 @@ import pystache_custom as pystache
 from opaque_keys.edx.locations import i4xEncoder
 from opaque_keys.edx.keys import CourseKey
 from xmodule.modulestore.django import modulestore
-from ccx.overrides import get_current_ccx
+from lms.djangoapps.ccx.overrides import get_current_ccx
 
 from django_comment_common.models import Role, FORUM_ROLE_STUDENT
 from django_comment_client.permissions import check_permissions_by_view, has_permission, get_team
@@ -129,7 +129,7 @@ def get_accessible_discussion_modules(course, user, include_all=False):  # pylin
     Return a list of all valid discussion modules in this course that
     are accessible to the given user.
     """
-    all_modules = modulestore().get_items(course.id, qualifiers={'category': 'discussion'})
+    all_modules = modulestore().get_items(course.id, qualifiers={'category': 'discussion'}, include_orphans=False)
 
     return [
         module for module in all_modules
@@ -198,7 +198,7 @@ def get_discussion_id_map(course, user):
     return dict(map(get_discussion_id_map_entry, get_accessible_discussion_modules(course, user)))
 
 
-def _filter_unstarted_categories(category_map):
+def _filter_unstarted_categories(category_map, course):
     """
     Returns a subset of categories from the provided map which have not yet met the start date
     Includes information about category children, subcategories (different), and entries
@@ -221,7 +221,7 @@ def _filter_unstarted_categories(category_map):
 
         for child in unfiltered_map["children"]:
             if child in unfiltered_map["entries"]:
-                if unfiltered_map["entries"][child]["start_date"] <= now:
+                if course.self_paced or unfiltered_map["entries"][child]["start_date"] <= now:
                     filtered_map["children"].append(child)
                     filtered_map["entries"][child] = {}
                     for key in unfiltered_map["entries"][child]:
@@ -230,7 +230,7 @@ def _filter_unstarted_categories(category_map):
                 else:
                     log.debug(u"Filtering out:%s with start_date: %s", child, unfiltered_map["entries"][child]["start_date"])
             else:
-                if unfiltered_map["subcategories"][child]["start_date"] < now:
+                if course.self_paced or unfiltered_map["subcategories"][child]["start_date"] < now:
                     filtered_map["children"].append(child)
                     filtered_map["subcategories"][child] = {}
                     unfiltered_queue.append(unfiltered_map["subcategories"][child])
@@ -382,10 +382,10 @@ def get_discussion_category_map(course, user, cohorted_if_in_list=False, exclude
 
     _sort_map_entries(category_map, course.discussion_sort_alpha)
 
-    return _filter_unstarted_categories(category_map) if exclude_unstarted else category_map
+    return _filter_unstarted_categories(category_map, course) if exclude_unstarted else category_map
 
 
-def discussion_category_id_access(course, user, discussion_id):
+def discussion_category_id_access(course, user, discussion_id, module=None):
     """
     Returns True iff the given discussion_id is accessible for user in course.
     Assumes that the commentable identified by discussion_id has a null or 'course' context.
@@ -395,10 +395,11 @@ def discussion_category_id_access(course, user, discussion_id):
     if discussion_id in course.top_level_discussion_topic_ids:
         return True
     try:
-        key = get_cached_discussion_key(course, discussion_id)
-        if not key:
-            return False
-        module = modulestore().get_item(key)
+        if not module:
+            key = get_cached_discussion_key(course, discussion_id)
+            if not key:
+                return False
+            module = modulestore().get_item(key)
         return has_required_keys(module) and has_access(user, 'load', module, course.id)
     except DiscussionIdMapIsNotCached:
         return discussion_id in get_discussion_categories_ids(course, user)
@@ -509,7 +510,18 @@ def get_ability(course_id, content, user):
         'can_reply': check_permissions_by_view(user, course_id, content, "create_comment" if content['type'] == 'thread' else "create_sub_comment"),
         'can_delete': check_permissions_by_view(user, course_id, content, "delete_thread" if content['type'] == 'thread' else "delete_comment"),
         'can_openclose': check_permissions_by_view(user, course_id, content, "openclose_thread") if content['type'] == 'thread' else False,
-        'can_vote': check_permissions_by_view(user, course_id, content, "vote_for_thread" if content['type'] == 'thread' else "vote_for_comment"),
+        'can_vote': not is_content_authored_by(content, user) and check_permissions_by_view(
+            user,
+            course_id,
+            content,
+            "vote_for_thread" if content['type'] == 'thread' else "vote_for_comment"
+        ),
+        'can_report': not is_content_authored_by(content, user) and check_permissions_by_view(
+            user,
+            course_id,
+            content,
+            "flag_abuse_for_thread" if content['type'] == 'thread' else "flag_abuse_for_comment"
+        )
     }
 
 # TODO: RENAME
@@ -654,7 +666,7 @@ def prepare_content(content, course_key, is_staff=False, course_is_cohorted=None
         'read', 'group_id', 'group_name', 'pinned', 'abuse_flaggers',
         'stats', 'resp_skip', 'resp_limit', 'resp_total', 'thread_type',
         'endorsed_responses', 'non_endorsed_responses', 'non_endorsed_resp_total',
-        'endorsement', 'context'
+        'endorsement', 'context', 'last_activity_at'
     ]
 
     if (content.get('anonymous') is False) and ((content.get('anonymous_to_peers') is False) or is_staff):
@@ -797,3 +809,13 @@ def is_discussion_enabled(course_id):
         if get_current_ccx(course_id):
             return False
     return settings.FEATURES.get('ENABLE_DISCUSSION_SERVICE')
+
+
+def is_content_authored_by(content, user):
+    """
+    Return True if the author is this content is the passed user, else False
+    """
+    try:
+        return int(content.get('user_id')) == user.id
+    except (ValueError, TypeError):
+        return False

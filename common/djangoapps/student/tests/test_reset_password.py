@@ -19,19 +19,23 @@ from django.utils.http import urlsafe_base64_encode, base36_to_int, int_to_base3
 from mock import Mock, patch
 import ddt
 
+from openedx.core.djangolib.testing.utils import CacheIsolationTestCase
 from student.views import password_reset, password_reset_confirm_wrapper, SETTING_CHANGE_INITIATED
 from student.tests.factories import UserFactory
 from student.tests.test_email import mock_render_to_string
 from util.testing import EventTestMixin
 
 from .test_microsite import fake_microsite_get_value
+from openedx.core.djangoapps.theming import helpers as theming_helpers
 
 
 @ddt.ddt
-class ResetPasswordTests(EventTestMixin, TestCase):
+class ResetPasswordTests(EventTestMixin, CacheIsolationTestCase):
     """ Tests that clicking reset password sends email, and doesn't activate the user
     """
     request_factory = RequestFactory()
+
+    ENABLED_CACHES = ['default']
 
     def setUp(self):
         super(ResetPasswordTests, self).setUp('student.views.tracker')
@@ -121,7 +125,7 @@ class ResetPasswordTests(EventTestMixin, TestCase):
         (subject, msg, from_addr, to_addrs) = send_email.call_args[0]
         self.assertIn("Password reset", subject)
         self.assertIn("You're receiving this e-mail because you requested a password reset", msg)
-        self.assertEquals(from_addr, settings.DEFAULT_FROM_EMAIL)
+        self.assertEquals(from_addr, theming_helpers.get_value('email_from_address', settings.DEFAULT_FROM_EMAIL))
         self.assertEquals(len(to_addrs), 1)
         self.assertIn(self.user.email, to_addrs)
 

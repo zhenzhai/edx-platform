@@ -1,6 +1,7 @@
 """
 Unit test tasks
 """
+import re
 import os
 import sys
 from paver.easy import sh, task, cmdopts, needs, call_task
@@ -30,10 +31,19 @@ __test__ = False  # do not collect
     ('extra_args=', 'e', 'adds as extra args to the test command'),
     ('cov_args=', 'c', 'adds as args to coverage for the test run'),
     ('skip_clean', 'C', 'skip cleaning repository before running tests'),
+    ('processes=', 'p', 'number of processes to use running tests'),
+    make_option('-r', '--randomize', action='store_true', dest='randomize', help='run the tests in a random order'),
+    make_option('--no-randomize', action='store_false', dest='randomize', help="don't run the tests in a random order"),
     make_option("--verbose", action="store_const", const=2, dest="verbosity"),
     make_option("-q", "--quiet", action="store_const", const=0, dest="verbosity"),
     make_option("-v", "--verbosity", action="count", dest="verbosity", default=1),
     make_option("--pdb", action="store_true", help="Drop into debugger on failures or errors"),
+    make_option(
+        '--disable-migrations',
+        action='store_true',
+        dest='disable_migrations',
+        help="Create tables directly from apps' models. Can also be used by exporting DISABLE_MIGRATIONS=1."
+    ),
 ], share_with=['pavelib.utils.test.utils.clean_reports_dir'])
 def test_system(options):
     """
@@ -51,6 +61,9 @@ def test_system(options):
         'cov_args': getattr(options, 'cov_args', ''),
         'skip_clean': getattr(options, 'skip_clean', False),
         'pdb': getattr(options, 'pdb', False),
+        'disable_migrations': getattr(options, 'disable_migrations', False),
+        'processes': getattr(options, 'processes', None),
+        'randomize': getattr(options, 'randomize', None),
     }
 
     if test_id:
@@ -134,6 +147,12 @@ def test_lib(options):
     make_option("-q", "--quiet", action="store_const", const=0, dest="verbosity"),
     make_option("-v", "--verbosity", action="count", dest="verbosity", default=1),
     make_option("--pdb", action="store_true", help="Drop into debugger on failures or errors"),
+    make_option(
+        '--disable-migrations',
+        action='store_true',
+        dest='disable_migrations',
+        help="Create tables directly from apps' models. Can also be used by exporting DISABLE_MIGRATIONS=1."
+    ),
 ])
 def test_python(options):
     """
@@ -146,6 +165,7 @@ def test_python(options):
         'extra_args': getattr(options, 'extra_args', ''),
         'cov_args': getattr(options, 'cov_args', ''),
         'pdb': getattr(options, 'pdb', False),
+        'disable_migrations': getattr(options, 'disable_migrations', False),
     }
 
     python_suite = suites.PythonTestSuite('Python Tests', **opts)
@@ -236,7 +256,7 @@ def diff_coverage(options):
     xml_reports = []
 
     for filepath in Env.REPORT_DIR.walk():
-        if filepath.basename() == 'coverage.xml':
+        if bool(re.match(r'^coverage.*\.xml$', filepath.basename())):
             xml_reports.append(filepath)
 
     if not xml_reports:

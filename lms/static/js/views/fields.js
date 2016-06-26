@@ -30,12 +30,12 @@
             tagName: 'div',
 
             indicators: {
-                'canEdit': '<i class="icon fa fa-pencil message-can-edit" aria-hidden="true"></i><span class="sr">' + gettext("Editable") + '</span>',
-                'error': '<i class="fa fa-exclamation-triangle message-error" aria-hidden="true"></i><span class="sr">' + gettext("Error") + '</span>',
-                'validationError': '<i class="fa fa-exclamation-triangle message-validation-error" aria-hidden="true"></i><span class="sr">' + gettext("Validation Error") + '</span>',
-                'inProgress': '<i class="fa fa-spinner fa-pulse message-in-progress" aria-hidden="true"></i><span class="sr">' + gettext("In Progress") + '</span>',
-                'success': '<i class="fa fa-check message-success" aria-hidden="true"></i><span class="sr">' + gettext("Success") + '</span>',
-                'plus': '<i class="fa fa-plus placeholder" aria-hidden="true"></i><span class="sr">' + gettext("Placeholder")+ '</span>'
+                'canEdit': '<span class="icon fa fa-pencil message-can-edit" aria-hidden="true"></span><span class="sr">' + gettext("Editable") + '</span>', // jshint ignore:line
+                'error': '<span class="fa fa-exclamation-triangle message-error" aria-hidden="true"></span><span class="sr">' + gettext("Error") + '</span>', // jshint ignore:line
+                'validationError': '<span class="fa fa-exclamation-triangle message-validation-error" aria-hidden="true"></span><span class="sr">' + gettext("Validation Error") + '</span>', // jshint ignore:line
+                'inProgress': '<span class="fa fa-spinner fa-pulse message-in-progress" aria-hidden="true"></span><span class="sr">' + gettext("In Progress") + '</span>', // jshint ignore:line
+                'success': '<span class="fa fa-check message-success" aria-hidden="true"></span><span class="sr">' + gettext("Success") + '</span>', // jshint ignore:line
+                'plus': '<span class="fa fa-plus placeholder" aria-hidden="true"></span><span class="sr">' + gettext("Placeholder")+ '</span>' // jshint ignore:line
             },
 
             messages: {
@@ -44,6 +44,11 @@
                 'validationError': '',
                 'inProgress': gettext('Saving'),
                 'success': gettext('Your changes have been saved.')
+            },
+
+            constructor: function(options) {
+                this.options = _.extend({}, options);
+                Backbone.View.apply(this, arguments);
             },
 
             initialize: function () {
@@ -114,7 +119,7 @@
                 this.showNotificationMessage(successMessage);
 
                 if (this.options.refreshPageOnSave) {
-                    document.location.reload();
+                    location.reload(true);
                 }
 
                 var view = this;
@@ -225,8 +230,15 @@
             },
 
             finishEditing: function() {
+                var modelValue;
                 if (this.persistChanges === false || this.mode !== 'edit') {return;}
-                if (this.fieldValue() !== this.modelValue()) {
+
+                modelValue = this.modelValue();
+                if (!(_.isUndefined(modelValue) || _.isNull(modelValue))) {
+                    modelValue = modelValue.toString();
+                }
+
+                if (this.fieldValue() !== modelValue) {
                     this.saveValue();
                 } else {
                     if (this.editable === 'always') {
@@ -312,7 +324,7 @@
 
             updateValueInField: function () {
                 var value = (_.isUndefined(this.modelValue()) || _.isNull(this.modelValue())) ? '' : this.modelValue();
-                this.$('.u-field-value input').val(_.escape(value));
+                this.$('.u-field-value input').val(value);
             },
 
             saveValue: function () {

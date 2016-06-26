@@ -6,7 +6,7 @@ from django.test import TestCase
 from path import path           # pylint: disable=no-name-in-module
 from django.contrib import staticfiles
 
-from openedx.core.djangoapps.theming.test_util import with_comprehensive_theme
+from openedx.core.djangoapps.theming.tests.test_util import with_comprehensive_theme
 from openedx.core.lib.tempdir import mkdtemp_clean
 
 
@@ -71,3 +71,18 @@ class TestComprehensiveTheming(TestCase):
     def test_overridden_logo_image(self):
         result = staticfiles.finders.find('images/logo.png')
         self.assertEqual(result, settings.REPO_ROOT / 'themes/red-theme/lms/static/images/logo.png')
+
+    def test_default_favicon(self):
+        """
+        Test default favicon is served if no theme is applied
+        """
+        result = staticfiles.finders.find('images/favicon.ico')
+        self.assertEqual(result, settings.REPO_ROOT / 'lms/static/images/favicon.ico')
+
+    @with_comprehensive_theme(settings.REPO_ROOT / 'themes/red-theme')
+    def test_overridden_favicon(self):
+        """
+        Test comprehensive theme override on favicon image.
+        """
+        result = staticfiles.finders.find('images/favicon.ico')
+        self.assertEqual(result, settings.REPO_ROOT / 'themes/red-theme/lms/static/images/favicon.ico')

@@ -2,7 +2,9 @@
 'use strict';
 define('video/04_video_full_screen.js', [], function () {
     var template = [
-        '<button class="control add-fullscreen" aria-disabled="false">',
+        '<button class="control add-fullscreen" aria-disabled="false" title="',
+            gettext('Fill browser'),
+        '">',
             '<span class="icon-fallback-img">',
                 '<span class="icon fa fa-arrows-alt" aria-hidden="true"></span>',
                 '<span class="sr control-text">',
@@ -131,7 +133,8 @@ define('video/04_video_full_screen.js', [], function () {
     }
 
     function exit() {
-        var fullScreenClassNameEl = this.el.add(document.documentElement);
+        var fullScreenClassNameEl = this.el.add(document.documentElement),
+            closedCaptionsEl = this.el.find('.closed-captions');
 
         this.videoFullScreen.fullScreenState = this.isFullScreen = false;
         fullScreenClassNameEl.removeClass('video-fullscreen');
@@ -144,10 +147,16 @@ define('video/04_video_full_screen.js', [], function () {
                     .text(gettext('Fill browser'));
 
         this.el.trigger('fullscreen', [this.isFullScreen]);
+
+        $(closedCaptionsEl).css({
+            'top': '70%',
+            'left': '5%'
+        });
     }
 
     function enter() {
-        var fullScreenClassNameEl = this.el.add(document.documentElement);
+        var fullScreenClassNameEl = this.el.add(document.documentElement),
+            closedCaptionsEl = this.el.find('.closed-captions');
 
         this.scrollPos = $(window).scrollTop();
         $(window).scrollTop(0);
@@ -161,6 +170,11 @@ define('video/04_video_full_screen.js', [], function () {
                     .text(gettext('Exit full browser'));
 
         this.el.trigger('fullscreen', [this.isFullScreen]);
+
+        $(closedCaptionsEl).css({
+            'top': '70%',
+            'left': '5%'
+        });
     }
 
     /** Toggle fullscreen mode. */

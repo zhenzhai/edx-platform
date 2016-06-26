@@ -3,7 +3,7 @@ Run acceptance tests that use the bok-choy framework
 http://bok-choy.readthedocs.org/en/latest/
 """
 from paver.easy import task, needs, cmdopts, sh
-from pavelib.utils.test.suites.bokchoy_suite import BokChoyTestSuite
+from pavelib.utils.test.suites.bokchoy_suite import BokChoyTestSuite, Pa11yCrawler
 from pavelib.utils.envs import Env
 from pavelib.utils.test.utils import check_firefox_version
 from optparse import make_option
@@ -19,17 +19,21 @@ __test__ = False  # do not collect
 BOKCHOY_OPTS = [
     ('test_spec=', 't', 'Specific test to run'),
     ('fasttest', 'a', 'Skip some setup'),
+    ('skip_clean', 'C', 'Skip cleaning repository before running tests'),
     ('serversonly', 'r', 'Prepare suite and leave servers running'),
     ('testsonly', 'o', 'Assume servers are running and execute tests only'),
     ('extra_args=', 'e', 'adds as extra args to the test command'),
     ('default_store=', 's', 'Default modulestore'),
     ('test_dir=', 'd', 'Directory for finding tests (relative to common/test/acceptance)'),
+    ('imports_dir=', 'i', 'Directory containing (un-archived) courses to be imported'),
     ('num_processes=', 'n', 'Number of test threads (for multiprocessing)'),
+    ('verify_xss', 'x', 'Run XSS vulnerability tests'),
     make_option("--verbose", action="store_const", const=2, dest="verbosity"),
     make_option("-q", "--quiet", action="store_const", const=0, dest="verbosity"),
     make_option("-v", "--verbosity", action="count", dest="verbosity"),
     make_option("--pdb", action="store_true", help="Drop into debugger on failures or errors"),
-    make_option("--skip_firefox_version_validation", action='store_false', dest="validate_firefox_version")
+    make_option("--skip_firefox_version_validation", action='store_false', dest="validate_firefox_version"),
+    make_option("--save_screenshots", action='store_true', dest="save_screenshots"),
 ]
 
 
@@ -43,6 +47,7 @@ def parse_bokchoy_opts(options):
         'test_spec': getattr(options, 'test_spec', None),
         'fasttest': getattr(options, 'fasttest', False),
         'num_processes': int(getattr(options, 'num_processes', 1)),
+        'verify_xss': getattr(options, 'verify_xss', os.environ.get('VERIFY_XSS', False)),
         'serversonly': getattr(options, 'serversonly', False),
         'testsonly': getattr(options, 'testsonly', False),
         'default_store': getattr(options, 'default_store', os.environ.get('DEFAULT_STORE', 'split')),
@@ -50,6 +55,8 @@ def parse_bokchoy_opts(options):
         'extra_args': getattr(options, 'extra_args', ''),
         'pdb': getattr(options, 'pdb', False),
         'test_dir': getattr(options, 'test_dir', 'tests'),
+        'imports_dir': getattr(options, 'imports_dir', None),
+        'save_screenshots': getattr(options, 'save_screenshots', False),
     }
 
 
@@ -111,28 +118,48 @@ def test_a11y(options):
 
 @task
 @needs('pavelib.prereqs.install_prereqs')
-@cmdopts([
-    ('test_spec=', 't', 'Specific test to run'),
-    ('fasttest', 'a', 'Skip some setup'),
-    ('imports_dir=', 'd', 'Directory containing (un-archived) courses to be imported'),
-    ('default_store=', 's', 'Default modulestore'),
-    make_option("--verbose", action="store_const", const=2, dest="verbosity"),
-    make_option("-q", "--quiet", action="store_const", const=0, dest="verbosity"),
-    make_option("-v", "--verbosity", action="count", dest="verbosity"),
-])
+@cmdopts(BOKCHOY_OPTS)
 def perf_report_bokchoy(options):
     """
     Generates a har file for with page performance info.
     """
-    opts = {
-        'test_spec': getattr(options, 'test_spec', None),
-        'fasttest': getattr(options, 'fasttest', False),
-        'default_store': getattr(options, 'default_store', os.environ.get('DEFAULT_STORE', 'split')),
-        'imports_dir': getattr(options, 'imports_dir', None),
-        'verbosity': getattr(options, 'verbosity', 2),
-        'test_dir': 'performance',
-    }
+    opts = parse_bokchoy_opts(options)
+    opts['test_dir'] = 'performance'
+
     run_bokchoy(**opts)
+
+
+@task
+@needs('pavelib.prereqs.install_prereqs')
+@cmdopts(BOKCHOY_OPTS + [
+    ('with-html', 'w', 'Include html reports'),
+    make_option('--course-key', help='Course key for test course'),
+    make_option(
+        "--fetch-course",
+        action="store_true",
+        dest="should_fetch_course",
+        help='Course key for test course',
+    ),
+])
+def pa11ycrawler(options):
+    """
+    Runs pa11ycrawler against the demo-test-course to generates accessibility
+    reports. (See https://github.com/edx/demo-test-course)
+
+    Note: Like the bok-choy tests, this can be used with the `serversonly`
+    flag to get an environment running. The setup for this is the same as
+    for bok-choy tests, only test course is imported as well.
+    """
+    opts = parse_bokchoy_opts(options)
+    opts['report_dir'] = Env.PA11YCRAWLER_REPORT_DIR
+    opts['coveragerc'] = Env.PA11YCRAWLER_COVERAGERC
+    opts['should_fetch_course'] = getattr(options, 'should_fetch_course', not opts['fasttest'])
+    opts['course_key'] = getattr(options, 'course-key', "course-v1:edX+Test101+course")
+    test_suite = Pa11yCrawler('a11y_crawler', **opts)
+    test_suite.run()
+
+    if getattr(options, 'with_html', False):
+        test_suite.generate_html_reports()
 
 
 def run_bokchoy(**opts):
@@ -192,4 +219,15 @@ def a11y_coverage():
     parse_coverage(
         Env.BOK_CHOY_A11Y_REPORT_DIR,
         Env.BOK_CHOY_A11Y_COVERAGERC
+    )
+
+
+@task
+def pa11ycrawler_coverage():
+    """
+    Generate coverage reports for bok-choy tests
+    """
+    parse_coverage(
+        Env.PA11YCRAWLER_REPORT_DIR,
+        Env.PA11YCRAWLER_COVERAGERC
     )

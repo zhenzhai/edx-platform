@@ -9,10 +9,10 @@ from urllib import urlencode
 import ddt
 import httpretty
 import mock
+from nose.plugins.attrib import attr
 from pytz import UTC
 
 from django.core.exceptions import ValidationError
-from django.http import Http404
 from django.test.client import RequestFactory
 
 from rest_framework.exceptions import PermissionDenied
@@ -35,10 +35,13 @@ from discussion_api.api import (
     update_thread,
     get_thread,
 )
+from discussion_api.exceptions import DiscussionDisabledError, ThreadNotFoundError, CommentNotFoundError
 from discussion_api.tests.utils import (
     CommentsServiceMockMixin,
     make_minimal_cs_comment,
     make_minimal_cs_thread,
+    make_paginated_api_response,
+    ProfileImageTestMixin,
 )
 from django_comment_common.models import (
     FORUM_ROLE_ADMINISTRATOR,
@@ -49,6 +52,7 @@ from django_comment_common.models import (
 )
 from openedx.core.djangoapps.course_groups.models import CourseUserGroupPartitionGroup
 from openedx.core.djangoapps.course_groups.tests.helpers import CohortFactory
+from openedx.core.lib.exceptions import CourseNotFoundError, PageNotFoundError
 from student.tests.factories import CourseEnrollmentFactory, UserFactory
 from util.testing import UrlResetMixin
 from xmodule.modulestore.django import modulestore
@@ -80,7 +84,7 @@ def _discussion_disabled_course_for(user):
     return course_with_disabled_forums
 
 
-@ddt.ddt
+@attr('shard_2')
 @mock.patch.dict("django.conf.settings.FEATURES", {"ENABLE_DISCUSSION_SERVICE": True})
 class GetCourseTest(UrlResetMixin, SharedModuleStoreTestCase):
     """Test for get_course"""
@@ -99,17 +103,17 @@ class GetCourseTest(UrlResetMixin, SharedModuleStoreTestCase):
         self.request.user = self.user
 
     def test_nonexistent_course(self):
-        with self.assertRaises(Http404):
+        with self.assertRaises(CourseNotFoundError):
             get_course(self.request, CourseLocator.from_string("non/existent/course"))
 
     def test_not_enrolled(self):
         unenrolled_user = UserFactory.create()
         self.request.user = unenrolled_user
-        with self.assertRaises(Http404):
+        with self.assertRaises(CourseNotFoundError):
             get_course(self.request, self.course.id)
 
     def test_discussions_disabled(self):
-        with self.assertRaises(Http404):
+        with self.assertRaises(DiscussionDisabledError):
             get_course(self.request, _discussion_disabled_course_for(self.user).id)
 
     def test_basic(self):
@@ -125,6 +129,24 @@ class GetCourseTest(UrlResetMixin, SharedModuleStoreTestCase):
                 "topics_url": "http://testserver/api/discussion/v1/course_topics/x/y/z",
             }
         )
+
+
+@attr('shard_2')
+@ddt.ddt
+@mock.patch.dict("django.conf.settings.FEATURES", {"ENABLE_DISCUSSION_SERVICE": True})
+class GetCourseTestBlackouts(UrlResetMixin, ModuleStoreTestCase):
+    """
+    Tests of get_course for courses that have blackout dates.
+    """
+
+    @mock.patch.dict("django.conf.settings.FEATURES", {"ENABLE_DISCUSSION_SERVICE": True})
+    def setUp(self):
+        super(GetCourseTestBlackouts, self).setUp()
+        self.course = CourseFactory.create(org="x", course="y", run="z")
+        self.user = UserFactory.create()
+        CourseEnrollmentFactory.create(user=self.user, course_id=self.course.id)
+        self.request = RequestFactory().get("/dummy")
+        self.request.user = self.user
 
     def test_blackout(self):
         # A variety of formats is accepted
@@ -153,6 +175,7 @@ class GetCourseTest(UrlResetMixin, SharedModuleStoreTestCase):
         self.assertEqual(result["blackouts"], [])
 
 
+@attr('shard_2')
 @mock.patch.dict("django.conf.settings.FEATURES", {"DISABLE_START_DATES": False})
 @mock.patch.dict("django.conf.settings.FEATURES", {"ENABLE_DISCUSSION_SERVICE": True})
 class GetCourseTopicsTest(UrlResetMixin, ModuleStoreTestCase):
@@ -226,18 +249,18 @@ class GetCourseTopicsTest(UrlResetMixin, ModuleStoreTestCase):
         return node
 
     def test_nonexistent_course(self):
-        with self.assertRaises(Http404):
+        with self.assertRaises(CourseNotFoundError):
             get_course_topics(self.request, CourseLocator.from_string("non/existent/course"))
 
     def test_not_enrolled(self):
         unenrolled_user = UserFactory.create()
         self.request.user = unenrolled_user
-        with self.assertRaises(Http404):
+        with self.assertRaises(CourseNotFoundError):
             self.get_course_topics()
 
     def test_discussions_disabled(self):
         _remove_discussion_tab(self.course, self.user.id)
-        with self.assertRaises(Http404):
+        with self.assertRaises(DiscussionDisabledError):
             self.get_course_topics()
 
     def test_without_courseware(self):
@@ -478,7 +501,53 @@ class GetCourseTopicsTest(UrlResetMixin, ModuleStoreTestCase):
         }
         self.assertEqual(staff_actual, staff_expected)
 
+    def test_discussion_topic(self):
+        """
+        Tests discussion topic details against a requested topic id
+        """
+        topic_id_1 = "topic_id_1"
+        topic_id_2 = "topic_id_2"
+        self.make_discussion_module(topic_id_1, "test_category_1", "test_target_1")
+        self.make_discussion_module(topic_id_2, "test_category_2", "test_target_2")
+        actual = get_course_topics(self.request, self.course.id, {"topic_id_1", "topic_id_2"})
+        self.assertEqual(
+            actual,
+            {
+                "non_courseware_topics": [],
+                "courseware_topics": [
+                    {
+                        "children": [{
+                            "children": [],
+                            "id": "topic_id_1",
+                            "thread_list_url": "http://testserver/api/discussion/v1/threads/?"
+                                               "course_id=x%2Fy%2Fz&topic_id=topic_id_1",
+                            "name": "test_target_1"
+                        }],
+                        "id": None,
+                        "thread_list_url": "http://testserver/api/discussion/v1/threads/?"
+                                           "course_id=x%2Fy%2Fz&topic_id=topic_id_1",
+                        "name": "test_category_1"
+                    },
+                    {
+                        "children":
+                            [{
+                                "children": [],
+                                "id": "topic_id_2",
+                                "thread_list_url": "http://testserver/api/discussion/v1/threads/?"
+                                                   "course_id=x%2Fy%2Fz&topic_id=topic_id_2",
+                                "name": "test_target_2"
+                            }],
+                        "id": None,
+                        "thread_list_url": "http://testserver/api/discussion/v1/threads/?"
+                                           "course_id=x%2Fy%2Fz&topic_id=topic_id_2",
+                        "name": "test_category_2"
+                    }
+                ]
+            }
+        )
 
+
+@attr('shard_2')
 @ddt.ddt
 @mock.patch.dict("django.conf.settings.FEATURES", {"ENABLE_DISCUSSION_SERVICE": True})
 class GetThreadListTest(CommentsServiceMockMixin, UrlResetMixin, SharedModuleStoreTestCase):
@@ -523,25 +592,29 @@ class GetThreadListTest(CommentsServiceMockMixin, UrlResetMixin, SharedModuleSto
         return ret
 
     def test_nonexistent_course(self):
-        with self.assertRaises(Http404):
+        with self.assertRaises(CourseNotFoundError):
             get_thread_list(self.request, CourseLocator.from_string("non/existent/course"), 1, 1)
 
     def test_not_enrolled(self):
         self.request.user = UserFactory.create()
-        with self.assertRaises(Http404):
+        with self.assertRaises(CourseNotFoundError):
             self.get_thread_list([])
 
     def test_discussions_disabled(self):
-        with self.assertRaises(Http404):
+        with self.assertRaises(DiscussionDisabledError):
             self.get_thread_list([], course=_discussion_disabled_course_for(self.user))
 
     def test_empty(self):
         self.assertEqual(
-            self.get_thread_list([]),
+            self.get_thread_list([], num_pages=0).data,
             {
+                "pagination": {
+                    "next": None,
+                    "previous": None,
+                    "num_pages": 0,
+                    "count": 0
+                },
                 "results": [],
-                "next": None,
-                "previous": None,
                 "text_search_rewrite": None,
             }
         )
@@ -687,14 +760,14 @@ class GetThreadListTest(CommentsServiceMockMixin, UrlResetMixin, SharedModuleSto
                 "read": False,
             },
         ]
+
+        expected_result = make_paginated_api_response(
+            results=expected_threads, count=2, num_pages=1, next_link=None, previous_link=None
+        )
+        expected_result.update({"text_search_rewrite": None})
         self.assertEqual(
-            self.get_thread_list(source_threads),
-            {
-                "results": expected_threads,
-                "next": None,
-                "previous": None,
-                "text_search_rewrite": None,
-            }
+            self.get_thread_list(source_threads).data,
+            expected_result
         )
 
     @ddt.data(
@@ -722,42 +795,49 @@ class GetThreadListTest(CommentsServiceMockMixin, UrlResetMixin, SharedModuleSto
 
     def test_pagination(self):
         # N.B. Empty thread list is not realistic but convenient for this test
-        self.assertEqual(
-            self.get_thread_list([], page=1, num_pages=3),
-            {
-                "results": [],
-                "next": "http://testserver/test_path?page=2",
-                "previous": None,
-                "text_search_rewrite": None,
-            }
+        expected_result = make_paginated_api_response(
+            results=[], count=0, num_pages=3, next_link="http://testserver/test_path?page=2", previous_link=None
         )
+        expected_result.update({"text_search_rewrite": None})
         self.assertEqual(
-            self.get_thread_list([], page=2, num_pages=3),
-            {
-                "results": [],
-                "next": "http://testserver/test_path?page=3",
-                "previous": "http://testserver/test_path?page=1",
-                "text_search_rewrite": None,
-            }
+            self.get_thread_list([], page=1, num_pages=3).data,
+            expected_result
         )
+
+        expected_result = make_paginated_api_response(
+            results=[],
+            count=0,
+            num_pages=3,
+            next_link="http://testserver/test_path?page=3",
+            previous_link="http://testserver/test_path?page=1"
+        )
+        expected_result.update({"text_search_rewrite": None})
         self.assertEqual(
-            self.get_thread_list([], page=3, num_pages=3),
-            {
-                "results": [],
-                "next": None,
-                "previous": "http://testserver/test_path?page=2",
-                "text_search_rewrite": None,
-            }
+            self.get_thread_list([], page=2, num_pages=3).data,
+            expected_result
+        )
+
+        expected_result = make_paginated_api_response(
+            results=[], count=0, num_pages=3, next_link=None, previous_link="http://testserver/test_path?page=2"
+        )
+        expected_result.update({"text_search_rewrite": None})
+        self.assertEqual(
+            self.get_thread_list([], page=3, num_pages=3).data,
+            expected_result
         )
 
         # Test page past the last one
         self.register_get_threads_response([], page=3, num_pages=3)
-        with self.assertRaises(Http404):
+        with self.assertRaises(PageNotFoundError):
             get_thread_list(self.request, self.course.id, page=4, page_size=10)
 
     @ddt.data(None, "rewritten search string")
     def test_text_search(self, text_search_rewrite):
-        self.register_get_threads_search_response([], text_search_rewrite)
+        expected_result = make_paginated_api_response(
+            results=[], count=0, num_pages=0, next_link=None, previous_link=None
+        )
+        expected_result.update({"text_search_rewrite": text_search_rewrite})
+        self.register_get_threads_search_response([], text_search_rewrite, num_pages=0)
         self.assertEqual(
             get_thread_list(
                 self.request,
@@ -765,13 +845,8 @@ class GetThreadListTest(CommentsServiceMockMixin, UrlResetMixin, SharedModuleSto
                 page=1,
                 page_size=10,
                 text_search="test search string"
-            ),
-            {
-                "results": [],
-                "next": None,
-                "previous": None,
-                "text_search_rewrite": text_search_rewrite,
-            }
+            ).data,
+            expected_result
         )
         self.assert_last_query_params({
             "user_id": [unicode(self.user.id)],
@@ -785,17 +860,22 @@ class GetThreadListTest(CommentsServiceMockMixin, UrlResetMixin, SharedModuleSto
         })
 
     def test_following(self):
-        self.register_subscribed_threads_response(self.user, [], page=1, num_pages=1)
+        self.register_subscribed_threads_response(self.user, [], page=1, num_pages=0)
         result = get_thread_list(
             self.request,
             self.course.id,
             page=1,
             page_size=11,
             following=True,
+        ).data
+
+        expected_result = make_paginated_api_response(
+            results=[], count=0, num_pages=0, next_link=None, previous_link=None
         )
+        expected_result.update({"text_search_rewrite": None})
         self.assertEqual(
             result,
-            {"results": [], "next": None, "previous": None, "text_search_rewrite": None}
+            expected_result
         )
         self.assertEqual(
             urlparse(httpretty.last_request().path).path,
@@ -812,17 +892,22 @@ class GetThreadListTest(CommentsServiceMockMixin, UrlResetMixin, SharedModuleSto
 
     @ddt.data("unanswered", "unread")
     def test_view_query(self, query):
-        self.register_get_threads_response([], page=1, num_pages=1)
+        self.register_get_threads_response([], page=1, num_pages=0)
         result = get_thread_list(
             self.request,
             self.course.id,
             page=1,
             page_size=11,
             view=query,
+        ).data
+
+        expected_result = make_paginated_api_response(
+            results=[], count=0, num_pages=0, next_link=None, previous_link=None
         )
+        expected_result.update({"text_search_rewrite": None})
         self.assertEqual(
             result,
-            {"results": [], "next": None, "previous": None, "text_search_rewrite": None}
+            expected_result
         )
         self.assertEqual(
             urlparse(httpretty.last_request().path).path,
@@ -853,18 +938,20 @@ class GetThreadListTest(CommentsServiceMockMixin, UrlResetMixin, SharedModuleSto
             http_query (str): Query string sent in the http request
             cc_query (str): Query string used for the comments client service
         """
-        self.register_get_threads_response([], page=1, num_pages=1)
+        self.register_get_threads_response([], page=1, num_pages=0)
         result = get_thread_list(
             self.request,
             self.course.id,
             page=1,
             page_size=11,
             order_by=http_query,
+        ).data
+
+        expected_result = make_paginated_api_response(
+            results=[], count=0, num_pages=0, next_link=None, previous_link=None
         )
-        self.assertEqual(
-            result,
-            {"results": [], "next": None, "previous": None, "text_search_rewrite": None}
-        )
+        expected_result.update({"text_search_rewrite": None})
+        self.assertEqual(result, expected_result)
         self.assertEqual(
             urlparse(httpretty.last_request().path).path,
             "/api/v1/threads"
@@ -881,18 +968,20 @@ class GetThreadListTest(CommentsServiceMockMixin, UrlResetMixin, SharedModuleSto
 
     @ddt.data("asc", "desc")
     def test_order_direction_query(self, http_query):
-        self.register_get_threads_response([], page=1, num_pages=1)
+        self.register_get_threads_response([], page=1, num_pages=0)
         result = get_thread_list(
             self.request,
             self.course.id,
             page=1,
             page_size=11,
             order_direction=http_query,
+        ).data
+
+        expected_result = make_paginated_api_response(
+            results=[], count=0, num_pages=0, next_link=None, previous_link=None
         )
-        self.assertEqual(
-            result,
-            {"results": [], "next": None, "previous": None, "text_search_rewrite": None}
-        )
+        expected_result.update({"text_search_rewrite": None})
+        self.assertEqual(result, expected_result)
         self.assertEqual(
             urlparse(httpretty.last_request().path).path,
             "/api/v1/threads"
@@ -908,6 +997,7 @@ class GetThreadListTest(CommentsServiceMockMixin, UrlResetMixin, SharedModuleSto
         })
 
 
+@attr('shard_2')
 @ddt.ddt
 @mock.patch.dict("django.conf.settings.FEATURES", {"ENABLE_DISCUSSION_SERVICE": True})
 class GetCommentListTest(CommentsServiceMockMixin, SharedModuleStoreTestCase):
@@ -952,21 +1042,21 @@ class GetCommentListTest(CommentsServiceMockMixin, SharedModuleStoreTestCase):
     def test_nonexistent_thread(self):
         thread_id = "nonexistent_thread"
         self.register_get_thread_error_response(thread_id, 404)
-        with self.assertRaises(Http404):
+        with self.assertRaises(ThreadNotFoundError):
             get_comment_list(self.request, thread_id, endorsed=False, page=1, page_size=1)
 
     def test_nonexistent_course(self):
-        with self.assertRaises(Http404):
+        with self.assertRaises(CourseNotFoundError):
             self.get_comment_list(self.make_minimal_cs_thread({"course_id": "non/existent/course"}))
 
     def test_not_enrolled(self):
         self.request.user = UserFactory.create()
-        with self.assertRaises(Http404):
+        with self.assertRaises(CourseNotFoundError):
             self.get_comment_list(self.make_minimal_cs_thread())
 
     def test_discussions_disabled(self):
         disabled_course = _discussion_disabled_course_for(self.user)
-        with self.assertRaises(Http404):
+        with self.assertRaises(DiscussionDisabledError):
             self.get_comment_list(
                 self.make_minimal_cs_thread(
                     overrides={"course_id": unicode(disabled_course.id)}
@@ -1023,7 +1113,7 @@ class GetCommentListTest(CommentsServiceMockMixin, SharedModuleStoreTestCase):
         try:
             self.get_comment_list(thread)
             self.assertFalse(expected_error)
-        except Http404:
+        except ThreadNotFoundError:
             self.assertTrue(expected_error)
 
     @ddt.data(True, False)
@@ -1054,8 +1144,8 @@ class GetCommentListTest(CommentsServiceMockMixin, SharedModuleStoreTestCase):
             {"thread_type": "discussion", "children": [], "resp_total": 0}
         )
         self.assertEqual(
-            self.get_comment_list(discussion_thread),
-            {"results": [], "next": None, "previous": None}
+            self.get_comment_list(discussion_thread).data,
+            make_paginated_api_response(results=[], count=0, num_pages=1, next_link=None, previous_link=None)
         )
 
         question_thread = self.make_minimal_cs_thread({
@@ -1065,18 +1155,18 @@ class GetCommentListTest(CommentsServiceMockMixin, SharedModuleStoreTestCase):
             "non_endorsed_resp_total": 0
         })
         self.assertEqual(
-            self.get_comment_list(question_thread, endorsed=False),
-            {"results": [], "next": None, "previous": None}
+            self.get_comment_list(question_thread, endorsed=False).data,
+            make_paginated_api_response(results=[], count=0, num_pages=1, next_link=None, previous_link=None)
         )
         self.assertEqual(
-            self.get_comment_list(question_thread, endorsed=True),
-            {"results": [], "next": None, "previous": None}
+            self.get_comment_list(question_thread, endorsed=True).data,
+            make_paginated_api_response(results=[], count=0, num_pages=1, next_link=None, previous_link=None)
         )
 
     def test_basic_query_params(self):
         self.get_comment_list(
             self.make_minimal_cs_thread({
-                "children": [make_minimal_cs_comment()],
+                "children": [make_minimal_cs_comment({"username": self.user.username})],
                 "resp_total": 71
             }),
             page=6,
@@ -1109,6 +1199,7 @@ class GetCommentListTest(CommentsServiceMockMixin, SharedModuleStoreTestCase):
                 "endorsed": False,
                 "abuse_flaggers": [],
                 "votes": {"up_count": 4},
+                "child_count": 0,
                 "children": [],
             },
             {
@@ -1125,6 +1216,7 @@ class GetCommentListTest(CommentsServiceMockMixin, SharedModuleStoreTestCase):
                 "endorsed": False,
                 "abuse_flaggers": [str(self.user.id)],
                 "votes": {"up_count": 7},
+                "child_count": 0,
                 "children": [],
             }
         ]
@@ -1147,6 +1239,7 @@ class GetCommentListTest(CommentsServiceMockMixin, SharedModuleStoreTestCase):
                 "voted": False,
                 "vote_count": 4,
                 "editable_fields": ["abuse_flagged", "voted"],
+                "child_count": 0,
                 "children": [],
             },
             {
@@ -1167,26 +1260,29 @@ class GetCommentListTest(CommentsServiceMockMixin, SharedModuleStoreTestCase):
                 "voted": False,
                 "vote_count": 7,
                 "editable_fields": ["abuse_flagged", "voted"],
+                "child_count": 0,
                 "children": [],
             },
         ]
         actual_comments = self.get_comment_list(
             self.make_minimal_cs_thread({"children": source_comments})
-        )["results"]
+        ).data["results"]
         self.assertEqual(actual_comments, expected_comments)
 
     def test_question_content(self):
         thread = self.make_minimal_cs_thread({
             "thread_type": "question",
-            "endorsed_responses": [make_minimal_cs_comment({"id": "endorsed_comment"})],
-            "non_endorsed_responses": [make_minimal_cs_comment({"id": "non_endorsed_comment"})],
+            "endorsed_responses": [make_minimal_cs_comment({"id": "endorsed_comment", "username": self.user.username})],
+            "non_endorsed_responses": [make_minimal_cs_comment({
+                "id": "non_endorsed_comment", "username": self.user.username
+            })],
             "non_endorsed_resp_total": 1,
         })
 
-        endorsed_actual = self.get_comment_list(thread, endorsed=True)
+        endorsed_actual = self.get_comment_list(thread, endorsed=True).data
         self.assertEqual(endorsed_actual["results"][0]["id"], "endorsed_comment")
 
-        non_endorsed_actual = self.get_comment_list(thread, endorsed=False)
+        non_endorsed_actual = self.get_comment_list(thread, endorsed=False).data
         self.assertEqual(non_endorsed_actual["results"][0]["id"], "non_endorsed_comment")
 
     def test_endorsed_by_anonymity(self):
@@ -1198,11 +1294,12 @@ class GetCommentListTest(CommentsServiceMockMixin, SharedModuleStoreTestCase):
             "anonymous": True,
             "children": [
                 make_minimal_cs_comment({
-                    "endorsement": {"user_id": str(self.author.id), "time": "2015-05-18T12:34:56Z"}
+                    "username": self.user.username,
+                    "endorsement": {"user_id": str(self.author.id), "time": "2015-05-18T12:34:56Z"},
                 })
             ]
         })
-        actual_comments = self.get_comment_list(thread)["results"]
+        actual_comments = self.get_comment_list(thread).data["results"]
         self.assertIsNone(actual_comments[0]["endorsed_by"])
 
     @ddt.data(
@@ -1225,29 +1322,29 @@ class GetCommentListTest(CommentsServiceMockMixin, SharedModuleStoreTestCase):
         # number of responses is unrealistic but convenient for this test
         thread = self.make_minimal_cs_thread({
             "thread_type": thread_type,
-            response_field: [make_minimal_cs_comment()],
+            response_field: [make_minimal_cs_comment({"username": self.user.username})],
             response_total_field: 5,
         })
 
         # Only page
-        actual = self.get_comment_list(thread, endorsed=endorsed_arg, page=1, page_size=5)
-        self.assertIsNone(actual["next"])
-        self.assertIsNone(actual["previous"])
+        actual = self.get_comment_list(thread, endorsed=endorsed_arg, page=1, page_size=5).data
+        self.assertIsNone(actual["pagination"]["next"])
+        self.assertIsNone(actual["pagination"]["previous"])
 
         # First page of many
-        actual = self.get_comment_list(thread, endorsed=endorsed_arg, page=1, page_size=2)
-        self.assertEqual(actual["next"], "http://testserver/test_path?page=2")
-        self.assertIsNone(actual["previous"])
+        actual = self.get_comment_list(thread, endorsed=endorsed_arg, page=1, page_size=2).data
+        self.assertEqual(actual["pagination"]["next"], "http://testserver/test_path?page=2")
+        self.assertIsNone(actual["pagination"]["previous"])
 
         # Middle page of many
-        actual = self.get_comment_list(thread, endorsed=endorsed_arg, page=2, page_size=2)
-        self.assertEqual(actual["next"], "http://testserver/test_path?page=3")
-        self.assertEqual(actual["previous"], "http://testserver/test_path?page=1")
+        actual = self.get_comment_list(thread, endorsed=endorsed_arg, page=2, page_size=2).data
+        self.assertEqual(actual["pagination"]["next"], "http://testserver/test_path?page=3")
+        self.assertEqual(actual["pagination"]["previous"], "http://testserver/test_path?page=1")
 
         # Last page of many
-        actual = self.get_comment_list(thread, endorsed=endorsed_arg, page=3, page_size=2)
-        self.assertIsNone(actual["next"])
-        self.assertEqual(actual["previous"], "http://testserver/test_path?page=2")
+        actual = self.get_comment_list(thread, endorsed=endorsed_arg, page=3, page_size=2).data
+        self.assertIsNone(actual["pagination"]["next"])
+        self.assertEqual(actual["pagination"]["previous"], "http://testserver/test_path?page=2")
 
         # Page past the end
         thread = self.make_minimal_cs_thread({
@@ -1255,15 +1352,16 @@ class GetCommentListTest(CommentsServiceMockMixin, SharedModuleStoreTestCase):
             response_field: [],
             response_total_field: 5
         })
-        with self.assertRaises(Http404):
+        with self.assertRaises(PageNotFoundError):
             self.get_comment_list(thread, endorsed=endorsed_arg, page=2, page_size=5)
 
     def test_question_endorsed_pagination(self):
         thread = self.make_minimal_cs_thread({
             "thread_type": "question",
-            "endorsed_responses": [
-                make_minimal_cs_comment({"id": "comment_{}".format(i)}) for i in range(10)
-            ]
+            "endorsed_responses": [make_minimal_cs_comment({
+                "id": "comment_{}".format(i),
+                "username": self.user.username
+            }) for i in range(10)]
         })
 
         def assert_page_correct(page, page_size, expected_start, expected_stop, expected_next, expected_prev):
@@ -1271,18 +1369,18 @@ class GetCommentListTest(CommentsServiceMockMixin, SharedModuleStoreTestCase):
             Check that requesting the given page/page_size returns the expected
             output
             """
-            actual = self.get_comment_list(thread, endorsed=True, page=page, page_size=page_size)
+            actual = self.get_comment_list(thread, endorsed=True, page=page, page_size=page_size).data
             result_ids = [result["id"] for result in actual["results"]]
             self.assertEqual(
                 result_ids,
                 ["comment_{}".format(i) for i in range(expected_start, expected_stop)]
             )
             self.assertEqual(
-                actual["next"],
+                actual["pagination"]["next"],
                 "http://testserver/test_path?page={}".format(expected_next) if expected_next else None
             )
             self.assertEqual(
-                actual["previous"],
+                actual["pagination"]["previous"],
                 "http://testserver/test_path?page={}".format(expected_prev) if expected_prev else None
             )
 
@@ -1327,10 +1425,11 @@ class GetCommentListTest(CommentsServiceMockMixin, SharedModuleStoreTestCase):
         )
 
         # Page past the end
-        with self.assertRaises(Http404):
+        with self.assertRaises(PageNotFoundError):
             self.get_comment_list(thread, endorsed=True, page=2, page_size=10)
 
 
+@attr('shard_2')
 @ddt.ddt
 @disable_signal(api, 'thread_created')
 @disable_signal(api, 'thread_voted')
@@ -1476,7 +1575,7 @@ class CreateThreadTest(
             cohort = CohortFactory.create(course_id=cohort_course.id, users=[self.user])
         role = Role.objects.create(name=role_name, course_id=cohort_course.id)
         role.users = [self.user]
-        self.register_post_thread_response({})
+        self.register_post_thread_response({"username": self.user.username})
         data = self.minimal_data.copy()
         data["course_id"] = unicode(cohort_course.id)
         if data_group_state == "group_is_none":
@@ -1505,7 +1604,7 @@ class CreateThreadTest(
                 self.fail("Unexpected validation error: {}".format(ex))
 
     def test_following(self):
-        self.register_post_thread_response({"id": "test_id"})
+        self.register_post_thread_response({"id": "test_id", "username": self.user.username})
         self.register_subscription_response(self.user)
         data = self.minimal_data.copy()
         data["following"] = "True"
@@ -1523,7 +1622,7 @@ class CreateThreadTest(
         )
 
     def test_voted(self):
-        self.register_post_thread_response({"id": "test_id"})
+        self.register_post_thread_response({"id": "test_id", "username": self.user.username})
         self.register_thread_votes_response("test_id")
         data = self.minimal_data.copy()
         data["voted"] = "True"
@@ -1539,7 +1638,7 @@ class CreateThreadTest(
         )
 
     def test_abuse_flagged(self):
-        self.register_post_thread_response({"id": "test_id"})
+        self.register_post_thread_response({"id": "test_id", "username": self.user.username})
         self.register_thread_flag_response("test_id")
         data = self.minimal_data.copy()
         data["abuse_flagged"] = "True"
@@ -1561,22 +1660,19 @@ class CreateThreadTest(
         self.assertEqual(assertion.exception.message_dict, {"course_id": ["Invalid value."]})
 
     def test_nonexistent_course(self):
-        with self.assertRaises(ValidationError) as assertion:
+        with self.assertRaises(CourseNotFoundError):
             create_thread(self.request, {"course_id": "non/existent/course"})
-        self.assertEqual(assertion.exception.message_dict, {"course_id": ["Invalid value."]})
 
     def test_not_enrolled(self):
         self.request.user = UserFactory.create()
-        with self.assertRaises(ValidationError) as assertion:
+        with self.assertRaises(CourseNotFoundError):
             create_thread(self.request, self.minimal_data)
-        self.assertEqual(assertion.exception.message_dict, {"course_id": ["Invalid value."]})
 
     def test_discussions_disabled(self):
         disabled_course = _discussion_disabled_course_for(self.user)
         self.minimal_data["course_id"] = unicode(disabled_course.id)
-        with self.assertRaises(ValidationError) as assertion:
+        with self.assertRaises(DiscussionDisabledError):
             create_thread(self.request, self.minimal_data)
-        self.assertEqual(assertion.exception.message_dict, {"course_id": ["Invalid value."]})
 
     def test_invalid_field(self):
         data = self.minimal_data.copy()
@@ -1585,6 +1681,7 @@ class CreateThreadTest(
             create_thread(self.request, data)
 
 
+@attr('shard_2')
 @ddt.ddt
 @disable_signal(api, 'comment_created')
 @disable_signal(api, 'comment_voted')
@@ -1662,7 +1759,8 @@ class CreateCommentTest(
             "voted": False,
             "vote_count": 0,
             "children": [],
-            "editable_fields": ["abuse_flagged", "raw_body", "voted"]
+            "editable_fields": ["abuse_flagged", "raw_body", "voted"],
+            "child_count": 0,
         }
         self.assertEqual(actual, expected)
         expected_url = (
@@ -1726,7 +1824,7 @@ class CreateCommentTest(
                 "user_id": str(self.user.id) if is_thread_author else str(self.user.id + 1),
             })
         )
-        self.register_post_comment_response({}, "test_thread")
+        self.register_post_comment_response({"username": self.user.username}, "test_thread")
         data = self.minimal_data.copy()
         data["endorsed"] = True
         expected_error = (
@@ -1741,7 +1839,7 @@ class CreateCommentTest(
             self.assertTrue(expected_error)
 
     def test_voted(self):
-        self.register_post_comment_response({"id": "test_comment"}, "test_thread")
+        self.register_post_comment_response({"id": "test_comment", "username": self.user.username}, "test_thread")
         self.register_comment_votes_response("test_comment")
         data = self.minimal_data.copy()
         data["voted"] = "True"
@@ -1757,7 +1855,7 @@ class CreateCommentTest(
         )
 
     def test_abuse_flagged(self):
-        self.register_post_comment_response({"id": "test_comment"}, "test_thread")
+        self.register_post_comment_response({"id": "test_comment", "username": self.user.username}, "test_thread")
         self.register_comment_flag_response("test_comment")
         data = self.minimal_data.copy()
         data["abuse_flagged"] = "True"
@@ -1775,23 +1873,20 @@ class CreateCommentTest(
 
     def test_thread_id_not_found(self):
         self.register_get_thread_error_response("test_thread", 404)
-        with self.assertRaises(ValidationError) as assertion:
+        with self.assertRaises(ThreadNotFoundError):
             create_comment(self.request, self.minimal_data)
-        self.assertEqual(assertion.exception.message_dict, {"thread_id": ["Invalid value."]})
 
     def test_nonexistent_course(self):
         self.register_get_thread_response(
             make_minimal_cs_thread({"id": "test_thread", "course_id": "non/existent/course"})
         )
-        with self.assertRaises(ValidationError) as assertion:
+        with self.assertRaises(CourseNotFoundError):
             create_comment(self.request, self.minimal_data)
-        self.assertEqual(assertion.exception.message_dict, {"thread_id": ["Invalid value."]})
 
     def test_not_enrolled(self):
         self.request.user = UserFactory.create()
-        with self.assertRaises(ValidationError) as assertion:
+        with self.assertRaises(CourseNotFoundError):
             create_comment(self.request, self.minimal_data)
-        self.assertEqual(assertion.exception.message_dict, {"thread_id": ["Invalid value."]})
 
     def test_discussions_disabled(self):
         disabled_course = _discussion_disabled_course_for(self.user)
@@ -1802,9 +1897,8 @@ class CreateCommentTest(
                 "commentable_id": "test_topic",
             })
         )
-        with self.assertRaises(ValidationError) as assertion:
+        with self.assertRaises(DiscussionDisabledError):
             create_comment(self.request, self.minimal_data)
-        self.assertEqual(assertion.exception.message_dict, {"thread_id": ["Invalid value."]})
 
     @ddt.data(
         *itertools.product(
@@ -1834,7 +1928,7 @@ class CreateCommentTest(
                 cohort.id + 1
             ),
         }))
-        self.register_post_comment_response({}, thread_id="cohort_thread")
+        self.register_post_comment_response({"username": self.user.username}, thread_id="cohort_thread")
         data = self.minimal_data.copy()
         data["thread_id"] = "cohort_thread"
         expected_error = (
@@ -1845,12 +1939,8 @@ class CreateCommentTest(
         try:
             create_comment(self.request, data)
             self.assertFalse(expected_error)
-        except ValidationError as err:
+        except ThreadNotFoundError:
             self.assertTrue(expected_error)
-            self.assertEqual(
-                err.message_dict,
-                {"thread_id": ["Invalid value."]}
-            )
 
     def test_invalid_field(self):
         data = self.minimal_data.copy()
@@ -1859,6 +1949,7 @@ class CreateCommentTest(
             create_comment(self.request, data)
 
 
+@attr('shard_2')
 @ddt.ddt
 @disable_signal(api, 'thread_edited')
 @disable_signal(api, 'thread_voted')
@@ -1968,30 +2059,29 @@ class UpdateThreadTest(
                 "closed": ["False"],
                 "pinned": ["False"],
                 "read": ["False"],
-                "requested_user_id": [str(self.user.id)],
             }
         )
 
     def test_nonexistent_thread(self):
         self.register_get_thread_error_response("test_thread", 404)
-        with self.assertRaises(Http404):
+        with self.assertRaises(ThreadNotFoundError):
             update_thread(self.request, "test_thread", {})
 
     def test_nonexistent_course(self):
         self.register_thread({"course_id": "non/existent/course"})
-        with self.assertRaises(Http404):
+        with self.assertRaises(CourseNotFoundError):
             update_thread(self.request, "test_thread", {})
 
     def test_not_enrolled(self):
         self.register_thread()
         self.request.user = UserFactory.create()
-        with self.assertRaises(Http404):
+        with self.assertRaises(CourseNotFoundError):
             update_thread(self.request, "test_thread", {})
 
     def test_discussions_disabled(self):
         disabled_course = _discussion_disabled_course_for(self.user)
         self.register_thread(overrides={"course_id": unicode(disabled_course.id)})
-        with self.assertRaises(Http404):
+        with self.assertRaises(DiscussionDisabledError):
             update_thread(self.request, "test_thread", {})
 
     @ddt.data(
@@ -2029,7 +2119,7 @@ class UpdateThreadTest(
         try:
             update_thread(self.request, "test_thread", {})
             self.assertFalse(expected_error)
-        except Http404:
+        except ThreadNotFoundError:
             self.assertTrue(expected_error)
 
     @ddt.data(
@@ -2096,7 +2186,8 @@ class UpdateThreadTest(
 
     @ddt.data(*itertools.product([True, False], [True, False]))
     @ddt.unpack
-    def test_voted(self, current_vote_status, new_vote_status):
+    @mock.patch("eventtracking.tracker.emit")
+    def test_voted(self, current_vote_status, new_vote_status, mock_emit):
         """
         Test attempts to edit the "voted" field.
 
@@ -2132,6 +2223,22 @@ class UpdateThreadTest(
             if new_vote_status:
                 expected_request_data["value"] = ["up"]
             self.assertEqual(actual_request_data, expected_request_data)
+
+            event_name, event_data = mock_emit.call_args[0]
+            self.assertEqual(event_name, "edx.forum.thread.voted")
+            self.assertEqual(
+                event_data,
+                {
+                    'undo_vote': not new_vote_status,
+                    'url': '',
+                    'target_username': self.user.username,
+                    'vote_value': 'up',
+                    'user_forums_roles': [FORUM_ROLE_STUDENT],
+                    'user_course_roles': [],
+                    'commentable_id': 'original_topic',
+                    'id': 'test_thread'
+                }
+            )
 
     @ddt.data(*itertools.product([True, False], [True, False], [True, False]))
     @ddt.unpack
@@ -2250,6 +2357,7 @@ class UpdateThreadTest(
         )
 
 
+@attr('shard_2')
 @ddt.ddt
 @disable_signal(api, 'comment_edited')
 @disable_signal(api, 'comment_voted')
@@ -2340,7 +2448,8 @@ class UpdateCommentTest(
             "voted": False,
             "vote_count": 0,
             "children": [],
-            "editable_fields": ["abuse_flagged", "raw_body", "voted"]
+            "editable_fields": ["abuse_flagged", "raw_body", "voted"],
+            "child_count": 0,
         }
         self.assertEqual(actual, expected)
         self.assertEqual(
@@ -2357,23 +2466,23 @@ class UpdateCommentTest(
 
     def test_nonexistent_comment(self):
         self.register_get_comment_error_response("test_comment", 404)
-        with self.assertRaises(Http404):
+        with self.assertRaises(CommentNotFoundError):
             update_comment(self.request, "test_comment", {})
 
     def test_nonexistent_course(self):
         self.register_comment(thread_overrides={"course_id": "non/existent/course"})
-        with self.assertRaises(Http404):
+        with self.assertRaises(CourseNotFoundError):
             update_comment(self.request, "test_comment", {})
 
     def test_unenrolled(self):
         self.register_comment()
         self.request.user = UserFactory.create()
-        with self.assertRaises(Http404):
+        with self.assertRaises(CourseNotFoundError):
             update_comment(self.request, "test_comment", {})
 
     def test_discussions_disabled(self):
         self.register_comment(course=_discussion_disabled_course_for(self.user))
-        with self.assertRaises(Http404):
+        with self.assertRaises(DiscussionDisabledError):
             update_comment(self.request, "test_comment", {})
 
     @ddt.data(
@@ -2416,7 +2525,7 @@ class UpdateCommentTest(
         try:
             update_comment(self.request, "test_comment", {})
             self.assertFalse(expected_error)
-        except Http404:
+        except ThreadNotFoundError:
             self.assertTrue(expected_error)
 
     @ddt.data(*itertools.product(
@@ -2488,7 +2597,8 @@ class UpdateCommentTest(
 
     @ddt.data(*itertools.product([True, False], [True, False]))
     @ddt.unpack
-    def test_voted(self, current_vote_status, new_vote_status):
+    @mock.patch("eventtracking.tracker.emit")
+    def test_voted(self, current_vote_status, new_vote_status, mock_emit):
         """
         Test attempts to edit the "voted" field.
 
@@ -2527,6 +2637,23 @@ class UpdateCommentTest(
             if new_vote_status:
                 expected_request_data["value"] = ["up"]
             self.assertEqual(actual_request_data, expected_request_data)
+
+            event_name, event_data = mock_emit.call_args[0]
+            self.assertEqual(event_name, "edx.forum.response.voted")
+
+            self.assertEqual(
+                event_data,
+                {
+                    'undo_vote': not new_vote_status,
+                    'url': '',
+                    'target_username': self.user.username,
+                    'vote_value': 'up',
+                    'user_forums_roles': [FORUM_ROLE_STUDENT],
+                    'user_course_roles': [],
+                    'commentable_id': 'dummy',
+                    'id': 'test_comment'
+                }
+            )
 
     @ddt.data(*itertools.product([True, False], [True, False], [True, False]))
     @ddt.unpack
@@ -2635,6 +2762,7 @@ class UpdateCommentTest(
             )
 
 
+@attr('shard_2')
 @ddt.ddt
 @disable_signal(api, 'thread_deleted')
 @mock.patch.dict("django.conf.settings.FEATURES", {"ENABLE_DISCUSSION_SERVICE": True})
@@ -2690,24 +2818,24 @@ class DeleteThreadTest(
 
     def test_thread_id_not_found(self):
         self.register_get_thread_error_response("missing_thread", 404)
-        with self.assertRaises(Http404):
+        with self.assertRaises(ThreadNotFoundError):
             delete_thread(self.request, "missing_thread")
 
     def test_nonexistent_course(self):
         self.register_thread({"course_id": "non/existent/course"})
-        with self.assertRaises(Http404):
+        with self.assertRaises(CourseNotFoundError):
             delete_thread(self.request, self.thread_id)
 
     def test_not_enrolled(self):
         self.register_thread()
         self.request.user = UserFactory.create()
-        with self.assertRaises(Http404):
+        with self.assertRaises(CourseNotFoundError):
             delete_thread(self.request, self.thread_id)
 
     def test_discussions_disabled(self):
         disabled_course = _discussion_disabled_course_for(self.user)
         self.register_thread(overrides={"course_id": unicode(disabled_course.id)})
-        with self.assertRaises(Http404):
+        with self.assertRaises(DiscussionDisabledError):
             delete_thread(self.request, self.thread_id)
 
     @ddt.data(
@@ -2770,10 +2898,11 @@ class DeleteThreadTest(
         try:
             delete_thread(self.request, self.thread_id)
             self.assertFalse(expected_error)
-        except Http404:
+        except ThreadNotFoundError:
             self.assertTrue(expected_error)
 
 
+@attr('shard_2')
 @ddt.ddt
 @disable_signal(api, 'comment_deleted')
 @mock.patch.dict("django.conf.settings.FEATURES", {"ENABLE_DISCUSSION_SERVICE": True})
@@ -2838,20 +2967,20 @@ class DeleteCommentTest(
 
     def test_comment_id_not_found(self):
         self.register_get_comment_error_response("missing_comment", 404)
-        with self.assertRaises(Http404):
+        with self.assertRaises(CommentNotFoundError):
             delete_comment(self.request, "missing_comment")
 
     def test_nonexistent_course(self):
         self.register_comment_and_thread(
             thread_overrides={"course_id": "non/existent/course"}
         )
-        with self.assertRaises(Http404):
+        with self.assertRaises(CourseNotFoundError):
             delete_comment(self.request, self.comment_id)
 
     def test_not_enrolled(self):
         self.register_comment_and_thread()
         self.request.user = UserFactory.create()
-        with self.assertRaises(Http404):
+        with self.assertRaises(CourseNotFoundError):
             delete_comment(self.request, self.comment_id)
 
     def test_discussions_disabled(self):
@@ -2860,7 +2989,7 @@ class DeleteCommentTest(
             thread_overrides={"course_id": unicode(disabled_course.id)},
             overrides={"course_id": unicode(disabled_course.id)}
         )
-        with self.assertRaises(Http404):
+        with self.assertRaises(DiscussionDisabledError):
             delete_comment(self.request, self.comment_id)
 
     @ddt.data(
@@ -2928,10 +3057,11 @@ class DeleteCommentTest(
         try:
             delete_comment(self.request, self.comment_id)
             self.assertFalse(expected_error)
-        except Http404:
+        except ThreadNotFoundError:
             self.assertTrue(expected_error)
 
 
+@attr('shard_2')
 @ddt.ddt
 @mock.patch.dict("django.conf.settings.FEATURES", {"ENABLE_DISCUSSION_SERVICE": True})
 class RetrieveThreadTest(
@@ -3017,7 +3147,7 @@ class RetrieveThreadTest(
 
     def test_thread_id_not_found(self):
         self.register_get_thread_error_response("missing_thread", 404)
-        with self.assertRaises(Http404):
+        with self.assertRaises(ThreadNotFoundError):
             get_thread(self.request, "missing_thread")
 
     def test_nonauthor_enrolled_in_course(self):
@@ -3062,7 +3192,7 @@ class RetrieveThreadTest(
     def test_not_enrolled_in_course(self):
         self.register_thread()
         self.request.user = UserFactory.create()
-        with self.assertRaises(Http404):
+        with self.assertRaises(CourseNotFoundError):
             get_thread(self.request, self.thread_id)
 
     @ddt.data(
@@ -3108,5 +3238,5 @@ class RetrieveThreadTest(
         try:
             get_thread(self.request, self.thread_id)
             self.assertFalse(expected_error)
-        except Http404:
+        except ThreadNotFoundError:
             self.assertTrue(expected_error)

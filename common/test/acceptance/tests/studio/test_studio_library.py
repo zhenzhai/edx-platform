@@ -121,7 +121,7 @@ class LibraryEditPageTest(StudioLibraryTest):
         # Check that the save worked:
         self.assertEqual(len(self.lib_page.xblocks), 1)
         problem_block = self.lib_page.xblocks[0]
-        self.assertIn("Laura Roslin", problem_block.student_content)
+        self.assertIn("Laura Roslin", problem_block.author_content)
 
     def test_no_discussion_button(self):
         """
@@ -656,10 +656,10 @@ class StudioLibraryA11yTest(StudioLibraryTest):
         # we will ignore this error in the test until we fix them.
         lib_page.a11y_audit.config.set_rules({
             "ignore": [
+                'section',  # TODO: AC-491
                 'color-contrast',  # TODO: AC-225
                 'link-href',  # TODO: AC-226
                 'nav-aria-label',  # TODO: AC-227
-                'skip-link',  # TODO: AC-228
                 'icon-aria-hidden',  # TODO: AC-229
             ],
         })

@@ -4,6 +4,7 @@ Tests for UserPartitionTransformer.
 """
 from collections import namedtuple
 import ddt
+from nose.plugins.attrib import attr
 
 from openedx.core.djangoapps.course_groups.partition_scheme import CohortPartitionScheme
 from openedx.core.djangoapps.course_groups.tests.helpers import CohortFactory, config_course_cohorts
@@ -15,13 +16,15 @@ from xmodule.modulestore.tests.factories import CourseFactory
 
 from ...api import get_course_blocks
 from ..user_partitions import UserPartitionTransformer, _MergedGroupAccess
-from .test_helpers import CourseStructureTestCase, update_block
+from .helpers import CourseStructureTestCase, update_block
 
 
 class UserPartitionTestMixin(object):
     """
     Helper Mixin for testing user partitions.
     """
+    TRANSFORMER_CLASS_TO_TEST = UserPartitionTransformer
+
     def setup_groups_partitions(self, num_user_partitions=1, num_groups=4):
         """
         Sets up groups and user partitions for testing.
@@ -63,6 +66,7 @@ class UserPartitionTestMixin(object):
             self.partition_cohorts.append(partition_cohorts)
 
 
+@attr('shard_3')
 @ddt.ddt
 class UserPartitionTransformerTestCase(UserPartitionTestMixin, CourseStructureTestCase):
     """
@@ -89,8 +93,6 @@ class UserPartitionTransformerTestCase(UserPartitionTestMixin, CourseStructureTe
 
         # Set up cohorts.
         self.setup_cohorts(self.course)
-
-        self.transformer = UserPartitionTransformer()
 
     def get_course_hierarchy(self):
         """
@@ -204,7 +206,7 @@ class UserPartitionTransformerTestCase(UserPartitionTestMixin, CourseStructureTe
         trans_block_structure = get_course_blocks(
             self.user,
             self.course.location,
-            transformers={self.transformer}
+            self.transformers,
         )
         self.assertSetEqual(
             set(trans_block_structure.get_block_keys()),
@@ -212,6 +214,7 @@ class UserPartitionTransformerTestCase(UserPartitionTestMixin, CourseStructureTe
         )
 
 
+@attr('shard_3')
 @ddt.ddt
 class MergedGroupAccessTestData(UserPartitionTestMixin, CourseStructureTestCase):
     """
