@@ -1,8 +1,8 @@
 
 # coding: utf-8
 
-from expr_parser import webwork_parser
-from expr_parser import Eval_parsed
+import webwork_parser
+import Eval_parsed
 from collections import deque
 from collections import defaultdict
 
