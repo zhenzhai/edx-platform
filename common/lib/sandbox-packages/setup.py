@@ -6,6 +6,7 @@ setup(
     packages=[
         "loncapa",
         "verifiers",
+        "expr_parser",
     ],
     py_modules=[
         "eia",
