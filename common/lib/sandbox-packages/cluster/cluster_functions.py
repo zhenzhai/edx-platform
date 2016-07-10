@@ -145,20 +145,20 @@ def make_params(ans_str, att_str):
     parse_tree = webwork_parser.parse_webwork(ans_str)
     if parse_tree[0] == None:
         print 'parse_tree empty'
-        continue
+        return {}
     eval_tree = Eval_parsed.eval_parsed(parse_tree[0])
     if eval_tree == None:
         print 'eval_tree empty'
-        continue
+        return {}
 
     parse_tree_att = webwork_parser.parse_webwork(att_str)
     if parse_tree_att[0] == None:
         print 'parse_tree empty'
-        continue
+        return {}
     eval_tree_att = Eval_parsed.eval_parsed(parse_tree_att[0])
     if eval_tree_att == None:
         print 'eval_tree empty'
-        continue
+        return {}
 
     params = {'answer':ans_str, 'attempt':att_str, 'ans_tree':eval_tree, 'att_tree':eval_tree_att}
 
