@@ -24,6 +24,6 @@ def universal_hint(p):
         elif float(ans).is_integer() and not float(att).is_integer():
             return hint_fraction()
         elif p['ans_tree'][0] == 'X' and p['att_tree'][0] != 'X':
-            return hint_numerial()
+            return hint_numerical()
         else:
             return ""
