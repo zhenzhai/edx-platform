@@ -1,5 +1,14 @@
 import cluster_functions
 
+def hint_wrong_sign():
+	return "Please double check your answer to make sure your sign is correct."
+
+def hint_fraction():
+	return "Please double check your answer to make sure it is an integer."
+
+def hint_numerical():
+	return "Please write an expression instead of a number."
+
 def universal_hint(p):
     if len(p['att_tree']) > 1:
         if p['att_tree'][0] == 'X':
@@ -16,13 +25,5 @@ def universal_hint(p):
             return hint_fraction()
         elif p['ans_tree'][0] == 'X' and p['att_tree'][0] != 'X':
             return hint_numerial()
-
-
-def hint_wrong_sign():
-	return "Please double check your answer to make sure your sign is correct."
-
-def hint_fraction():
-	return "Please double check your answer to make sure it is an integer."
-
-def hint_numerical():
-	return "Please write an expression instead of a number."
+        else
+            return ""
