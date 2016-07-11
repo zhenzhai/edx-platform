@@ -25,5 +25,5 @@ def universal_hint(p):
             return hint_fraction()
         elif p['ans_tree'][0] == 'X' and p['att_tree'][0] != 'X':
             return hint_numerial()
-        else
+        else:
             return ""
