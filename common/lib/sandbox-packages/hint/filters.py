@@ -1,4 +1,5 @@
 import cluster_functions
+from xml.sax.saxutils import escape
 
 def hint_wrong_sign():
 	return "Please double check your answer to make sure your sign is correct."
@@ -27,3 +28,12 @@ def universal_hint(p):
             return hint_numerical()
         else:
             return ""
+
+def escape_html(html_code):
+    return escape(html_code.replace('"', "&quot;"))
+
+def redirect_hint(text, unit_id):
+    html_code = '<a href="/jump_to_id/{0}" target="_blank">{1}</a>'.format(str(unit_id), text)
+    color = "grey"
+    html_code = '<font color={0}>{1}</font>'.format(color, html_code)
+    return escape_html(html_code)
