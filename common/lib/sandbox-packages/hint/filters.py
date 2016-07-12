@@ -30,10 +30,10 @@ def universal_hint(p):
             return ""
 
 def escape_html(html_code):
-    return escape(html_code.replace('"', "&quot;"))
+    return escape(html_code).replace("'", "&quot;")
 
 def redirect_hint(text, unit_id):
-    html_code = '<a href="/jump_to_id/{0}" target="_blank">{1}</a>'.format(str(unit_id), text)
-    color = "grey"
-    html_code = '<font color={0}>{1}</font>'.format(color, html_code)
-    return escape_html(html_code)[1:-1]
+    html_code = "<a href='/jump_to_id/{0}' target='_blank'>{1}</a>".format(unit_id, text)
+    color = 'grey'
+    html_code = "<font color={0}>{1}</font>".format(color, html_code)
+    return escape_html(html_code)
