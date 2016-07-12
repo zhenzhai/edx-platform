@@ -2,13 +2,13 @@ import cluster_functions
 from xml.sax.saxutils import escape
 
 def hint_wrong_sign():
-	return "Please double check your answer to make sure your sign is correct."
+	return "Can the number of strings satisfying the constraint be negative?"
 
 def hint_fraction():
-	return "Please double check your answer to make sure it is an integer."
+	return "Can the number of strings satisfying the constraint be fractional?"
 
 def hint_numerical():
-	return "Please write an expression instead of a number."
+	return "Your answer is incorrect, please write an expression."
 
 def universal_hint(p):
     if len(p['att_tree']) > 1:
