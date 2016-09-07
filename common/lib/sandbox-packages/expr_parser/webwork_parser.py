@@ -129,6 +129,8 @@ precedence = (
     ('nonassoc','CHOOSE'),
     ('nonassoc','PERMUTE'),
     ('nonassoc','Q'),
+    ('nonassoc','PHI'),
+    ('nonassoc','SQRT'),
     ('nonassoc','COMPUTE')
 )
 
@@ -200,6 +202,11 @@ def p_factor_q(t):
     t[0] = ['Q', t[3]]
     t[0]=add_header(t)
 
+def p_factor_phi(t):
+    '''factor : PHI LPAREN factor RPAREN %prec PHI
+              | PHI LPAREN expression RPAREN %prec PHI'''
+    t[0] = ['Phi', t[3]]
+    t[0]=add_header(t)
 
 def p_expression_group(t):
     '''factor : LPAREN expression RPAREN
@@ -208,6 +215,12 @@ def p_expression_group(t):
               | LBRACKET factor RBRACKET
               '''
     t[0] = t[2]
+
+def p_factor_sqrt(t):
+    '''factor : SQRT LPAREN factor RPAREN %prec SQRT
+              | SQRT LPAREN expression RPAREN %prec SQRT'''
+    t[0] = ['sqrt', t[3]]
+    t[0]=add_header(t)
 
 def p_compute(t):
     '''factor : COMPUTE LPAREN expression RPAREN

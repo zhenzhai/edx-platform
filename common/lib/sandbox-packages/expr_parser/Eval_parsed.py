@@ -33,13 +33,22 @@ def ncr(n, r):
     if r == 0: return 1
     numer = reduce(op.mul, xrange(n, n-r, -1))
     denom = reduce(op.mul, xrange(1, r+1))
-    return numer/denom
+    ans = numer/denom
+    try:
+        float(ans)
+    except OverflowError:
+        raise Exception('C(%s, %s) is too large and cause over flow'%(n,r))
+    return ans
 
 def npr(n, r):
     " Computer n permute r (order matters)"
     r = min(r, n-r)
     if r == 0: return 1
     numer = reduce(op.mul, xrange(n, n-r, -1))
+    try:
+        float(numer)
+    except OverflowError:
+        raise Exception('P(%s, %s) is too large and cause over flow'%(n,r))
     return numer
 
 def find_common_values(e1,e2):
@@ -52,9 +61,11 @@ def find_common_values(e1,e2):
     """
     
 
-def eval_parsed(e, label='R'):
+def eval_parsed(e, variable_list={}, label='R'):
     """ Evaluate a parsed expression, returns a tree, of the same form as the parse tree. Where each operator 
         is replaced by a tuple: (operator,evaluation result)
+
+        variable_list = {variable_name: number used to test}
     
         Still need to write code to handle varibles, lists and sets.
     """
@@ -80,6 +91,15 @@ def eval_parsed(e, label='R'):
 
             if f=='{}':
                 return [[f,None,span,label],op]  # if element is a list, just return as is.
+            elif f=='V':
+                if op=='e':
+                    ans = 2.71828183
+                    return ['X',ans,span,label]
+                elif variable_list:
+                    ans = variable_list[op]
+                    return ['X',ans,span,label]
+                else:
+                    raise Exception("%s doesn't have a value for evaluation"%op)
 
             ev=eval_parsed(op,label+'.0')
             v=get_number(ev)
@@ -96,6 +116,10 @@ def eval_parsed(e, label='R'):
                     raise Exception('%s is too large to apply factorial'%v)
             elif f=='Q':
                 ans= 1-norm.cdf(v)
+            elif f=='Phi':
+                ans = norm.cdf(v)
+            elif f=='sqrt':
+                ans = sqrt(v)
             else:
                 raise Exception('unrecognized unary operator %s in %s'%(f,e))
             return [[f,ans,span,label],ev]

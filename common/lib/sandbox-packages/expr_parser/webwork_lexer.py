@@ -1,15 +1,17 @@
 import ply.lex as lex
-#import webwork_parser
+import webwork_parser
 # from webwork_parser import WebworkParseException
 
 class WebworkLexer(object):
     tokens = (
-        'Q', 'CHOOSE', 'PERMUTE', 'VARIABLE', 'NUMBER', 'PLUS','MINUS','TIMES','DIVIDE', 'LPAREN','RPAREN','FACTORIAL', \
+        'Q', 'PHI', 'CHOOSE', 'SQRT', 'PERMUTE', 'VARIABLE', 'NUMBER', 'PLUS','MINUS','TIMES','DIVIDE', 'LPAREN','RPAREN','FACTORIAL', \
         'LSET', 'RSET','COMMA','EXP', 'LBRACKET', 'RBRACKET','COMPUTE'
     )
 
     # Tokens
     t_Q         = r'Q'
+    t_PHI       = r'Phi'
+    t_SQRT      = r'sqrt'
     t_CHOOSE    = r'C'
     t_PERMUTE   = r'P'
     t_PLUS      = r'\+'
