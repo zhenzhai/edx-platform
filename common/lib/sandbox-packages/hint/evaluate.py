@@ -1,8 +1,6 @@
 import cluster_functions
-def evaluate(ans, att):
-	p = cluster_functions.make_params(ans, att)
-	if param == {}:
-      return False
+def evaluate(p):
+	#p = cluster_functions.make_params(ans, att)
 	final_pairs = cluster_functions.find_matches(p)
 	if len(final_pairs) == 1 and final_pairs[0][0] == 'R':
 		return True
