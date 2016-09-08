@@ -137,16 +137,20 @@ def get_top_node(tree):
 
 
 ######## Make a list of dictionaries ##########
-def make_params(ans_str, att_str):
-    """return list of dict with format
-    'user_id':d['user_id'],'answer':d['answer'], 'attempt':d['attempt'],
-    'ans_tree':eval_tree,'att_tree':eval_tree_att"""
+def make_params(ans_str, att_str, variable_list={}):
+    """
+    input: answer string, attemp string,
+    optional input: variable dictionary {'variable_name':value to test, 'variable_name2':value}
+    return: list of dict with format
+        'user_id':d['user_id'],'answer':d['answer'], 'attempt':d['attempt'],
+        'ans_tree':eval_tree,'att_tree':eval_tree_att
+    """
 
     parse_tree = webwork_parser.parse_webwork(ans_str)
     if parse_tree[0] == None:
         print 'parse_tree empty'
         return {}
-    eval_tree = Eval_parsed.eval_parsed(parse_tree[0])
+    eval_tree = Eval_parsed.eval_parsed(parse_tree[0], variable_list)
     if eval_tree == None:
         print 'eval_tree empty'
         return {}
@@ -155,7 +159,7 @@ def make_params(ans_str, att_str):
     if parse_tree_att[0] == None:
         print 'parse_tree empty'
         return {}
-    eval_tree_att = Eval_parsed.eval_parsed(parse_tree_att[0])
+    eval_tree_att = Eval_parsed.eval_parsed(parse_tree_att[0], variable_list)
     if eval_tree_att == None:
         print 'eval_tree empty'
         return {}
@@ -172,6 +176,72 @@ def get_numerical_answer(eval_tree):
         return eval_tree[0][1]
     else:
         return eval_tree[1]
+
+
+
+
+
+
+def equal_len(variable_list):
+    size_of_list = len(variable_list[variable_list.keys()[0]])
+    for key in variable_list:
+        if len(variable_list[key]) != size_of_list:
+            return False
+    return True
+
+
+def find_matches_w_variables(ans_str, att_str, variable_values, test_all=False):
+    variable_list = {}
+    for key in variable_values:
+        variable_list[key] = variable_values[key][0]
+    params = make_params(ans_str, att_str, variable_list)
+    final_matches = find_matches(params)
+
+    if test_all:
+        #first check to make sure equal length
+        if len(variable_values>1) and ~equal_len(variable_list):
+            print 'need to make sure variables all have same number of values'
+            return None
+
+        size_of_value_list = len(variable_values[variable_values.keys()[0]])
+        for i in xrange(size_of_value_list):
+            variable_list = {}
+            for key in variable_values:
+                variable_list[key] = variable_values[key][i]
+            params = make_params(ans_str, att_str, variable_list)
+            match = find_matches(params)
+            if match != final_matches:
+                return None
+    return final_matches
+
+
+
+
+
+def show_matching_group_w_variables(ans_str, att_str, variable_values, test_all=False):
+    matches = find_matches_w_variables(ans_str, att_str, variable_values, test_all)
+    parse_tree_att = webwork_parser.parse_webwork(att_str)
+    matching_exps = []
+    if parse_tree_att[0] == None:
+        print 'parse_tree empty'
+        return None
+    if matches:
+        for m in matches:
+            tree_index = [int(i)+1 for i in m[0].split('.')[1:]]
+            node = parse_tree_att
+            for t in tree_index:
+                node = node[t]
+            matching_exps.append(att_str[node[0][1][0]:node[0][1][1]+1])
+        return matching_exps
+    else:
+        return None
+
+
+
+
+
+
+
 
 
 
