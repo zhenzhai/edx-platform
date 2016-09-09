@@ -20,6 +20,7 @@ def universal_hint(p):
             ans = p['ans_tree'][1]
         else:
             ans = p['ans_tree'][0][1]
+
         if att * ans < 0:
             return hint_wrong_sign()
         elif float(ans).is_integer() and not float(att).is_integer():
@@ -29,8 +30,10 @@ def universal_hint(p):
         else:
             return ""
 
-def redirect_hint(text, unit_id):
-    html_code = "<a href='/jump_to_id/{0}' target='_blank'>{1}</a>".format(unit_id, text)
-    color = 'grey'
-    html_code = "<font color='{0}'>{1}</font>".format(color, html_code)
-    return html_code
+def universal_hint_w_variables(p, variables):
+    """
+    input variables should be a list of strings of variable names 
+    """
+    for v in variables:
+        if not v in p['att']:
+            return "Your answer should include variable ", v
