@@ -35,5 +35,5 @@ def universal_hint_w_variables(p, variables):
     input variables should be a list of strings of variable names 
     """
     for v in variables:
-        if not v in p['att']:
+        if not v in p['attempt']:
             return "Your answer should include variable ", v
