@@ -99,8 +99,8 @@ def find_matches(params):
     answer_list=flatten(answer_tree,'c')
 
     # sort by value
-    combined_list=sorted(answer_list+attempt_list,key=lambda x: x[0])
-    
+    combined_list=sorted(answer_list+attempt_list,key=lambda x: (x[0],len(x[2])))
+
     # find all hits
     Hits=find_Hits(combined_list)
 
@@ -228,7 +228,7 @@ def show_matching_group_w_variables(ans_str, att_str, variable_values, test_all=
     if matches:
         for m in matches:
             tree_index = [int(i)+1 for i in m[0].split('.')[1:]]
-            node = parse_tree_att
+            node = parse_tree_att[0]
             for t in tree_index:
                 node = node[t]
             matching_exps.append(att_str[node[0][1][0]:node[0][1][1]+1])
