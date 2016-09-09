@@ -192,8 +192,10 @@ def equal_len(variable_list):
 
 def extract_one_value_to_test(variable_values, index):
     """ Extract one value to test for each of the variable """
+    variable_list = {}
     for key in variable_values:
-                variable_list[key] = variable_values[key][index]
+        variable_list[key] = variable_values[key][index]
+    return variable_list
 
 def make_params_w_variables(ans_str, att_str, variable_values, index):
     """ make param using test value at the passed in index """
