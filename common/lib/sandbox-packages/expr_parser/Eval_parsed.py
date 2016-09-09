@@ -101,7 +101,7 @@ def eval_parsed(e, variable_list={}, label='R'):
                 else:
                     raise Exception("%s doesn't have a value for evaluation"%op)
 
-            ev=eval_parsed(op,label+'.0')
+            ev=eval_parsed(op,label=label+'.0')
             v=get_number(ev)
             
             if f=='X':  # X indicates a single number
@@ -126,9 +126,9 @@ def eval_parsed(e, variable_list={}, label='R'):
         
         elif len(e)==3:
             [[f,span],op1,op2]=e
-            ev1=eval_parsed(op1, label+'.0')
+            ev1=eval_parsed(op1, label=label+'.0')
             v1=get_number(ev1)
-            ev2=eval_parsed(op2, label+'.1')
+            ev2=eval_parsed(op2, label=label+'.1')
             v2=get_number(ev2)
 
             if f=='+':    ans= v1+v2
