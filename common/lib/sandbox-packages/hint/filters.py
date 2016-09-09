@@ -36,4 +36,4 @@ def universal_hint_w_variables(p, variables):
     """
     for v in variables:
         if not v in p['attempt']:
-            return "Your answer should include variable ", v
+            return "Your answer should include variable " + v
