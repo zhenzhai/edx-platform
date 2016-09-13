@@ -1,17 +1,21 @@
 ---
 metadata:
-    display_name: Adaptive Hint
+    display_name: Problem with Adaptive Hint
     markdown: !!null
 data: |
-     <problem>
-      <script type="loncapa/python">
+    <problem>
+      <text>
+        <script type="loncapa/python">
     # random variables
     n2 = random.randrange(3,6,1)
           
     # solution string
-    solution = "8"
-      </script>
-       
+    solution = "(26^" + str(n2) + ")-(25^" + str(n2) + ")"
+
+    # hint id
+    hint_id = "cse103fall2016week1problem1part1"
+        </script>
+        
         <script type="text/javascript">
           //fill in hint input box id
             var hintId = "input_57ccdc78397649aca59b419c95573254_2_1";
@@ -21,24 +25,47 @@ data: |
             var hintTextId = "cse103fall2016week1problem1part1";
           show_hint(hintId, proId, hintTextId);
         </script>
-       
-       <p> insert hint here </p>
-      <customresponse cfn="check" expect="\[(26^$n2)-(25^$n2)\]">
-        <textline correct_answer="$solution" label=""/>
-      </customresponse>
-       
-       
 
+        <p>How many strings of length $n2 consisting of lower case English letters, and including at least one "x", are there?</p>
+        
+        <customresponse cfn="check" expect="\[(26^$n2)-(25^$n2)\]">
+          <textline correct_answer="$solution" label="LABEL TEXT"/>
+          <hintgroup hintfn="hint_fn"/>
+        </customresponse>
 
-         <script type="loncapa/python">
+        
+        
+        
+        
+        <script type="loncapa/python">
     from hint import evaluate
     from hint import cluster_functions
     from hint import filters
 
+    # grader of the problem
     def check(expect, ans):
+      expect = expect.strip("\[")
+      expect = expect.strip("\]")
+      ans = ans.strip("'")
+      ans = ans.strip("'")
       return evaluate.evaluate(expect, ans)
+
+    # hint function
+    def hint_fn(answer_ids, student_answers, new_cmap, old_cmap):
+      aid = answer_ids[0]
+      ans = str(student_answers[aid])
+      param = cluster_functions.make_params(solution, ans)
+      hint = filters.universal_hint(param)
+      if hint:
+        hint = "&lt;font color='grey'&gt;Hint: {0}&lt;/font&gt;".format(hint)
+      else:
+        hint_text = "This problem can help you answer the above question."
+        hint = "&lt;p id='" + hint_id + "' style='display:none'&gt;" + hint_text + "&lt;/p&gt;"
+      new_cmap.set_hint_and_mode(aid,hint,'always')
         </script>
-      <script type="text/javascript">
+        
+
+        <script type="text/javascript">
           function show_hint(hintId, proId, hintTextId) {
             hintId = hintId.replace('input', 'problem');
             hintId = hintId.replace('_2_1', '');
@@ -56,4 +83,8 @@ data: |
             }
           }
       </script>
+
+      </text>
     </problem>
+
+

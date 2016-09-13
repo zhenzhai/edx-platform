@@ -6,9 +6,6 @@ data: |
     <problem>
       <text>
         <script type="loncapa/python">
-    from hint import evaluate
-    from hint import cluster_functions
-    from hint import filters
 
     # variable names and values
     # if multiple variables, the number of values to test should be the same
@@ -25,13 +22,37 @@ data: |
 
     # hint id
     hint_id = "cse103fall2016week1problem1part1"
+
+      </script>
+        
+        
+        <script type="text/javascript">
+          //fill in hint input box id
+            var hintId = "input_57ccdc78397649aca59b419c95573254_2_1";
+          //fill in problem input box id
+            var proId = "input_0463a3ce78dd46429e9e2fcf681616d9_2_1";
+          //fill in hint text id. Need to match the hint_id from above
+            var hintTextId = "cse103fall2016week1problem1part1";
+        </script>
+        
+        <p>How many strings of length \(n\) consisting of lower case English letters are there?</p>
+        <customresponse cfn="check" expect="\[26^n+k\]">
+          <textline correct_answer="$solution" label="LABEL TEXT"/>
+          <hintgroup hintfn="hint_fn"/>
+        </customresponse>
+
+
+
+
+
+
+        <script type="loncapa/python">
+    from hint import evaluate
+    from hint import cluster_functions
+    from hint import filters
           
     # grader of the problem
     def check(expect, ans):
-      expect = expect.strip("\[")
-      expect = expect.strip("\]")
-      ans = ans.strip("'")
-      ans = ans.strip("'")
       return evaluate.evaluate_w_variables(expect, ans, variable_values)
           
     def hint_fn(answer_ids, student_answers, new_cmap, old_cmap):
@@ -49,13 +70,7 @@ data: |
         
         
         <script type="text/javascript">
-          //fill in hint input box id
-            var hintId = "input_57ccdc78397649aca59b419c95573254_2_1";
-          //fill in problem input box id
-            var proId = "input_0463a3ce78dd46429e9e2fcf681616d9_2_1";
-          //fill in hint text id. Need to match the hint_id from above
-            var hintTextId = "cse103fall2016week1problem1part1";
-          
+          function show_hint(hintId, proId, hintTextId) {
             hintId = hintId.replace('input', 'problem');
             hintId = hintId.replace('_2_1', '');
             document.getElementById(hintId).style.display = "none";
@@ -70,12 +85,8 @@ data: |
                 document.getElementById(hintId).getElementsByTagName('p')[0].innerHTML = hintText;
               }
             }
+          }
         </script>
-        
-        <p>How many strings of length \(n\) consisting of lower case English letters are there?</p>
-        <customresponse cfn="check" expect="\[26^n+k\]">
-          <textline correct_answer="$solution" label="LABEL TEXT"/>
-          <hintgroup hintfn="hint_fn"/>
-        </customresponse>
+
       </text>
     </problem>
