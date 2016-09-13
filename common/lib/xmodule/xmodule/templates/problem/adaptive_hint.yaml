@@ -3,7 +3,7 @@ metadata:
     display_name: Adaptive Hint
     markdown: !!null
 data: |
-     <problem>
+    <problem>
       <script type="loncapa/python">
     # random variables
     n2 = random.randrange(3,6,1)
