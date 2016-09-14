@@ -15,7 +15,8 @@ var options = {
 
     libraryFilesToInclude: [
         {pattern: 'common/js/vendor/jquery.js', included: true},
-        {pattern: 'common/js/vendor/jquery-migrate.js', included: true}
+        {pattern: 'common/js/vendor/jquery-migrate.js', included: true},
+        {pattern: 'adaptive_hint.js', included: true}
     ],
 
     // Make sure the patterns in sourceFiles and specFiles do not match the same file.

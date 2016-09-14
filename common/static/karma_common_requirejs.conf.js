@@ -21,7 +21,6 @@ var options = {
         {pattern: 'js/libs/**/*.js'},
         {pattern: 'js/test/**/*.js'},
         {pattern: 'js/vendor/**/*.js'},
-        {pattern: 'js/capa/adaptive_hint.js'}
     ],
 
     // Make sure the patterns in sourceFiles and specFiles do not match the same file.
