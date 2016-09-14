@@ -5,8 +5,8 @@ metadata:
 data: |
     <problem>
       <text>
-        <script type="loncapa/python">
 
+        <script type="loncapa/python">
     # variable names and values
     # if multiple variables, the number of values to test should be the same
     variable_values = {'n':[1,2,3], 'k':[4,5,6]}
@@ -15,31 +15,34 @@ data: |
     index_for_hint = 2
           
     # random variables
-    n0 = random.randrange(3,6,1)
+    r = random.randrange(3,6,1)
           
     # solution string
-    solution = "26^n+k"
+    solution = "26^n+k+{0}".format(r)
 
     # hint id
     hint_id = "cse103fall2016week1problem1part1"
-
       </script>
         
-        
-        <script type="text/javascript">
-          //fill in hint input box id
-            var hintId = "input_57ccdc78397649aca59b419c95573254_2_1";
-          //fill in problem input box id
-            var proId = "input_0463a3ce78dd46429e9e2fcf681616d9_2_1";
-          //fill in hint text id. Need to match the hint_id from above
-            var hintTextId = "cse103fall2016week1problem1part1";
-        </script>
-        
-        <p>How many strings of length \(n\) consisting of lower case English letters are there?</p>
-        <customresponse cfn="check" expect="\[26^n+k\]">
-          <textline correct_answer="$solution" label="LABEL TEXT"/>
-          <hintgroup hintfn="hint_fn"/>
-        </customresponse>
+      <script type="text/javascript">
+        //fill in number of hint
+          var hint_number = 1;
+
+        //fill in hint input box id
+          var hintId = ["input_57ccdc78397649aca59b419c95573254_2_1"];
+
+        //fill in problem input box id
+          var proId = ["input_0463a3ce78dd46429e9e2fcf681616d9_2_1"];
+
+        //fill in hint text id. Need to match the hint_id from above
+          var hintTextId = ["cse103fall2016week1problem1part1"];
+      </script>
+      
+      <p>How many strings of length \(n\) consisting of lower case English letters are there?</p>
+      <customresponse cfn="check" expect="\[$solution\]">
+        <textline/>
+        <hintgroup hintfn="hint_fn"/>
+      </customresponse>
 
 
 
@@ -58,34 +61,82 @@ data: |
     def hint_fn(answer_ids, student_answers, new_cmap, old_cmap):
       aid = answer_ids[0]
       ans = str(student_answers[aid])
+      i = int(aid[-3])-2
+
+      if ans == "":
+        return
+
+      key = new_cmap.keys()[0]
+      if new_cmap[key]['correctness'] == "correct":
+        return
+
       param = cluster_functions.make_params_w_variables(solution, ans, variable_values, index_for_hint)
+      if param == {}:
+        return
       hint = filters.universal_hint_w_variables(param, variable_values.keys())
       if hint:
         hint = "&lt;font color='blue'&gt;Hint: {0}&lt;/font&gt;".format(hint)
       else:
-        test_string = ''
-        hint = "test problem show below" + test_string
+        hint_text = "This problem can help you answer the above question."
+        hint_answer = "888"
+        hint_answer_id = hint_id[i] + "answer"
+        hint = "&lt;button onclick='show_hint({0})'&gt;Show hint&lt;/button&gt;".format(i)
+        hint += "&lt;p id='{0}' style='display:none'&gt; {1} &lt;/p&gt;".format(hint_id[i], hint_text)
+        hint += "&lt;p id='{0}' style='display:none'&gt; {1} &lt;/p&gt;".format(hint_answer_id, hint_answer)
       new_cmap.set_hint_and_mode(aid,hint,'always')
       </script>
         
         
         <script type="text/javascript">
-          function show_hint(hintId, proId, hintTextId) {
-            hintId = hintId.replace('input', 'problem');
-            hintId = hintId.replace('_2_1', '');
-            document.getElementById(hintId).style.display = "none";
+        function hide_hint() {
+          var index = arguments[0];
+          var hintInputId = hintIds[index];
+          var proId = proIds[index];
+          var hintId = hintInputId.replace('input', 'problem');
+          hintId = hintId.slice(0, -4);
+          document.getElementById(hintId).style.display = "none";
+          document.getElementById(hintInputId).value = "";
+          var hintStatusId = hintInputId.replace('input', 'status');
+          document.getElementById(hintStatusId).className = "incorrect";
+        }
+                 
+        function show_hint() {
+          var index = arguments[0];
+          var hintInputId = hintIds[index];
+          var proId = proIds[index];
+          var hintTextId = hintTextIds[index];
+          var hintAnswerId = hintTextId + "answer";
           
-            proId = proId.replace('input', 'status');
-            var prohintId = proId.replace('input', 'inputtype');
-            var ele = document.getElementById(proId);
-            if (ele.classList.contains("incorrect")) {
+          hintId = hintInputId.replace('input', 'problem');
+          hintId = hintId.slice(0, -4);
+          var proInputBox = document.getElementById(proId);
+          proId = proId.replace('input', 'status');
+          var prohintId = proId.replace('input', 'inputtype');
+          var ele = document.getElementById(proId);
+          if (ele.classList.contains("incorrect")) {
+            if (proInputBox.value != "") {
               if (document.getElementById(hintTextId)) {
                 var hintText = document.getElementById(hintTextId).innerHTML;
                 document.getElementById(hintId).style.display = "";
                 document.getElementById(hintId).getElementsByTagName('p')[0].innerHTML = hintText;
+                  var inputValue = document.getElementById(hintInputId).value;
+                  var answerValue = document.getElementById(hintAnswerId).innerHTML;
+                  answerValue = answerValue.substring(1);
+                  answerValue = answerValue.slice(0,-1);
+                  var hintStatusId = hintInputId.replace('input', 'status');
+                  if (inputValue == answerValue) {
+                    document.getElementById(hintStatusId).className = "correct";
+                  } else {
+                    document.getElementById(hintStatusId).className = "incorrect";
+                  }
               }
             }
           }
+        }
+          
+        for (var i=0; i != hint_number; i++) {
+          hide_hint(i);
+        }
         </script>
 
       </text>

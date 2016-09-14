@@ -4,56 +4,72 @@ metadata:
     markdown: !!null
 data: |
     <problem>
-      <script type="loncapa/python">
-    # random variables
-    n2 = random.randrange(3,6,1)
-          
-    # solution string
-    solution = "8"
+
+      <script type="text/javascript">
+        //fill in hint input box id
+          var hintId = "input_57ccdc78397649aca59b419c95573254_2_1";
+        //fill in problem input box id
+          var proId = "input_0463a3ce78dd46429e9e2fcf681616d9_2_1";
+        //fill in hint text id. Need to match the hint_id from above
+          var hintTextId = "cse103fall2016week1problem1part1";
       </script>
-       
-        <script type="text/javascript">
-          //fill in hint input box id
-            var hintId = "input_57ccdc78397649aca59b419c95573254_2_1";
-          //fill in problem input box id
-            var proId = "input_0463a3ce78dd46429e9e2fcf681616d9_2_1";
-          //fill in hint text id. Need to match the hint_id from above
-            var hintTextId = "cse103fall2016week1problem1part1";
-          show_hint(hintId, proId, hintTextId);
-        </script>
-       
-       <p> insert hint here </p>
-      <customresponse cfn="check" expect="\[(26^$n2)-(25^$n2)\]">
-        <textline correct_answer="$solution" label=""/>
+      
+      <p> hint will be inserted here </p>
+      <customresponse cfn="check" expect="\[\]">
+        <textline/>
       </customresponse>
-       
-       
 
 
-         <script type="loncapa/python">
+
+
+
+      <script type="loncapa/python">
     from hint import evaluate
     from hint import cluster_functions
     from hint import filters
 
     def check(expect, ans):
       return evaluate.evaluate(expect, ans)
-        </script>
+      </script>
+
       <script type="text/javascript">
-          function show_hint(hintId, proId, hintTextId) {
-            hintId = hintId.replace('input', 'problem');
-            hintId = hintId.replace('_2_1', '');
-            document.getElementById(hintId).style.display = "none";
+        function show_hint() {
+          var hintInputId = arguments[0];
+          var proId = arguments[1];
+          var hintTextId = arguments[2];
+          var hintAnswerId = hintTextId + "answer";
+          console.log(hintAnswerId);
+        
+          var hintId = hintInputId.replace('input', 'problem');
+          hintId = hintId.slice(0, -4);
           
-            proId = proId.replace('input', 'status');
-            var prohintId = proId.replace('input', 'inputtype');
-            var ele = document.getElementById(proId);
-            if (ele.classList.contains("incorrect")) {
+          var proInputBox = document.getElementById(proId);
+          proId = proId.replace('input', 'status');
+          var prohintId = proId.replace('input', 'inputtype');
+          var ele = document.getElementById(proId);
+
+          if (ele.classList.contains("incorrect")) {
+            if (proInputBox.value != "") {
               if (document.getElementById(hintTextId)) {
                 var hintText = document.getElementById(hintTextId).innerHTML;
                 document.getElementById(hintId).style.display = "";
                 document.getElementById(hintId).getElementsByTagName('p')[0].innerHTML = hintText;
+
+                var inputValue = document.getElementById(hintInputId).value;
+                var answerValue = document.getElementById(hintAnswerId).innerHTML;
+                answerValue = answerValue.substring(1);
+                answerValue = answerValue.slice(0,-1);
+                
+                if (inputValue == answerValue) {
+                  var hintStatusId = hintInputId.replace('input', 'status');
+                  document.getElementById(hintStatusId).className = "correct";
+                }
               }
             }
           }
+        }
+
+        show_hint(hintId, proId, hintTextId);
+
       </script>
     </problem>
