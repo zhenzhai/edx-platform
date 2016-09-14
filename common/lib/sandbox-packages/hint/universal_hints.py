@@ -1,6 +1,3 @@
-import cluster_functions
-from xml.sax.saxutils import escape
-
 def hint_wrong_sign():
 	return "Can the number of strings satisfying the constraint be negative?"
 
