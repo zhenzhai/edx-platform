@@ -1,5 +1,3 @@
-import sys
-sys.path.append("/Users/janetzhai/Desktop/open_edx/103_edX/devstack/edx-platform/common/lib/sandbox-packages")
 from expr_parser import webwork_parser
 from expr_parser import Eval_parsed
 from collections import deque
