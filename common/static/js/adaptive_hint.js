@@ -66,15 +66,7 @@ function show_hint_in_problem() {
           var hintText = document.getElementById(hintTextId).innerHTML;
           document.getElementById(hintId).style.display = "";
           document.getElementById(hintId).getElementsByTagName('p')[0].innerHTML = hintText;
-          var inputValue = document.getElementById(hintInputId).value;
-          var answerValue = document.getElementById(hintAnswerId).innerHTML;
-          answerValue = answerValue.substring(1);
-          answerValue = answerValue.slice(0,-1);
-          if (inputValue == answerValue) {
-            document.getElementById(hintStatusId).className = "correct";
-          } else {
-            document.getElementById(hintStatusId).className = "incorrect";
-          }
+          document.getElementById(hintStatusId).className = "unanswered";
         }
       }
     }
@@ -84,6 +76,7 @@ function show_hint_in_hint() {
     var proId = arguments[1];
     var hintTextId = arguments[2];
     var hintAnswerId = hintTextId + "answer";
+    var tolerance = 1+Math.exp(-6);
   
     var hintId = hintInputId.replace('input', 'problem');
       hintId = hintId.slice(0, -4);
@@ -98,14 +91,27 @@ function show_hint_in_hint() {
             var hintText = document.getElementById(hintTextId).innerHTML;
             document.getElementById(hintId).style.display = "";
             document.getElementById(hintId).getElementsByTagName('p')[0].innerHTML = hintText;
-          var inputValue = document.getElementById(hintInputId).value;
-              var answerValue = document.getElementById(hintAnswerId).innerHTML;
-              answerValue = answerValue.substring(1);
-          answerValue = answerValue.slice(0,-1);
-              if (inputValue == answerValue) {
-                var hintStatusId = hintInputId.replace('input', 'status');
+            var hintStatusId = hintInputId.replace('input', 'status');
+
+            var inputValue = document.getElementById(hintInputId).value;
+            inputValue = eval(inputValue);
+            var answerValue = document.getElementById(hintAnswerId).innerHTML;
+            answerValue = answerValue.substring(1);
+            answerValue = answerValue.slice(0,-1);
+            answerValue = eval(answerValue);
+
+            if (answerValue == 0) {
+              if (inputValue == 0) {
                 document.getElementById(hintStatusId).className = "correct";
+              } else {
+                document.getElementById(hintStatusId).className = "incorrect";
               }
+            } else {
+              var ratio = inputValue / answerValue;
+                if (ratio < tolerance && ratio > (1/tolerance)) {
+                    document.getElementById(hintStatusId).className = "correct";
+                }
+            }
           }
         }
       }
