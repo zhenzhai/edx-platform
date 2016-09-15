@@ -21,53 +21,13 @@ data: |
 
 
 
-
-
       <script type="loncapa/python">
     from hint import evaluate
-
     def check(expect, ans):
       return evaluate.evaluate(expect, ans)
       </script>
 
       <script type="text/javascript">
-        function show_hint() {
-          var hintInputId = arguments[0];
-          var proId = arguments[1];
-          var hintTextId = arguments[2];
-          var hintAnswerId = hintTextId + "answer";
-          console.log(hintAnswerId);
-        
-          var hintId = hintInputId.replace('input', 'problem');
-          hintId = hintId.slice(0, -4);
-          
-          var proInputBox = document.getElementById(proId);
-          proId = proId.replace('input', 'status');
-          var prohintId = proId.replace('input', 'inputtype');
-          var ele = document.getElementById(proId);
-
-          if (ele.classList.contains("incorrect")) {
-            if (proInputBox.value != "") {
-              if (document.getElementById(hintTextId)) {
-                var hintText = document.getElementById(hintTextId).innerHTML;
-                document.getElementById(hintId).style.display = "";
-                document.getElementById(hintId).getElementsByTagName('p')[0].innerHTML = hintText;
-
-                var inputValue = document.getElementById(hintInputId).value;
-                var answerValue = document.getElementById(hintAnswerId).innerHTML;
-                answerValue = answerValue.substring(1);
-                answerValue = answerValue.slice(0,-1);
-                
-                if (inputValue == answerValue) {
-                  var hintStatusId = hintInputId.replace('input', 'status');
-                  document.getElementById(hintStatusId).className = "correct";
-                }
-              }
-            }
-          }
-        }
-
-        show_hint(hintId, proId, hintTextId);
-
+        show_hint_in_hint(hintId, proId, hintTextId);
       </script>
     </problem>
