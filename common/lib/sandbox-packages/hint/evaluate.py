@@ -2,7 +2,8 @@ import cluster_functions
 def evaluate(ans, att):
 	ans = ans.strip("\[")
   	ans = ans.strip("\]")
-  	att = att.strip("'")
+  	ans = ans.replace("{","")
+  	ans = ans.replace("}","")
   	att = att.strip("'")
 	p = cluster_functions.make_params(ans, att)
 	if p == {}:
@@ -16,7 +17,8 @@ def evaluate(ans, att):
 def evaluate_w_variables(ans, att, variable_values, test_all=False):
 	ans = ans.strip("\[")
   	ans = ans.strip("\]")
-  	att = att.strip("'")
+  	ans = ans.replace("{","")
+  	ans = ans.replace("}","")
   	att = att.strip("'")
 	matches = cluster_functions.show_matching_group_w_variables(ans, att, variable_values, test_all)
 	if matches and len(matches) == 1 and matches[0] == att:
