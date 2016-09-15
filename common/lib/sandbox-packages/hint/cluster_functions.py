@@ -1,3 +1,5 @@
+import sys
+sys.path.append("/Users/janetzhai/Desktop/open_edx/103_edX/devstack/edx-platform/common/lib/sandbox-packages")
 from expr_parser import webwork_parser
 from expr_parser import Eval_parsed
 from collections import deque
@@ -43,7 +45,10 @@ def find_Hits(List,tol = 1+1e-6):
         if item2[0] != 0:
             ratio=item1[0]/item2[0]
         else:
-            ratio = 0
+            if item1[0] == 0:
+                ratio = 1
+            else:
+                ratio = 0
         # get the tree node
         node1 = get_top_node(item1)
         node2 = get_top_node(item2)

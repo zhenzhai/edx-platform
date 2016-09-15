@@ -23,3 +23,8 @@ def evaluate_w_variables(ans, att, variable_values, test_all=False):
 		return True
 	else:
 		return False
+
+def test():
+	print evaluate('\[0\]', '0')
+
+test()
