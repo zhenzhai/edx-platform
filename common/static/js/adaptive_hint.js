@@ -74,6 +74,7 @@ function show_hint_in_problem() {
 
 function show_hint_in_hint() {
     var index = arguments[0];
+    index = index - 1;
     var hintInputId = arguments[1];
     hintInputId = hintInputId[index];
     var proId = arguments[2];
