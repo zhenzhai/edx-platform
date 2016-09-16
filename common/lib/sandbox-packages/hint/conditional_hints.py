@@ -1,7 +1,7 @@
 import cluster_functions
 
 def conditional_hint(p):
-    return "", ""
+    return "This is a hint. Please type 888 below", "888"
 
 def conditional_hint_w_variables(p, variables):
     """
