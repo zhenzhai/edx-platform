@@ -16,7 +16,7 @@ data: |
     solutions = [solution1, solution2]
 
     # hint id
-    hint_id = ["cse103fall2016week1problem1part1","cse103fall2016week1problem1part2"]
+    hint_text_id = ["cse103fall2016week1problem1part1","cse103fall2016week1problem1part2"]
         </script>
 
         <script type="text/javascript">
@@ -85,7 +85,7 @@ data: |
         hint_text, hint_answer = ('hint testing', '888')#c_hint.conditional_hint(param)
         if not hint_text:
           return
-        hint = string_format.format_c_hint(hint, hint_id, hint_answer, i)
+        hint = string_format.format_c_hint(hint_text, hint_text_id, hint_answer, i)
       new_cmap.set_hint_and_mode(aid,hint,'always')
         </script>
 

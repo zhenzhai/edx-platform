@@ -6,12 +6,21 @@ data: |
     <problem>
 
       <script type="text/javascript">
+        //fill in the part id as the hint index
+          var hint_index = 1;
+          
         //fill in hint input box id
-          var hintId = "input_57ccdc78397649aca59b419c95573254_2_1";
+          var hintIds = ["input_57ccdc78397649aca59b419c95573254_2_1",
+                  "input_1ddc9e0c3eea4ba3b61b291a7cfb650d_2_1"];
+
         //fill in problem input box id
-          var proId = "input_0463a3ce78dd46429e9e2fcf681616d9_2_1";
-        //fill in hint text id. Need to match the hint_id from above
-          var hintTextId = "cse103fall2016week1problem1part1";
+          var proIds = ["input_0463a3ce78dd46429e9e2fcf681616d9_2_1",
+                 "input_0463a3ce78dd46429e9e2fcf681616d9_3_1"];
+
+        //fill in hint text id. Need to match the hint_id from above.
+          var hintTextIds = ["cse103fall2016week1problem1part1",
+                    "cse103fall2016week1problem1part2"];
+
       </script>
       
       <p> hint will be inserted here </p>
@@ -28,6 +37,6 @@ data: |
       </script>
 
       <script type="text/javascript">
-        show_hint_in_hint(hintId, proId, hintTextId);
+        show_hint_in_hint(hint_index, hintIds, proIds, hintTextIds);
       </script>
     </problem>
