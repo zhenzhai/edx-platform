@@ -102,7 +102,7 @@ def find_matches(params):
     answer_list=flatten(answer_tree,'c')
 
     # sort by value
-    combined_list=sorted(answer_list+attempt_list,key=lambda x: (x[0],len(x[2])))
+    combined_list=sorted(answer_list+attempt_list,key=lambda x: (x[0], len(str(x))))
 
     # find all hits
     Hits=find_Hits(combined_list)
