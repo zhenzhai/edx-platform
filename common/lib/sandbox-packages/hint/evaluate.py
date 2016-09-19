@@ -1,4 +1,19 @@
 import cluster_functions
+
+def check_w_tol(ans, att, tol = 1+1e-3):
+	if ans == 0:
+		if att == 0:
+			return True
+		else:
+			return False
+	else:
+		ratio = att/ans
+		if ratio < tol and ratio > (1/tol):
+			return True
+		else:
+			return False
+
+
 def evaluate(ans, att):
 	ans = ans.strip("\[")
   	ans = ans.strip("\]")
@@ -8,14 +23,13 @@ def evaluate(ans, att):
 	p = cluster_functions.make_params(ans, att)
 	if p == {}:
 		return False
-	print p
 	att_value = cluster_functions.get_numerical_answer(p['att_tree'])
 	ans_value = cluster_functions.get_numerical_answer(p['ans_tree'])
 	final_pairs = cluster_functions.find_matches(p)
 
 	if len(final_pairs) == 1 and final_pairs[0][0] == 'R':
 		return True
-	elif att_value == ans_value:
+	elif check_w_tol(ans_value, att_value):
 		return True
 	else:
 		return False
