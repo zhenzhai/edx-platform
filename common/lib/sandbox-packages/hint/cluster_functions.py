@@ -30,7 +30,7 @@ def flatten(tree,tag):
     return List
 
 
-def find_Hits(List,tol = 1+1e-6):
+def find_Hits(List,tol = 1+1e-3):
     """ Given a combined list of subtrees from both attempt and answer,
     sorted by value, find the matching pairs of trees
     tol is the tolerance used to define which pairs of values match. 
