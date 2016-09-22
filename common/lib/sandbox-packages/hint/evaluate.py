@@ -1,5 +1,16 @@
 import cluster_functions
 
+import logging.handlers
+import logging
+# logging settings
+log_path = 'log/evaluate.log'
+logger = logging.getLogger('evaluate')
+handler = logging.handlers.RotatingFileHandler(log_path, maxBytes = 262144, backupCount = 16)
+formatter = logging.Formatter('%(asctime)s - %(name)s: EVAL %(levelname)s - %(message)s')
+handler.setFormatter(formatter)
+logger.addHandler(handler)
+logger.setLevel(logging.INFO)
+
 def check_w_tol(ans, att, tol = 1+1e-3):
 	if ans == 0:
 		if att == 0:
@@ -22,6 +33,7 @@ def evaluate(ans, att):
   	att = att.strip("'")
 	p = cluster_functions.make_params(ans, att)
 	if p == {}:
+		logger.info("param empty from evaluate")
 		return False
 	att_value = cluster_functions.get_numerical_answer(p['att_tree'])
 	ans_value = cluster_functions.get_numerical_answer(p['ans_tree'])
