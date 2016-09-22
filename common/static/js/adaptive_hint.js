@@ -1,5 +1,5 @@
-
 function hide_hint() {
+    //initially hide all hints
     var index = arguments[0];
     var hintInputId = hintIds[index];
     var proId = proIds[index];
@@ -22,8 +22,25 @@ function hide_hint() {
     hintInputEle.value = "";
     hintStatusEle.className = "incorrect";
 }
-             
+
+function show_hint() {
+  //show "show hint" button after certain minutes
+  //pass in hint index and number of minutes to delay
+  var index = arguments[0];
+  var minutes = arguments[1];
+  var hintDivId = hintTextIds[index]+"_hintDiv";
+  var seconds_diff = minutes*60*1000;
+  var timer_diff = Date.now() - timerStart;
+  if (timer_diff > seconds_diff) {
+    if (document.getElementById(hintDivId)) {
+      document.getElementById(hintDivId).style.display = "";
+    }
+  }
+}
+
+
 function show_hint_in_problem() {
+  //show hint when the "show hint" button is clicked
     var index = arguments[0];
     var hintInputId = hintIds[index];
     var hintId = hintInputId.replace('input', 'problem');
@@ -33,7 +50,6 @@ function show_hint_in_problem() {
     var hintStatusId = hintInputId.replace('input', 'status');
     var proInputId = proIds[index];
     var proId = proInputId.replace('input', 'status');
-    //var prohintId = proInputId.replace('input', 'inputtype');
     
     var hintInputEle = document.getElementById(hintInputId);
     if (!hintInputEle) {
@@ -72,7 +88,9 @@ function show_hint_in_problem() {
     }
 }
 
+
 function show_textHint_in_problem() {
+  // show text hint when "show hint" button is clicked
     var index = arguments[0];
     var hintTextId = hintTextIds[index];
     hintTextId += "_textHint";
@@ -80,7 +98,10 @@ function show_textHint_in_problem() {
     proEle.style.display = "";
 }
 
+
 function show_hint_in_hint() {
+  // want to make sure the hint is not hidden after student
+  // clicks check/save/reset which will reload the js of the hint
     var index = arguments[0];
     index = index - 1;
     var hintInputId = arguments[1];
