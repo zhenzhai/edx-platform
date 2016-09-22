@@ -72,6 +72,14 @@ function show_hint_in_problem() {
     }
 }
 
+function show_hintText_in_problem() {
+    var index = arguments[0];
+    var hintTextId = hintTextIds[index];
+    hintTextId += "_hintText";
+    var proEle = document.getElementById(hintTextId);
+    proEle.style.display = "";
+}
+
 function show_hint_in_hint() {
     var index = arguments[0];
     index = index - 1;
