@@ -37,6 +37,7 @@ data: |
       </script>
 
       <script type="text/javascript">
+        hide_hint(hint_index-1);
         show_hint_in_hint(hint_index, hintIds, proIds, hintTextIds);
       </script>
     </problem>
