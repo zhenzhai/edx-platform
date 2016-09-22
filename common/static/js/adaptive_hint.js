@@ -75,7 +75,7 @@ function show_hint_in_problem() {
 function show_textHint_in_problem() {
     var index = arguments[0];
     var hintTextId = hintTextIds[index];
-    hintTextId += "_hintText";
+    hintTextId += "_textHint";
     var proEle = document.getElementById(hintTextId);
     proEle.style.display = "";
 }
