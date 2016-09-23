@@ -1,6 +1,4 @@
-import logging.handlers
-
-
+"""import logging.handlers
 # logging settings
 log_path = 'hint_format.log'
 logger = logging.getLogger('hint.format')
@@ -8,7 +6,7 @@ handler = logging.handlers.RotatingFileHandler(log_path, maxBytes = 262144, back
 formatter = logging.Formatter('%(asctime)s: FORMAT %(levelname)s - %(message)s')
 handler.setFormatter(formatter)
 logger.addHandler(handler)
-logger.setLevel(logging.INFO)
+logger.setLevel(logging.INFO)"""
 
 
 def format_u_hint(hint_text, hint_id, i):
@@ -17,7 +15,7 @@ def format_u_hint(hint_text, hint_id, i):
 		output: formated hint with "show hint" button
 	'''
 	if i >= len(hint_id):
-		logger.error("index out of range in foramt_u_hint")
+		#logger.error("index out of range in foramt_u_hint")
 		return ""
 
 	textHint_id = hint_id[i] + "_textHint"
@@ -38,7 +36,7 @@ def format_c_hint(hint_text, hint_id, hint_answer, i):
 		output: formated hint with "show hint" button
 	'''
 	if i >= len(hint_id):
-		logger.error("index out of range in foramt_c_hint")
+		#logger.error("index out of range in foramt_c_hint")
 		return ""
 
 	hintDiv_id = hint_id[i] + "_hintDiv"
