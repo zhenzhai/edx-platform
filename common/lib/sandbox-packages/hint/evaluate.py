@@ -3,7 +3,7 @@ import cluster_functions
 import logging.handlers
 import logging
 # logging settings
-log_path = '/edx/app/edxapp/edx-platform/common/lib/sandbox-packages/hint/log/evaluate.log'
+log_path = 'evaluate.log'
 logger = logging.getLogger('evaluate')
 handler = logging.handlers.RotatingFileHandler(log_path, maxBytes = 262144, backupCount = 16)
 formatter = logging.Formatter('%(asctime)s - %(name)s: EVAL %(levelname)s - %(message)s')

@@ -2,7 +2,7 @@ import logging.handlers
 
 
 # logging settings
-log_path = 'log/hint_format.log'
+log_path = 'hint_format.log'
 logger = logging.getLogger('hint.format')
 handler = logging.handlers.RotatingFileHandler(log_path, maxBytes = 262144, backupCount = 16)
 formatter = logging.Formatter('%(asctime)s: FORMAT %(levelname)s - %(message)s')
