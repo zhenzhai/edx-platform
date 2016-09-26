@@ -26,14 +26,16 @@ function hide_hint() {
 function show_hint() {
   //show "show hint" button after certain minutes
   //pass in hint index and number of minutes to delay
-  var index = arguments[0];
+  var hint_number = arguments[0];
   var minutes = arguments[1];
-  var hintDivId = hintTextIds[index]+"_hintDiv";
   var seconds_diff = minutes*60*1000;
   var timer_diff = Date.now() - timerStart;
   if (timer_diff > seconds_diff) {
-    if (document.getElementById(hintDivId)) {
-      document.getElementById(hintDivId).style.display = "";
+    for (var i=0; i < hint_number; i++) {
+      var hintDivId = hintTextIds[i]+"_hintDiv";
+      if (document.getElementById(hintDivId)) {
+        document.getElementById(hintDivId).style.display = "";
+      }
     }
   }
 }
