@@ -3,8 +3,8 @@ from expr_parser import Eval_parsed
 from collections import deque
 from collections import defaultdict
 
-import logging 
-log=logging.getLogger('evaluate')
+#import logging 
+#logger=logging.getLogger('evaluate')
 
 def flatten(tree,tag):
     """flatten a tree
