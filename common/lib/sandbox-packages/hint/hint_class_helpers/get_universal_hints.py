@@ -2,10 +2,11 @@ from os import listdir
 from os.path import isfile, join, expanduser, splitext
 from pydoc import locate
 import traceback
+base_dir = "/edx/app/edxapp/edx-platform/common/lib/sandbox-packages/hint/"
 
 def get_first_universal_hints(params):
     'Read first universal hint functions'''
-    uni_folder_name = 'hint_class/first_Universal'
+    uni_folder_name = base_dir+'hint_class/first_Universal'
     first_u_hints = []
     for f in listdir(expanduser(uni_folder_name)):
         if isfile(join(expanduser(uni_folder_name), f)) and \
@@ -35,7 +36,7 @@ def get_first_universal_hints(params):
 
 def get_last_universal_hints(params):
     'Read last universal hint functions'''
-    l_uni_folder_name = 'hint_class/last_Universal'
+    l_uni_folder_name = base_dir+'hint_class/last_Universal'
     last_u_hints = []
     for f in listdir(expanduser(l_uni_folder_name)):
         if isfile(join(expanduser(l_uni_folder_name), f)) and \
