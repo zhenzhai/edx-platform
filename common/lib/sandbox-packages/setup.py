@@ -7,9 +7,6 @@ setup(
         "loncapa",
         "verifiers",
         "hint",
-        "hint.hint_class",
-        "hint.hint_class_helpers",
-        "hint.hint_class_helpers.expr_parser"
     ],
     py_modules=[
         "eia",

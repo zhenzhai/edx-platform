@@ -31,18 +31,18 @@ logger.addHandler(ch)
 
 def common_subexpressions(params):
     final_pairs=find_matches(params)
-        if len(final_pairs)>0:
-            for node,value,ans_piece,attempt_piece in final_pairs:
-                if value>10 or value != int(value):
-                    # print hint
-                    if node=='R': # attempt is correct
-                        sub_type='answer'
-                    else:
-                        sub_type='sub-expression'
-                    if attempt_piece != ans_piece:
-                        return 'The {0} {1} is correct, it could also be written as {2}'.format(sub_type,attempt_piece,ans_piece)
-                    else:
-                        return 'The {0} {1} is correct'.fromat(sub_type,attempt_piece)
+    if len(final_pairs)>0:
+        for node,value,ans_piece,attempt_piece in final_pairs:
+            if value>10 or value != int(value):
+                # print hint
+                if node=='R': # attempt is correct
+                    sub_type='answer'
+                else:
+                    sub_type='sub-expression'
+                if attempt_piece != ans_piece:
+                    return 'The {0} {1} is correct, it could also be written as {2}'.format(sub_type,attempt_piece,ans_piece)
+                else:
+                    return 'The {0} {1} is correct'.fromat(sub_type,attempt_piece)
 
 
 
