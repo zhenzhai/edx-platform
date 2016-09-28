@@ -5,8 +5,8 @@ from hint_class_helpers.make_params import make_params
 import hint_format
 def get_hint(ans, att, hint_text_id, i):
 	param = make_params(ans, att)
-  	if param == {}:
-    	return ""
+	if param == {}:
+		return ""
 	hint = get_first_universal_hints(p)
 	if hint:
 		hint = hint_format.format_u_hint(hint, hint_text_id, i)
