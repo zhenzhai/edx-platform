@@ -28,10 +28,10 @@ def get_hint(ans, att, hint_text_id, i):
 
 
 def get_hint_w_variables(ans, att, hint_text_id, i, variables):
-    """
-    input variables should be a list of strings of variable names 
-    """
-    param = make_params(ans, att)
+	"""
+	input variables should be a list of strings of variable names 
+	"""
+	param = make_params(ans, att)
 	if param == {}:
 		return ""
-    return ""
+	return ""
