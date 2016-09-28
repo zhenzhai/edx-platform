@@ -7,7 +7,7 @@ def get_hint(ans, att, hint_text_id, i):
 	param = make_params(ans, att)
 	if param == {}:
 		return ""
-	hint = get_first_universal_hints(p)
+	hint = get_first_universal_hints(param)
 	if hint:
 		hint = hint_format.format_u_hint(hint, hint_text_id, i)
 		return hint
@@ -19,7 +19,7 @@ def get_hint(ans, att, hint_text_id, i):
 		hint = string_format.format_c_hint(hint_text, hint_text_id, hint_answer, i)
 		return hint
 
-	hint = get_last_universal_hints(p)
+	hint = get_last_universal_hints(param)
 	if hint:
 		hint = hint_format.format_u_hint(hint, hint_text_id, i)
 		return hint
@@ -27,8 +27,11 @@ def get_hint(ans, att, hint_text_id, i):
 	return ""
 
 
-def get_hint_w_variables(p, part_id, variables):
+def get_hint_w_variables(ans, att, hint_text_id, i, variables):
     """
     input variables should be a list of strings of variable names 
     """
+    param = make_params(ans, att)
+	if param == {}:
+		return ""
     return ""
