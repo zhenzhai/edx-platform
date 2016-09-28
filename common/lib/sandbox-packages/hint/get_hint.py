@@ -1,8 +1,12 @@
 from hint_class_helpers.get_universal_hints import get_first_universal_hints
 from hint_class_helpers.get_universal_hints import get_last_universal_hints
+from hint_class_helpers.make_params import make_params
 
 import hint_format
-def get_hint(p, hint_text_id, i):
+def get_hint(ans, att, hint_text_id, i):
+	param = make_params(ans, att)
+  	if param == {}:
+    	return ""
 	hint = get_first_universal_hints(p)
 	if hint:
 		hint = hint_format.format_u_hint(hint, hint_text_id, i)
