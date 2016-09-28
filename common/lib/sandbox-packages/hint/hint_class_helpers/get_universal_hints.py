@@ -1,11 +1,16 @@
+from os import listdir
+from os.path import isfile, join, expanduser, splitext
+from pydoc import locate
+import traceback
+
 def get_first_universal_hints(params):
     'Read first universal hint functions'''
     uni_folder_name = 'hint_class/first_Universal'
     first_u_hints = []
-    for f in listdir(os.path.expanduser(uni_folder_name)):
-        if isfile(join(os.path.expanduser(uni_folder_name), f)) and \
+    for f in listdir(expanduser(uni_folder_name)):
+        if isfile(join(expanduser(uni_folder_name), f)) and \
                 f.endswith('.py') and f != '__init__.py':
-            first_u_hints.append(os.path.splitext(f)[0])
+            first_u_hints.append(splitext(f)[0])
 
     package_name = 'hint_class.first_Universal'
     if len(params['att_tree']) > 1:
@@ -14,12 +19,14 @@ def get_first_universal_hints(params):
             try:
                 uni_f = locate(f_address)
             except:
-                print("ERROR: syntax error in universal hint function!!")
+                traceback.print_exc()
+                print "ERROR: syntax error in universal hint function!!"
                 return
             try:
                 hint = uni_f.check_attempt(params)
             except:
-                print("ERROR: syntax error in universal hint function!!")
+                traceback.print_exc()
+                print "ERROR: syntax error in universal hint function!!"
                 return
 
             if hint:
@@ -30,10 +37,10 @@ def get_last_universal_hints(params):
     'Read last universal hint functions'''
     l_uni_folder_name = 'hint_class/last_Universal'
     last_u_hints = []
-    for f in listdir(os.path.expanduser(l_uni_folder_name)):
-        if isfile(join(os.path.expanduser(l_uni_folder_name), f)) and \
+    for f in listdir(expanduser(l_uni_folder_name)):
+        if isfile(join(expanduser(l_uni_folder_name), f)) and \
                 f.endswith('.py') and f != '__init__.py':
-            last_u_hints.append(os.path.splitext(f)[0])
+            last_u_hints.append(splitext(f)[0])
 
     # Try last universal hint
     package_name = 'hint_class.last_Universal'
