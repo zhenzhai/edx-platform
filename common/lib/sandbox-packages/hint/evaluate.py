@@ -1,4 +1,8 @@
-import cluster_functions
+from hint_class_helpers.make_params import make_params
+from hint_class_helpers.get_numerical_answer import get_numerical_answer
+from hint_class_helpers.find_matches import find_matches
+from hint_class_helpers.find_matches_w_variables import find_matches_w_variables
+
 
 """import logging.handlers
 import logging
@@ -31,13 +35,13 @@ def evaluate(ans, att):
   	ans = ans.replace("{","")
   	ans = ans.replace("}","")
   	att = att.strip("'")
-	p = cluster_functions.make_params(ans, att)
+	p = make_params(ans, att)
 	if p == {}:
 		#logger.info("param empty from evaluate")
 		return False
-	att_value = cluster_functions.get_numerical_answer(p['att_tree'])
-	ans_value = cluster_functions.get_numerical_answer(p['ans_tree'])
-	final_pairs = cluster_functions.find_matches(p)
+	att_value = get_numerical_answer(p['att_tree'])
+	ans_value = get_numerical_answer(p['ans_tree'])
+	final_pairs = find_matches(p)
 
 	if len(final_pairs) == 1 and final_pairs[0][0] == 'R':
 		return True
@@ -52,7 +56,7 @@ def evaluate_w_variables(ans, att, variable_values, test_all=False):
   	ans = ans.replace("{","")
   	ans = ans.replace("}","")
   	att = att.strip("'")
-	matches = cluster_functions.show_matching_group_w_variables(ans, att, variable_values, test_all)
+	matches = find_matches_w_variables(ans, att, variable_values, test_all)
 	if matches and len(matches) == 1 and matches[0] == att:
 		return True
 	else:

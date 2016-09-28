@@ -1,6 +1,4 @@
 from math import factorial
-from math import sqrt
-from math import log
 import linecache
 import sys, traceback
 from string import replace
@@ -10,7 +8,7 @@ import operator as op
 from scipy.stats import norm
 
 import logging 
-logger=logging.getLogger('evaluate')
+log=logging.getLogger(__name__)
 
 def PrintException():
     exc_type, exc_obj, tb = sys.exc_info()
@@ -19,7 +17,7 @@ def PrintException():
     filename = f.f_code.co_filename
     linecache.checkcache(filename)
     line = linecache.getline(filename, lineno, f.f_globals)
-    logger.error('EXCEPTION IN ({}, LINE {} "{}"): {}'.format(filename, lineno, line.strip(), exc_obj))
+    log.error('EXCEPTION IN ({}, LINE {} "{}"): {}'.format(filename, lineno, line.strip(), exc_obj))
 
 def is_number(s):
     try:
@@ -27,6 +25,7 @@ def is_number(s):
         return True
     except:
         return False
+
 
 def ncr(n, r):
     " compute n choose r "
@@ -61,6 +60,7 @@ def find_common_values(e1,e2):
        
     """
     
+
 def eval_parsed(e, variable_list={}, label='R'):
     """ Evaluate a parsed expression, returns a tree, of the same form as the parse tree. Where each operator 
         is replaced by a tuple: (operator,evaluation result)
@@ -72,9 +72,7 @@ def eval_parsed(e, variable_list={}, label='R'):
     #print 'in eval_parsed e=|%s|, label=|%s|'%(str(e),str(label))
 
     def get_number(ev):
-        if not ev:
-            logger.error('Eval_parsed: None object from get_number')
-            return
+        #print 'get_number got',ev
         if len(ev)==4 and ev[0]=='X': 
             return float(ev[1])
         elif len(ev)==1:
@@ -83,7 +81,7 @@ def eval_parsed(e, variable_list={}, label='R'):
             return float(ev[0][1])
         
     try:
-        logger.debug('Eval_parsed: e="'+str(e)+'"')
+        log.debug('eval_parsed, e="'+str(e)+'"')
         if type(e)==type(None):
             return 0
         elif is_number(e)==1:
@@ -122,8 +120,6 @@ def eval_parsed(e, variable_list={}, label='R'):
                 ans = norm.cdf(v)
             elif f=='sqrt':
                 ans = sqrt(v)
-            elif f=='log':
-                ans = log(v)
             else:
                 raise Exception('unrecognized unary operator %s in %s'%(f,e))
             return [[f,ans,span,label],ev]
@@ -255,7 +251,7 @@ def parse_and_eval(string,values=[]):
         else:
             raise Exception
     except:
-        logger.error('Eval_parsed: Exception in parse_and_eval, string=%s, parsed=%s'%(string,str(expr)))
+        log.error('Exception in parse_and_eval, string=%s, parsed=%s'%(string,str(expr)))
         traceback.print_exc(file=sys.stdout)
         return None
 
