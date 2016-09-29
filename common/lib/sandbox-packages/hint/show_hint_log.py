@@ -10,15 +10,15 @@ db = MySQLdb.connect("localhost","root","","ucsd_cse103" )
 db_cursor = db.cursor()
 
 '''Create the table, should be executed only once'''
-create_phtb_table_sql = """CREATE TABLE SHOW_HINT_CLICK(
-                                        ID int NOT NULL AUTO_INCREMENT,
-                                        PROBLEM_NAME CHAR(255),
-                                        PROBLEM_PART CHAR(255), 
-                                        STUDENT_USERNAME CHAR(255),
-                                        TIME_CLICKED TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
+create_phtb_table_sql = """CREATE TABLE show_hint_click(
+                                        id int NOT NULL AUTO_INCREMENT,
+                                        problem_name CHAR(255),
+                                        problem_part CHAR(255), 
+                                        student_username CHAR(255),
+                                        time_clicked TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
                                         PRIMARY KEY (ID) )"""
 
-db_cursor.execute(create_phtb_table_sql)                                        
+#db_cursor.execute(create_phtb_table_sql)                                        
 
 
 app = Flask(__name__)
@@ -37,7 +37,7 @@ def index():
     new_record = (problem_name, problem_part, student_username)
     
     try:
-        insert_sql = """INSERT INTO SHOW_HINT_CLICK (PROBLEM_NAME, PROBLEM_PART, STUDENT_USERNAME)
+        insert_sql = """INSERT INTO show_hint_click (problem_name, problem_part, student_username)
                         VALUES(%s,%s, %s)"""  
         db_cursor.execute(insert_sql,new_record)  
         db.commit()
