@@ -15,23 +15,25 @@ def get_first_universal_hints(params):
 
     package_name = 'hint.hint_class.first_Universal'
     if len(params['att_tree']) > 1:
+        test_str = ""
         for f_name in first_u_hints:
             f_address = package_name + "." + f_name
+            test_str += f_address
             try:
                 uni_f = locate(f_address)
             except:
                 traceback.print_exc()
-                print "ERROR: syntax error in universal hint function!!"
-                return
+                return "ERROR: locate of universal hint function failed."
+
             try:
                 hint = uni_f.check_attempt(params)
             except:
                 traceback.print_exc()
-                print "ERROR: syntax error in universal hint function!!"
-                return
+                return "ERROR: check_attempt of universal hint function failed."
 
             if hint:
                 return hint
+        return test_str
 
 
 def get_last_universal_hints(params):
