@@ -13,7 +13,7 @@ def get_first_universal_hints(params):
                 f.endswith('.py') and f != '__init__.py':
             first_u_hints.append(splitext(f)[0])
 
-    package_name = 'hint_class.first_Universal'
+    package_name = 'hint.hint_class.first_Universal'
     if len(params['att_tree']) > 1:
         for f_name in first_u_hints:
             f_address = package_name + "." + f_name
@@ -44,7 +44,7 @@ def get_last_universal_hints(params):
             last_u_hints.append(splitext(f)[0])
 
     # Try last universal hint
-    package_name = 'hint_class.last_Universal'
+    package_name = 'hint.hint_class.last_Universal'
     last_universal_hint = ""
     for f_name in last_u_hints:
         f_address = package_name + "." + f_name

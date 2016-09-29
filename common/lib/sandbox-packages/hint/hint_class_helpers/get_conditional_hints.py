@@ -3,6 +3,7 @@ def get_conditional_hints(hint_text_id, i, params):
         #logger.error("index out of range in get_conditional_hints")
         return ""
 
+    path = ""
     # TODO: search from DB 
 
     '''Read hint class'''
@@ -16,7 +17,7 @@ def get_conditional_hints(hint_text_id, i, params):
     folder_name = path
     package_name = folder_name.replace('/', '.')
     for class_name in hint_classes:
-        class_address = package_name + "." + class_name + "." + class_name
+        class_address = "hint." + package_name + "." + class_name + "." + class_name
         try:
             ClassName = locate(class_address)
         except:
