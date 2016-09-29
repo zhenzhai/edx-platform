@@ -27,7 +27,7 @@ function show_hint() {
   //show "show hint" button after certain minutes
   //pass in hint index and number of minutes to delay
   var hint_number = arguments[0];
-  var minutes = arguments[1];
+  var minutes = 3;//arguments[1];
   var seconds_diff = minutes*60*1000;
   var timer_diff = Date.now() - timerStart;
   if (timer_diff > seconds_diff) {
