@@ -8,14 +8,14 @@ from math import factorial
 from webwork_lexer import WebworkLexer
 
 # Set up a logging object
-import logging
+#import logging
 
-logging.basicConfig(
+#logging.basicConfig(
 #    level = logging.WARNING,
-    level = logging.INFO,
-    format = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-)
-log=logging.getLogger(__name__)
+#    level = logging.INFO,
+#    format = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+#)
+#log=logging.getLogger(__name__)
 
 """
 Parsing webwork expressions
@@ -131,6 +131,7 @@ precedence = (
     ('nonassoc','Q'),
     ('nonassoc','PHI'),
     ('nonassoc','SQRT'),
+    ('nonassoc','LOG'),
     ('nonassoc','COMPUTE')
 )
 
@@ -220,6 +221,12 @@ def p_factor_sqrt(t):
     '''factor : SQRT LPAREN factor RPAREN %prec SQRT
               | SQRT LPAREN expression RPAREN %prec SQRT'''
     t[0] = ['sqrt', t[3]]
+    t[0]=add_header(t)
+
+def p_factor_log(t):
+    '''factor : LOG LPAREN factor RPAREN %prec LOG
+              | LOG LPAREN expression RPAREN %prec LOG'''
+    t[0] = ['log', t[3]]
     t[0]=add_header(t)
 
 def p_compute(t):
@@ -325,11 +332,9 @@ def p_error(p):
 #     yacc.token()
 
 # START lex and yacc
-#lexer = WebworkLexer(debug=True)
-lexer = WebworkLexer()
+lexer = WebworkLexer(debug=False)
 tokens = lexer.tokens
-#parser = yacc.yacc(debug=True)
-parser = yacc.yacc()
+parser = yacc.yacc(debug=False)
 
 # set up debugging.
 
