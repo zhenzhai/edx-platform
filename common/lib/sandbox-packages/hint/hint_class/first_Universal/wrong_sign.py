@@ -5,5 +5,5 @@ def check_attempt(p):
 	ans = get_numerical_answer(p['ans_tree'])
 
 	if att * ans < 0:
-		return "Can the number of strings satisfying the constraint be negative?"
+		return "Can the answer be negative?"
 	return ""

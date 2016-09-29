@@ -5,5 +5,5 @@ def check_attempt(p):
 	ans = get_numerical_answer(p['ans_tree'])
 
 	if float(ans).is_integer() and not float(att).is_integer():
-	   return "Can the number of strings satisfying the constraint be fractional?"
+	   return "Can the answer be fractional?"
 	return ""
