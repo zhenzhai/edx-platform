@@ -23,13 +23,13 @@ def get_first_universal_hints(params):
                 uni_f = locate(f_address)
             except:
                 traceback.print_exc()
-                return "ERROR: locate of universal hint function failed."
+                return "ERROR: locate of universal hint function {0} failed.".format(f_address)
 
             try:
                 hint = uni_f.check_attempt(params)
             except:
                 traceback.print_exc()
-                return "ERROR: check_attempt of universal hint function failed."
+                return "ERROR: check_attempt of universal hint function {0} failed.".format(f_address)
 
             if hint:
                 return hint
