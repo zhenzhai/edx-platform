@@ -90,6 +90,18 @@ function show_hint_in_problem() {
     }
 }
 
+$(function() {
+    $('.show_hint_button').click(function () {
+        var problem_info = $('.hint').attr('id');
+        $.ajax({
+            url: '/',
+            type: 'post',
+            datatype: 'json',
+            data: {'name': 'zzhai', 'problem_info': problem_info}
+        });
+    });
+});
+
 
 function show_textHint_in_problem() {
   // show text hint when "show hint" button is clicked

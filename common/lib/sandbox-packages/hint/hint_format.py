@@ -24,7 +24,7 @@ def format_u_hint(hint_text, hint_id, i):
 
 	hint = "<div style='display:none' id='{0}'>".format(hintDiv_id)
 	hint += "<div style='padding:10px 10px 10px 0px;'>"
-	hint += "<button onclick='show_textHint_in_problem({0})'>Show hint</button>".format(i)
+	hint += "<button class = 'show_hint_button' id='show_hint_button_{0}'  onclick='show_textHint_in_problem({1})'>Show hint</button>".format(hint_id[i], i)
 	hint += "<p id='{0}' style='display:none'> {1} </p>".format(textHint_id, hint_text)
 	hint += "</div></div>"
 	return hint
@@ -44,7 +44,7 @@ def format_c_hint(hint_text, hint_id, hint_answer, i):
 
 	hint = "<div stype='display:none' id='{0}'>".format(hintDiv_id)
 	hint += "<div style='padding:10px 10px 10px 0px;'>"
-	hint += "<button onclick='show_hint_in_problem({0})'>Show hint</button>".format(i)
+	hint += "<button class = 'show_hint_button' id='show_hint_button_{0}' onclick='show_hint_in_problem({1})'>Show hint</button>".format(hint_id[i], i)
 	hint += "<p id='{0}' style='display:none'> {1} </p>".format(hint_id[i], hint_text)
 	hint += "<p id='{0}' style='display:none'> {1} </p>".format(hint_answer_id, hint_answer)
 	hint += "</div></div>"
