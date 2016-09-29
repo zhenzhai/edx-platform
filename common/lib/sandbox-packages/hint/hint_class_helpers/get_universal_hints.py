@@ -18,22 +18,22 @@ def get_first_universal_hints(params):
         test_str = ""
         for f_name in first_u_hints:
             f_address = package_name + "." + f_name
-            test_str += f_address
             try:
                 uni_f = locate(f_address)
             except:
                 traceback.print_exc()
-                return "ERROR: locate of universal hint function {0} failed.".format(f_address)
+                print "ERROR: locate of universal hint function {0} failed.".format(f_address)
+                return
 
             try:
                 hint = uni_f.check_attempt(params)
             except:
                 traceback.print_exc()
-                return "ERROR: check_attempt of universal hint function {0} failed.".format(f_address)
+                print "ERROR: check_attempt of universal hint function {0} failed.".format(f_address)
+                return
 
             if hint:
                 return hint
-        return test_str
 
 
 def get_last_universal_hints(params):
