@@ -8,6 +8,7 @@ def get_hint(ans, att, hint_text_id, i):
 	if param == {}:
 		return ""
 	hint = get_first_universal_hints(param)
+	return "hint here: {0}".format(hint)
 	if hint:
 		hint = hint_format.format_u_hint(hint, hint_text_id, i)
 		return hint

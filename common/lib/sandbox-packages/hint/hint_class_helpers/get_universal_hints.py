@@ -12,7 +12,6 @@ def get_first_universal_hints(params):
         if isfile(join(expanduser(uni_folder_name), f)) and \
                 f.endswith('.py') and f != '__init__.py':
             first_u_hints.append(splitext(f)[0])
-    return str(first_u_hints)
 
     package_name = 'hint_class.first_Universal'
     if len(params['att_tree']) > 1:
