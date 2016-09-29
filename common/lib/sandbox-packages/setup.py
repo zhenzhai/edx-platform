@@ -25,6 +25,6 @@ setup(
         "eia",
     ],
     install_requires=[
-        'Flask',
+        'flask',
     ],
 )
