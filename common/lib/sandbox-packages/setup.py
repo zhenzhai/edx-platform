@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name="sandbox-packages",
-    version="0.2.64",
+    version="0.2.65",
     packages=[
         "loncapa",
         "verifiers",
@@ -25,6 +25,5 @@ setup(
         "eia",
     ],
     install_requires=[
-        'flask', 'flask_cors',
     ],
 )
