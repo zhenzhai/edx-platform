@@ -94,7 +94,7 @@ $(function() {
     $('.show_hint_button').click(function () {
         var problem_info = $('.hint').attr('id');
         $.ajax({
-            url: '/',
+            url: '/show_hint_button_clicked',
             type: 'post',
             datatype: 'json',
             data: {'name': 'zzhai', 'problem_info': problem_info}

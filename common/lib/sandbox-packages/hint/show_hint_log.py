@@ -23,7 +23,7 @@ create_phtb_table_sql = """CREATE TABLE show_hint_click(
 
 app = Flask(__name__)
 
-@app.route('/show_hint_clicked', methods=['POST'])
+@app.route('/show_hint_button_clicked', methods=['POST'])
 def index():
     student_username = request.form["student_name"]
     problem_info = request.form["problem_info"]
