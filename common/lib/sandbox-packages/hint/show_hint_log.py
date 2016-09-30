@@ -1,5 +1,4 @@
 # Log the time student click the 'show_hint' button
-
 import os
 import sys
 import MySQLdb
@@ -30,14 +29,14 @@ def index():
     student_username = request.form["student_name"]
     problem_info = request.form["problem_info"]
     week_pos, problem_pos, part_pos = \
-            id_str.find('week'), id_str.find('problem'), id_str.find('part')
+             problem_info.find('week'), problem_info.find('problem'), problem_info.find('part')
     week_id, problem_id, part_id = \
-            id_str[week_pos+4:problem_pos], id_str[problem_pos+7:part_pos], id_str[part_pos+4:]
+             problem_info[week_pos+4:problem_pos], problem_info[problem_pos+7:part_pos], problem_info[part_pos+4:]
     problem_name = "Week{0}_Problem{1}".format(week_id, problem_id)
     problem_part = part_id
 
     new_record = (problem_name, problem_part, student_username)
-    
+     
     try:
         insert_sql = """INSERT INTO show_hint_click (problem_name, problem_part, student_username)
                         VALUES(%s,%s, %s)"""  
@@ -49,5 +48,5 @@ def index():
         print(traceback.format_exc())  
 
     db.close()
-    
-  
+
+app.run(host='0.0.0.0')
