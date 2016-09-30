@@ -48,6 +48,6 @@ def index():
 
     db.close()
     
-app.run(port = 18010)
+#app.run(host = '132.239.95.101', port = 18010)
 
   

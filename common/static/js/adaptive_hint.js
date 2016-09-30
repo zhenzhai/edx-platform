@@ -90,7 +90,7 @@ function show_hint_in_problem() {
     }
 }
 
-$(function() {
+/*$(function() {
     $('.show_hint_button').click(function () {
         var problem_info = $('.hint').attr('id');
         $.ajax({
@@ -103,7 +103,7 @@ $(function() {
             }
         });
     });
-});
+});*/
 
 
 function show_textHint_in_problem() {
