@@ -47,5 +47,7 @@ def index():
         print(traceback.format_exc())  
 
     db.close()
+    
+app.run(port = 18010)
 
   
