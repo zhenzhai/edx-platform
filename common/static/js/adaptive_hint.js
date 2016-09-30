@@ -97,7 +97,10 @@ $(function() {
             url: '/show_hint_button_clicked',
             type: 'post',
             datatype: 'json',
-            data: {'name': 'zzhai', 'problem_info': problem_info}
+            data: {'problem_info': 'problem_info', 'name': 'zzhai'},
+            success: function (response) {
+                alert('click event recorded.')
+            }
         });
     });
 });
