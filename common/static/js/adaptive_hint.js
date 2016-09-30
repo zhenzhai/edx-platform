@@ -93,14 +93,12 @@ function show_hint_in_problem() {
 $(function() {
     $('.show_hint_button').click(function () {
         var problem_info = $('.hint').attr('id');
+        var name = $('.label-username').text();
         $.ajax({
             url: 'http://edx.cse.ucsd.edu:5000/show_hint_button_clicked',
             type: 'post',
             datatype: 'json',
-            data: {'student_name': 'zzhai', 'problem_info': problem_info},
-            success: function (response) {
-                alert('click event recorded.')
-            }
+            data: {'student_name': name, 'problem_info': problem_info}
         });
     });
 });
