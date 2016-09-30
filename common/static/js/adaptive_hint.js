@@ -90,11 +90,11 @@ function show_hint_in_problem() {
     }
 }
 
-/*$(function() {
+$(function() {
     $('.show_hint_button').click(function () {
         var problem_info = $('.hint').attr('id');
         $.ajax({
-            url: '/show_hint_button_clicked',
+            url: 'http://edx.cse.ucsd.edu:5000/show_hint_button_clicked',
             type: 'post',
             datatype: 'json',
             data: {'problem_info': 'problem_info', 'name': 'zzhai'},
@@ -103,7 +103,7 @@ function show_hint_in_problem() {
             }
         });
     });
-});*/
+});
 
 
 function show_textHint_in_problem() {

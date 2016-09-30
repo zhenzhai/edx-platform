@@ -4,6 +4,7 @@ import os
 import sys
 import MySQLdb
 from flask import request, Flask
+from flask_cors import CORS, cross_origin
 
 
 db = MySQLdb.connect("localhost","root","","ucsd_cse103" )
@@ -22,6 +23,7 @@ create_phtb_table_sql = """CREATE TABLE show_hint_click(
 
 
 app = Flask(__name__)
+CORS(app)
 
 @app.route('/show_hint_button_clicked', methods=['POST'])
 def index():
@@ -48,6 +50,4 @@ def index():
 
     db.close()
     
-#app.run(host = '132.239.95.101', port = 18010)
-
   
