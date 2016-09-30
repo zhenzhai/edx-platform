@@ -92,7 +92,7 @@ function show_hint_in_problem() {
 
 $(function() {
     $('.show_hint_button').click(function () {
-        var problem_info = $('.hint').attr('id');
+        var problem_info = this.id;
         var name = $('.label-username').text();
         $.ajax({
             url: 'http://edx.cse.ucsd.edu:5000/show_hint_button_clicked',
