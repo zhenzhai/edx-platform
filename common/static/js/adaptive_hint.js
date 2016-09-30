@@ -97,7 +97,7 @@ $(function() {
             url: 'http://edx.cse.ucsd.edu:5000/show_hint_button_clicked',
             type: 'post',
             datatype: 'json',
-            data: {'problem_info': 'problem_info', 'name': 'zzhai'},
+            data: {'student_name': 'zzhai', 'problem_info': problem_info},
             success: function (response) {
                 alert('click event recorded.')
             }
