@@ -30,13 +30,15 @@ def index():
     problem_info = request.form["problem_info"]
     week_pos, problem_pos, part_pos = \
              problem_info.find('week'), problem_info.find('problem'), problem_info.find('part')
-    week_id, problem_id, part_id = \
-             problem_info[week_pos+4:problem_pos], problem_info[problem_pos+7:part_pos], problem_info[part_pos+4:]
-    problem_name = "Week{0}_Problem{1}".format(week_id, problem_id)
-    problem_part = part_id
-
-    new_record = (problem_name, problem_part, student_username)
-     
+    try:
+        week_id, problem_id, part_id = \
+                 problem_info[week_pos+4:problem_pos], problem_info[problem_pos+7:part_pos], problem_info[part_pos+4:]
+        problem_name = "Week{0}_Problem{1}".format(week_id, problem_id)
+        problem_part = part_id
+        new_record = (problem_name, problem_part, student_username)
+    except:
+        return "problem_info format wrong: {0}".format(problem_info) 
+    
     try:
         insert_sql = """INSERT INTO show_hint_click (problem_name, problem_part, student_username)
                         VALUES(%s,%s, %s)"""  
@@ -44,9 +46,9 @@ def index():
         db.commit()
     except:
         db.rollback()
-        print "Database has been rolled back because of an Exception !!!"
-        print(traceback.format_exc())  
-
-    db.close()
+        return "Database has been rolled back because of an Exception !!!{0}".format(traceback.format_exc())  
+    # db.close()
+    
+    return 'success'
 
 app.run(host='0.0.0.0')
