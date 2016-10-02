@@ -199,14 +199,14 @@ FEATURES = {
 
     # Grade calculation started from the new instructor dashboard will write
     # grades CSV files to S3 and give links for downloads.
-    'ENABLE_S3_GRADE_DOWNLOADS': False,
+    'ENABLE_S3_GRADE_DOWNLOADS': True,
 
     # whether to use password policy enforcement or not
     'ENFORCE_PASSWORD_POLICY': True,
 
     # Give course staff unrestricted access to grade downloads (if set to False,
     # only edX superusers can perform the downloads)
-    'ALLOW_COURSE_STAFF_GRADE_DOWNLOADS': True,
+    'ALLOW_COURSE_STAFF_GRADE_DOWNLOADS': False,
 
     'ENABLED_PAYMENT_REPORTS': [
         "refund_report",
