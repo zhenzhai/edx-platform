@@ -94,11 +94,26 @@ $(function() {
     $('.show_hint_button').click(function () {
         var problem_info = this.id;
         var name = $('.label-username').text();
+        var index = problem_info.slice(-1);
+        var hint_content = "no hint";
+        var hintTextId = hintTextIds[index];
+        uhintTextId = hintTextId + "_textHint";
+        if (document.getElementById(uhintTextId)) {
+          hint_content = document.getElementById(uhintTextId).innerHTML;
+        } else if (document.getElementById(hintTextId)) {
+          hint_content = document.getElementById(hintTextId).innerHTML;
+        }
+        var attempt = "no attempt"
+        if (index < proIds.length) {
+          if (document.getElementById(proIds[index])) {
+            attempt = document.getElementById(proIds[index]).value;
+          }
+        }
         $.ajax({
             url: 'http://edx.cse.ucsd.edu:5000/show_hint_button_clicked',
             type: 'post',
             datatype: 'json',
-            data: {'student_name': name, 'problem_info': problem_info}
+            data: {'student_name': name, 'problem_info': problem_info, 'hint': hint_content, 'attempt': attempt}
         });
     });
 });
