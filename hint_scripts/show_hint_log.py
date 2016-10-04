@@ -31,7 +31,7 @@ create_hint_log_table_sql = """CREATE TABLE hint_log(
                                         time_clicked TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                                         PRIMARY KEY (ID) )"""                   
 
-db.cursor.execute(create_hint_log_table_sql)
+db_cursor.execute(create_hint_log_table_sql)
 
 app = Flask(__name__)
 CORS(app)
