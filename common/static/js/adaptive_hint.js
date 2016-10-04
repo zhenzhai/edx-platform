@@ -94,7 +94,8 @@ $(function() {
     $('.show_hint_button').click(function () {
         var problem_info = this.id;
         var name = $('.label-username').text();
-        var index = problem_info.slice(-1);
+        var index = Number(problem_info.slice(-1));
+        index = index - 1;
         var hint_content = "no hint";
         var hintTextId = hintTextIds[index];
         uhintTextId = hintTextId + "_textHint";
