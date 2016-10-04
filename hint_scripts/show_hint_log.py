@@ -54,7 +54,7 @@ def index():
         return "problem_info format wrong: {0}".format(problem_info) 
     
     try:
-        insert_sql = """INSERT INTO show_hint_click (problem_name, problem_part, student_username, hint_content, attempt)
+        insert_sql = """INSERT INTO hint_log (problem_name, problem_part, student_username, hint_content, attempt)
                         VALUES(%s,%s,%s,%s,%s)"""  
         db_cursor.execute(insert_sql,new_record)
         db.commit()
