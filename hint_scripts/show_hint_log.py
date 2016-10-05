@@ -5,6 +5,17 @@ import MySQLdb
 from flask import request, Flask
 from flask_cors import CORS, cross_origin
 
+import logging.handlers
+import logging
+# logging settings
+log_path = '~/show_hint.log'
+logger = logging.getLogger('show_hint')
+handler = logging.handlers.RotatingFileHandler(log_path, maxBytes = 262144, backupCount = 16)
+formatter = logging.Formatter('%(asctime)s - %(name)s: %(levelname)s - %(message)s')
+handler.setFormatter(formatter)
+logger.addHandler(handler)
+logger.setLevel(logging.INFO)
+
 
 db = MySQLdb.connect("localhost","root","","ucsd_cse103" )
 db_cursor = db.cursor()
@@ -38,19 +49,23 @@ CORS(app)
 
 @app.route('/show_hint_button_clicked', methods=['POST'])
 def index():
+    logger.info("captured post")
     student_username = request.form["student_name"]
     problem_info = request.form["problem_info"]
     hint_content = request.form["hint"]
     attempt = request.form['attempt']
-    week_pos, problem_pos, part_pos = \
-             problem_info.find('week'), problem_info.find('problem'), problem_info.find('part')
+    logger.info("grabbed input:")
+    logger.info("\t student_name {0}, problem_info {1}, hint_content {2}, attempt {3}.".format(student_username, problem_info, hint_content, attempt))
     try:
+        week_pos, problem_pos, part_pos = \
+             problem_info.find('week'), problem_info.find('problem'), problem_info.find('part')
         week_id, problem_id, part_id = \
                  problem_info[week_pos+4:problem_pos], problem_info[problem_pos+7:part_pos], problem_info[part_pos+4:]
         problem_name = "Week{0}_Problem{1}".format(week_id, problem_id)
         problem_part = part_id
         new_record = (problem_name, problem_part, student_username, hint_content, attempt)
     except:
+        logger.error("problem_info format wrong: {0}".format(problem_info)
         return "problem_info format wrong: {0}".format(problem_info) 
     
     try:
@@ -60,9 +75,11 @@ def index():
         db.commit()
     except:
         db.rollback()
+        logger.error("Exception {0}".format(traceback.format_exc()))
         return "Database has been rolled back because of an Exception !!!{0}".format(traceback.format_exc())  
     # db.close()
     
+    logger.info("return success")
     return 'success'
 
 app.run(host='0.0.0.0')
