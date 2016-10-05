@@ -16,24 +16,19 @@ def make_params(ans_str, att_str, variable_list={}):
 
     parse_tree = webwork_parser.parse_webwork(ans_str)
     if parse_tree[0] == None:
-        print 'parse_tree empty'
         return {}
     eval_tree = Eval_parsed.eval_parsed(parse_tree[0], variable_list)
     if eval_tree == None:
-        print 'eval_tree empty'
         return {}
 
     parse_tree_att = webwork_parser.parse_webwork(att_str)
     if parse_tree_att[0] == None:
-        print 'parse_tree empty'
         return {}
     eval_tree_att = Eval_parsed.eval_parsed(parse_tree_att[0], variable_list)
     if eval_tree_att == None:
-        print 'eval_tree empty'
         return {}
 
     params = {'answer':ans_str, 'attempt':att_str, 'ans_tree':eval_tree, 'att_tree':eval_tree_att}
-
     return params
 
 
