@@ -65,7 +65,7 @@ def index():
         problem_part = part_id
         new_record = (problem_name, problem_part, student_username, hint_content, attempt)
     except:
-        logger.error("problem_info format wrong: {0}".format(problem_info)
+        logger.error("problem_info format wrong: {0}".format(problem_info))
         return "problem_info format wrong: {0}".format(problem_info) 
     
     try:
