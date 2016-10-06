@@ -8,7 +8,7 @@ from flask_cors import CORS, cross_origin
 import logging.handlers
 import logging
 # logging settings
-log_path = '~/show_hint.log'
+log_path = '/home/zzhai/hint_log/show_hint.log'
 logger = logging.getLogger('show_hint')
 handler = logging.handlers.RotatingFileHandler(log_path, maxBytes = 262144, backupCount = 16)
 formatter = logging.Formatter('%(asctime)s - %(name)s: %(levelname)s - %(message)s')
