@@ -3,7 +3,7 @@ from hint_class_helpers.get_universal_hints import get_last_universal_hints
 from hint_class_helpers.get_conditional_hints import get_conditional_hints
 from hint_class_helpers.make_params import make_params
 import hint_format
-import search
+#import search
 
 def get_hint(ans, att, hint_text_id, i):
 	param = make_params(ans, att)
@@ -27,16 +27,16 @@ def get_hint(ans, att, hint_text_id, i):
 
 	return ""
 
-def get_cond_hint(ans, att, hint_text_id, i):
-	param = make_params(ans, att)
-	if param == {}:
-		return ""
+# def get_cond_hint(ans, att, hint_text_id, i):
+# 	param = make_params(ans, att)
+# 	if param == {}:
+# 		return ""
 
-	hint_text = search(hint_text_id, i, param)
-	if hint_text:
-		hint = hint_format.format_c_hint(hint_text, hint_text_id, hint_answer, i)
-		return hint
-	return ""
+# 	hint_text = search(hint_text_id, i, param)
+# 	if hint_text:
+# 		hint = hint_format.format_c_hint(hint_text, hint_text_id, hint_answer, i)
+# 		return hint
+# 	return ""
 
 
 def get_hint_w_variables(ans, att, hint_text_id, i, variables):
