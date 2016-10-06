@@ -4,16 +4,16 @@ from hint_class_helpers.find_matches import find_matches
 from hint_class_helpers.find_matches_w_variables import find_matches_w_variables
 
 
-"""import logging.handlers
+import logging.handlers
 import logging
 # logging settings
-log_path = 'evaluate.log'
+log_path = '/tmp/edx_hint_log/evaluate.log'
 logger = logging.getLogger('evaluate')
 handler = logging.handlers.RotatingFileHandler(log_path, maxBytes = 262144, backupCount = 16)
 formatter = logging.Formatter('%(asctime)s - %(name)s: EVAL %(levelname)s - %(message)s')
 handler.setFormatter(formatter)
 logger.addHandler(handler)
-logger.setLevel(logging.INFO)"""
+logger.setLevel(logging.INFO)
 
 def check_w_tol(ans, att, tol = 1+1e-3):
 	if ans == 0:
@@ -35,6 +35,7 @@ def evaluate(ans, att):
   	ans = ans.replace("{","")
   	ans = ans.replace("}","")
   	att = att.strip("'")
+  	#logger.info("evaluating attempt: {0}, answer: {1}.".format(att, ans))
 	p = make_params(ans, att)
 	if p == {}:
 		#logger.info("param empty from evaluate")
@@ -42,6 +43,30 @@ def evaluate(ans, att):
 	att_value = get_numerical_answer(p['att_tree'])
 	ans_value = get_numerical_answer(p['ans_tree'])
 	final_pairs = find_matches(p)
+	#logger.info("output matching: {0}.".format(final_pairs))
+
+	if len(final_pairs) == 1 and final_pairs[0][0] == 'R':
+		return True
+	elif check_w_tol(ans_value, att_value):
+		return True
+	else:
+		return False
+
+def evaluate_test(ans, att):
+	ans = ans.strip("\[")
+  	ans = ans.strip("\]")
+  	ans = ans.replace("{","")
+  	ans = ans.replace("}","")
+  	att = att.strip("'")
+  	logger.info("evaluating attempt: {0}, answer: {1}.".format(att, ans))
+	p = make_params(ans, att)
+	if p == {}:
+		logger.info("param empty from evaluate")
+		return False
+	att_value = get_numerical_answer(p['att_tree'])
+	ans_value = get_numerical_answer(p['ans_tree'])
+	final_pairs = find_matches(p)
+	logger.info("output matching: {0}.".format(final_pairs))
 
 	if len(final_pairs) == 1 and final_pairs[0][0] == 'R':
 		return True
