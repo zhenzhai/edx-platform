@@ -12,11 +12,11 @@ def check_attempt(params):
 
         if len(missing)>1:
             hint+='. You are not using the numbers '
-            hint+= missingstring+' used in the question.\n'
+            hint+= missingstring+' used in the question. '
             hint+='Figure out how to use these numbers in your answer.'
         else:
             hint+='. You are not using the number '
-            hint+= missingstring+' used in the question.\n'
+            hint+= missingstring+' used in the question. '
             hint+='Figure out how to use this number in your answer.'
 
         return hint

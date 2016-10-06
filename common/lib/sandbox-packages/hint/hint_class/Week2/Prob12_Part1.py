@@ -2,7 +2,7 @@
 
 from sets import Set
 
-class Prob13_Part1:
+class Prob12_Part1:
 	"""
 	Author: Yoav Freund
 	Date: 9/25/2016
