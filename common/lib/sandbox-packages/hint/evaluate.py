@@ -6,14 +6,6 @@ from hint_class_helpers.find_matches_w_variables import find_matches_w_variables
 
 import logging.handlers
 import logging
-# logging settings
-log_path = '/tmp/edx_hint_log/evaluate.log'
-logger = logging.getLogger('evaluate')
-handler = logging.handlers.RotatingFileHandler(log_path, maxBytes = 262144, backupCount = 16)
-formatter = logging.Formatter('%(asctime)s - %(name)s: EVAL %(levelname)s - %(message)s')
-handler.setFormatter(formatter)
-logger.addHandler(handler)
-logger.setLevel(logging.INFO)
 
 def check_w_tol(ans, att, tol = 1+1e-3):
 	if ans == 0:
@@ -53,6 +45,14 @@ def evaluate(ans, att):
 		return False
 
 def evaluate_test(ans, att):
+	# logging settings
+	log_path = '/tmp/edx_hint_log/evaluate.log'
+	logger = logging.getLogger('evaluate')
+	handler = logging.handlers.RotatingFileHandler(log_path, maxBytes = 262144, backupCount = 16)
+	formatter = logging.Formatter('%(asctime)s - %(name)s: EVAL %(levelname)s - %(message)s')
+	handler.setFormatter(formatter)
+	logger.addHandler(handler)
+	logger.setLevel(logging.INFO)
 	ans = ans.strip("\[")
   	ans = ans.strip("\]")
   	ans = ans.replace("{","")
