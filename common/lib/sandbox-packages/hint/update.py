@@ -29,7 +29,7 @@ create_phtb_table_sql = """CREATE TABLE problem_to_hint(
 
 # db_cursor.execute(create_phtb_table_sql)                                        
 
-hint_class_dir = 'testHintClassFolder'
+#hint_class_dir = 'testHintClassFolder'
 
 if __name__ == "__main__":
     
@@ -45,7 +45,7 @@ if __name__ == "__main__":
     for n in hint_class_files:
         hint_classes.append(os.path.splitext(n)[0]) 
 
-    class_path = folder_path[folder_path.find(hint_class_dir):]
+    class_path = folder_path
 
     '''Fetch all the records from database'''
     db_cursor.execute("SELECT * FROM problem_to_hint")
