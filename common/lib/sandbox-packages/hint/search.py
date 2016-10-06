@@ -14,7 +14,7 @@ def search(id_str_list, i, p):
     #id_str is like: cse103fall2016week1problem1part1
     if i < len(id_str_list):
         id_str = id_str_list[i]
-    else
+    else:
         return ""
 
     # constants
