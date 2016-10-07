@@ -58,16 +58,16 @@ def evaluate_test(ans, att):
 	except:
 		db.rollback()
 		print "Database has been rolled back because of an Exception !!!"
-		print(traceback.format_exc())  
+		#print(traceback.format_exc())  
 
 	p = make_params(ans, att)
 	if p == {}:
-		logger.info("param empty from evaluate")
+		#logger.info("param empty from evaluate")
 		return False
 	att_value = get_numerical_answer(p['att_tree'])
 	ans_value = get_numerical_answer(p['ans_tree'])
 	final_pairs = find_matches(p)
-	logger.info("output matching: {0}.".format(final_pairs))
+	#logger.info("output matching: {0}.".format(final_pairs))
 
 	if len(final_pairs) == 1 and final_pairs[0][0] == 'R':
 		return True
