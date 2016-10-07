@@ -25,5 +25,6 @@ setup(
         "eia",
     ],
     install_requires=[
+    "MySQLdb",
     ],
 )

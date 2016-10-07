@@ -27,7 +27,7 @@ create_phtb_table_sql = """CREATE TABLE problem_to_hint(
                                         HINT_CLASSES CHAR(255), 
                                         PRIMARY KEY (ID) )"""
 
-# db_cursor.execute(create_phtb_table_sql)                                        
+#db_cursor.execute(create_phtb_table_sql)                                        
 
 #hint_class_dir = 'testHintClassFolder'
 
