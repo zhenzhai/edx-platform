@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name="sandbox-packages",
-    version="0.2.72",
+    version="0.2.73",
     packages=[
         "loncapa",
         "verifiers",

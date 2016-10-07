@@ -2,18 +2,32 @@ from hint_class_helpers.make_params import make_params
 from hint_class_helpers.get_numerical_answer import get_numerical_answer
 from hint_class_helpers.find_matches import find_matches
 from hint_class_helpers.find_matches_w_variables import find_matches_w_variables
+import MySQLdb
 
 
-import logging.handlers
-import logging
-# logging settings
-log_path = '~/edx_hint_log/evaluate.log'
-logger = logging.getLogger('evaluate')
-handler = logging.handlers.RotatingFileHandler(log_path, maxBytes = 262144, backupCount = 16)
-formatter = logging.Formatter('%(asctime)s - %(name)s: EVAL %(levelname)s - %(message)s')
-handler.setFormatter(formatter)
-logger.addHandler(handler)
-logger.setLevel(logging.INFO)
+# import logging.handlers
+# import logging
+# # logging settings
+# log_path = 'evaluate.log'
+# logger = logging.getLogger('evaluate')
+# handler = logging.handlers.RotatingFileHandler(log_path, maxBytes = 262144, backupCount = 16)
+# formatter = logging.Formatter('%(asctime)s - %(name)s: EVAL %(levelname)s - %(message)s')
+# handler.setFormatter(formatter)
+# logger.addHandler(handler)
+# logger.setLevel(logging.INFO)
+
+db = MySQLdb.connect("localhost","root","","ucsd_cse103" )
+db_cursor = db.cursor()
+
+'''Create the table, should be executed only once'''
+create_eval_table_sql = """CREATE TABLE eval_info(
+                                        ID int NOT NULL AUTO_INCREMENT,
+                                        attempt CHAR(255), 
+                                        answer CHAR(255), 
+                                        time_clicked TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
+                                        PRIMARY KEY (ID) )"""
+
+#db_cursor.execute(create_eval_table_sql)    
 
 def check_w_tol(ans, att, tol = 1+1e-3):
 	if ans == 0:
@@ -35,7 +49,17 @@ def evaluate_test(ans, att):
   	ans = ans.replace("{","")
   	ans = ans.replace("}","")
   	att = att.strip("'")
-  	logger.info("evaluating attempt: {0}, answer: {1}.".format(att, ans))
+  	try:
+        update_sql = """UPDATE eval_info 
+                        SET attempt = %s
+                        SET answer = %s"""
+        db_cursor.execute(update_sql,(att,ans))
+        db.commit()
+    except:
+        db.rollback()
+        print "Database has been rolled back because of an Exception !!!"
+        print(traceback.format_exc())  
+
 	p = make_params(ans, att)
 	if p == {}:
 		logger.info("param empty from evaluate")
