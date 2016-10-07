@@ -45,20 +45,20 @@ def check_w_tol(ans, att, tol = 1+1e-3):
 
 def evaluate_test(ans, att):
 	ans = ans.strip("\[")
-  	ans = ans.strip("\]")
-  	ans = ans.replace("{","")
-  	ans = ans.replace("}","")
-  	att = att.strip("'")
-  	try:
-        update_sql = """UPDATE eval_info 
-                        SET attempt = %s
-                        SET answer = %s"""
-        db_cursor.execute(update_sql,(att,ans))
-        db.commit()
-    except:
-        db.rollback()
-        print "Database has been rolled back because of an Exception !!!"
-        print(traceback.format_exc())  
+	ans = ans.strip("\]")
+	ans = ans.replace("{","")
+	ans = ans.replace("}","")
+	att = att.strip("'")
+	try:
+		update_sql = """UPDATE eval_info 
+						SET attempt = %s
+						SET answer = %s"""
+		db_cursor.execute(update_sql,(att,ans))
+		db.commit()
+	except:
+		db.rollback()
+		print "Database has been rolled back because of an Exception !!!"
+		print(traceback.format_exc())  
 
 	p = make_params(ans, att)
 	if p == {}:
