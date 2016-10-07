@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name="sandbox-packages",
-    version="0.2.71",
+    version="0.2.72",
     packages=[
         "loncapa",
         "verifiers",
@@ -25,6 +25,6 @@ setup(
         "eia",
     ],
     install_requires=[
-    "MySQLdb",
+    "MySQL-python",
     ],
 )
