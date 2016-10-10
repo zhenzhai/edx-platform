@@ -33,7 +33,7 @@ create_phtb_table_sql = """CREATE TABLE problem_to_hint(
 
 if __name__ == "__main__":
     
-    root = "hint_class"
+    root = "hint_class/"
     folder_path = raw_input("Type in Week ID:\n")
     folder_path = root + folder_path
 
