@@ -14,7 +14,7 @@ handler = logging.handlers.RotatingFileHandler(log_path, maxBytes = 262144, back
 formatter = logging.Formatter('%(asctime)s - %(name)s: %(levelname)s - %(message)s')
 handler.setFormatter(formatter)
 logger.addHandler(handler)
-logger.setLevel(logging.ERROR)
+logger.setLevel(logging.INFO)
 
 
 db = MySQLdb.connect("localhost","root","","ucsd_cse103" )
@@ -64,6 +64,7 @@ def index():
         problem_name = "Week{0}_Problem{1}".format(week_id, problem_id)
         problem_part = part_id
         new_record = (problem_name, problem_part, student_username, hint_content, attempt)
+        logger.info("record captured")
     except:
         logger.error("problem_info format wrong: {0}".format(problem_info))
         return "problem_info format wrong: {0}".format(problem_info) 
@@ -73,6 +74,7 @@ def index():
                         VALUES(%s,%s,%s,%s,%s)"""  
         db_cursor.execute(insert_sql, new_record)
         db.commit()
+        logger.info("hint logged to db")
     except:
         db.rollback()
         logger.error("Exception {0}".format(traceback.format_exc()))
