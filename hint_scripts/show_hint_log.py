@@ -14,7 +14,7 @@ handler = logging.handlers.RotatingFileHandler(log_path, maxBytes = 262144, back
 formatter = logging.Formatter('%(asctime)s - %(name)s: %(levelname)s - %(message)s')
 handler.setFormatter(formatter)
 logger.addHandler(handler)
-logger.setLevel(logging.INFO)
+logger.setLevel(logging.ERROR)
 
 
 db = MySQLdb.connect("localhost","root","","ucsd_cse103" )
@@ -71,7 +71,7 @@ def index():
     try:
         insert_sql = """INSERT INTO hint_log (problem_name, problem_part, student_username, hint_content, attempt)
                         VALUES(%s,%s,%s,%s,%s)"""  
-        db_cursor.execute(insert_sql,new_record)
+        db_cursor.execute(insert_sql, new_record)
         db.commit()
     except:
         db.rollback()
