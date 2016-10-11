@@ -4,6 +4,7 @@ import sys
 import MySQLdb
 from flask import request, Flask
 from flask_cors import CORS, cross_origin
+import traceback
 
 import logging.handlers
 import logging
