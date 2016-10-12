@@ -26,17 +26,6 @@ def get_hint(ans, att, hint_text_id, i):
 
 	return ""
 
-# def get_cond_hint(ans, att, hint_text_id, i):
-# 	param = make_params(ans, att)
-# 	if param == {}:
-# 		return ""
-
-# 	hint_text = search(hint_text_id, i, param)
-# 	if hint_text:
-# 		hint = hint_format.format_c_hint(hint_text, hint_text_id, hint_answer, i)
-# 		return hint
-# 	return ""
-
 
 def get_hint_w_variables(ans, att, hint_text_id, i, variables):
 	"""

@@ -22,10 +22,10 @@ def get_conditional_hints(hint_text_id, i, params):
     try:
         ClassName = locate(class_address)
     except:
-        print "ERROR: syntax error in HINT CLASS!!"
+        print "ERROR: syntax error in HINT CLASS:{0}".format(class_address)
         return "", ""
 
-        try:
+    try:
         hint_instance = ClassName()
     except TypeError:
         print "ERROR: name of the HINT CLASS has to be the same as the name of the FILE !!"
@@ -34,7 +34,7 @@ def get_conditional_hints(hint_text_id, i, params):
     try:
         hint, hint_ans = hint_instance.check_attempt(params)
     except:
-        print "ERROR: syntax error in HINT CLASS!!"
+        print "ERROR: syntax error in HINT CLASS:{0}".format(class_address)
         return
 
     if hint and hint_ans:
