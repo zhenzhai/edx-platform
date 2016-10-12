@@ -52,9 +52,7 @@ data: |
 
         <script type="loncapa/python">
     from hint import evaluate
-    from hint import cluster_functions
-    from hint import universal_hints as u_hint
-    from hint import conditional_hints as c_hint
+    from hint.get_hint import get_hint_w_variables
           
     # grader of the problem
     def check(expect, ans):
@@ -72,17 +70,7 @@ data: |
       if new_cmap[key]['correctness'] == "correct":
         return
 
-      param = cluster_functions.make_params_w_variables(solutions[i], ans, variable_values, index_for_hint)
-      if param == {}:
-        return
-      hint = u_hint.universal_hint_w_variables(param, variable_values.keys())
-      if hint:
-        hint = string_format.format_u_hint(hint)
-      else:
-        hint_text, hint_answer = c_hint.conditional_hint_w_variables(param, variable_values.keys())
-        if not hint_text:
-          return
-        hint = string_format.format_c_hint(hint_text, hint_text_id, hint_answer, i)
+      hint = get_hint_w_variables(solutions[i], ans, hint_text_id, i, variable_values)
       new_cmap.set_hint_and_mode(aid,hint,'always')
         </script>
         
@@ -91,6 +79,7 @@ data: |
           for (var i=0; i != hint_number; i++) {
               hide_hint(i);
           }
+          show_hint(hint_number);
         </script>
 
       </text>
