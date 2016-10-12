@@ -14,9 +14,8 @@ def get_hint(ans, att, hint_text_id, i):
 		hint = hint_format.format_u_hint(hint, hint_text_id, i)
 		return hint
 
-	#hint_text, hint_answer = get_conditional_hints(hint_text_id, i, param)
-	hint_text = ""
-	if hint_text:
+	hint_text, hint_answer = get_conditional_hints(hint_text_id, i, param)
+	if hint_text and hint_answer:
 		hint = hint_format.format_c_hint(hint_text, hint_text_id, hint_answer, i)
 		return hint
 
