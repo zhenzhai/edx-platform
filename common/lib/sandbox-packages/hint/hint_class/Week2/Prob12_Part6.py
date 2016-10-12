@@ -1,9 +1,6 @@
 # Make sure you name your file with className.py
 # To test your class make sure you add the local path of hint_class_helpers in your system path
-try:
-	from hint_class_helpers.find_matches import find_matches
-except:
-	pass
+from hint_class_helpers.find_matches import find_matches
 
 class Prob12_Part6:
 	"""
