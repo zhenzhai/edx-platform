@@ -51,8 +51,8 @@ def evaluate_test(ans, att):
 	att = att.strip("'")
 	try:
 		update_sql = """UPDATE eval_info 
-					SET attempt = %s
-					SET answer = %s"""
+						SET attempt = %s
+						SET answer = %s"""
 		db_cursor.execute(update_sql,(att,ans))
 		db.commit()
 	except:
