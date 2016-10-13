@@ -175,9 +175,9 @@ function show_hint_in_hint() {
             }
           } else {
             var ratio = inputValue / answerValue;
-              if (ratio < tolerance && ratio > (1/tolerance)) {
-                  document.getElementById(hintStatusId).className = "correct";
-              }
+            if (ratio < tolerance || ratio > (1/tolerance)) {
+            	document.getElementById(hintStatusId).className = "correct";
+            }
           }
         }
       }
