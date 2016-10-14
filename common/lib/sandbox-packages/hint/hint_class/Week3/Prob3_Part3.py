@@ -24,4 +24,3 @@ class Prob3_Part3:
 	def get_problems(self):
 		self.problem_list = ["Combinatorics/DiscreteProb1/part3"]
 		return self.problem_list
-

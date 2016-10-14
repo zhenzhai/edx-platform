@@ -4,7 +4,7 @@ class Prob10_Part6:
 	Date: 10/11/2016
 	"""
 
-        def check_attempt(self, params):
+	def check_attempt(self, params):
 		#unpack params
 		self.attempt = params['attempt'] #student's attempt
 		self.answer = params['answer'] #solution

@@ -39,12 +39,12 @@ class Prob8_Part1:
 				elif attempt_val < answer_val:
 					hint=''
 
-	        if len(hint)>0:
-	                return hint+'How many bars are needed for 3 categories?','3-1'
-	        else:
-	                return '',''
+			if len(hint)>0:
+				return hint+'How many bars are needed for 3 categories?','3-1'
+			else:
+				return '',''
 		except Exception:
-		        return '',''
+			return '',''
 
 
 	def get_problems(self):

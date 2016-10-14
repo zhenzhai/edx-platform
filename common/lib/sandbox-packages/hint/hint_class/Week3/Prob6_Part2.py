@@ -4,7 +4,7 @@ class Prob6_Part2:
 	Date: 10/11/2016
 	"""
 
-        def check_attempt(self, params):
+	def check_attempt(self, params):
 		#unpack params
 		self.attempt = params['attempt'] #student's attempt
 		self.answer = params['answer'] #solution
@@ -24,7 +24,7 @@ class Prob6_Part2:
 			else:
 				return '',''
 		except Exception:
-		        return '',''
+			return '',''
 
 	def get_problems(self):
 		self.problem_list = ["Combinatorics/PigeonHole/part2"]
