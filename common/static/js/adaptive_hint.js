@@ -19,7 +19,7 @@ function hide_hint() {
       return;
     }
     hintEle.style.display = "none";
-    hintInputEle.value = "";
+    //hintInputEle.value = "";
     hintStatusEle.className = "incorrect";
 }
 
