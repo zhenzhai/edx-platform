@@ -175,7 +175,10 @@ function show_hint_in_hint() {
             }
           } else {
             var ratio = inputValue / answerValue;
-            if (ratio < tolerance || ratio > (1/tolerance)) {
+            console.log(ratio)
+            console.log(tolerance)
+            if (ratio < tolerance && ratio > (1/tolerance)) {
+              console.log('in condition')
             	document.getElementById(hintStatusId).className = "correct";
             }
           }
