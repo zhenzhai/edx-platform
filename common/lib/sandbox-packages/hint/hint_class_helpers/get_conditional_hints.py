@@ -1,3 +1,4 @@
+from pydoc import locate
 def get_conditional_hints(hint_text_id, i, params):
     if i >= len(hint_text_id):
         #logger.error("index out of range in get_conditional_hints")

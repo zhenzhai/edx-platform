@@ -6,6 +6,8 @@ import hint_format
 #import search
 
 def get_hint(ans, att, hint_text_id, i):
+	ans = ans.replace("{","")
+  	ans = ans.replace("}","")
 	param = make_params(ans, att)
 	if param == {}:
 		return ""
