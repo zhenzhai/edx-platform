@@ -353,15 +353,17 @@ def parse_webwork(expr):
             final_range=fix_ranges(parsed)
             #logger.debug('final_range='+str(final_range))
             #print 'final_range='+str(final_range)
-        except  WebworkParseException as e:
+        except WebworkParseException as e:
             #logger.error('||%s|| %s', expr, e)
             #logger.exception(e)
-            print "Error in parser{0}, {1}".format(expr, e)
+            print "Error in parser {0}, {1}".format(expr, e)
             parsed=None
+        except UnicodeEncodeError as e:
+            print "Error in parser. Unicode Encode Exception: {0}".format(e)
         except Exception as e:
             #logger.error('||%s|| %s', expr, e)
             #logger.exception(e)
-            print "Error in parser{0}, {1}".format(expr, e)
+            print "Error in parser {0}, {1}".format(expr, e)
             parsed = None
     return parsed,variables
 

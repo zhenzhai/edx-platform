@@ -1,4 +1,3 @@
-# Log the time student click the 'show_hint' button
 import os
 import sys
 import MySQLdb

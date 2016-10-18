@@ -28,6 +28,24 @@ def get_hint(ans, att, hint_text_id, i):
 
 	return ""
 
+def get_hint_wo_cond(ans, att, hint_text_id, i):
+	ans = ans.replace("{","")
+  	ans = ans.replace("}","")
+	param = make_params(ans, att)
+	if param == {}:
+		return ""
+	hint = get_first_universal_hints(param)
+	if hint:
+		hint = hint_format.format_u_hint(hint, hint_text_id, i)
+		return hint
+
+	hint = get_last_universal_hints(param)
+	if hint:
+		hint = hint_format.format_u_hint(hint, hint_text_id, i)
+		return hint
+
+	return ""
+
 
 def get_hint_w_variables(ans, att, hint_text_id, i, variables):
 	"""

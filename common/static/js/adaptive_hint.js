@@ -1,3 +1,33 @@
+$(function() {
+    $('.show_hint_button').click(function () {
+        var problem_info = this.id;
+        var name = $('.label-username').text();
+        var index = Number(problem_info.slice(-1));
+        index = index - 1;
+        var hint_content = "no hint";
+        var hintTextId = hintTextIds[index];
+        uhintTextId = hintTextId + "_textHint";
+        if (document.getElementById(uhintTextId)) {
+          hint_content = document.getElementById(uhintTextId).innerHTML;
+        } else if (document.getElementById(hintTextId)) {
+          hint_content = document.getElementById(hintTextId).innerHTML;
+        }
+        var attempt = "no attempt"
+        if (index < proIds.length) {
+          if (document.getElementById(proIds[index])) {
+            attempt = document.getElementById(proIds[index]).value;
+          }
+        }
+        $.ajax({
+            url: 'http://edx.cse.ucsd.edu:5000/show_hint_button_clicked',
+            type: 'post',
+            datatype: 'json',
+            data: {'student_name': name, 'problem_info': problem_info, 'hint': hint_content, 'attempt': attempt}
+        });
+    });
+});
+
+
 function hide_hint() {
     //initially hide all hints
     var index = arguments[0];
@@ -27,17 +57,32 @@ function show_hint() {
   //show "show hint" button after certain minutes
   //pass in hint index and number of minutes to delay
   var hint_number = arguments[0];
-  var minutes = 3;//arguments[1];
-  var seconds_diff = minutes*60*1000;
   var timer_diff = Date.now() - timerStart;
-  if (timer_diff > seconds_diff) {
-    for (var i=0; i < hint_number; i++) {
-      var hintDivId = hintTextIds[i]+"_hintDiv";
-      if (document.getElementById(hintDivId)) {
-        document.getElementById(hintDivId).style.display = "";
-      }
-    }
-  }
+  var problem_info = hintTextIds[0];
+  var name = $('.label-username').text();
+
+  $.ajax({
+            url: 'http://edx.cse.ucsd.edu:5000/hint_permission',
+            type: 'get',
+            datatype: 'json',
+            data: {'username': name, 'problem_info': problem_info,
+             'timer_diff': timer_diff, 'hint_number': hint_number},
+            success: function (response) {
+              var timer_diff = response['timer_diff'];
+              var status = response['status'];
+              var hint_number = response['hint_number'];
+              var minutes = 3;
+              var seconds_diff = minutes*60*1000;
+              if (timer_diff > seconds_diff && status == "True") {
+                for (var i=0; i < hint_number; i++) {
+                  var hintDivId = hintTextIds[i]+"_hintDiv";
+                  if (document.getElementById(hintDivId)) {
+                    document.getElementById(hintDivId).style.display = "";
+                  }
+                }
+              }
+            }
+        });
 }
 
 
@@ -89,35 +134,6 @@ function show_hint_in_problem() {
       }
     }
 }
-
-$(function() {
-    $('.show_hint_button').click(function () {
-        var problem_info = this.id;
-        var name = $('.label-username').text();
-        var index = Number(problem_info.slice(-1));
-        index = index - 1;
-        var hint_content = "no hint";
-        var hintTextId = hintTextIds[index];
-        uhintTextId = hintTextId + "_textHint";
-        if (document.getElementById(uhintTextId)) {
-          hint_content = document.getElementById(uhintTextId).innerHTML;
-        } else if (document.getElementById(hintTextId)) {
-          hint_content = document.getElementById(hintTextId).innerHTML;
-        }
-        var attempt = "no attempt"
-        if (index < proIds.length) {
-          if (document.getElementById(proIds[index])) {
-            attempt = document.getElementById(proIds[index]).value;
-          }
-        }
-        $.ajax({
-            url: 'http://edx.cse.ucsd.edu:5000/show_hint_button_clicked',
-            type: 'post',
-            datatype: 'json',
-            data: {'student_name': name, 'problem_info': problem_info, 'hint': hint_content, 'attempt': attempt}
-        });
-    });
-});
 
 
 function show_textHint_in_problem() {
