@@ -128,24 +128,24 @@ def select_student():
             logger2.info("fetched student log permission of username:{0}.".format(username))
             logger2.info(student)
 	    if student[int(week_id)] == '1':
-                return json.dumps({'status':'True','timer_diff':timer_diff})
+                return json.dumps({'status':'True','timer_diff':timer_diff, 'hint_number':hint_number})
             else:
-                return json.dumps({'status':'False','timer_diff':timer_diff})
+                return json.dumps({'status':'False','timer_diff':timer_diff, 'hint_number':hint_number})
         elif(len(records) == 0):
             logger2.info('No student is fetched with username: {0}. Return False'.format(username))
-            return json.dumps({'status':'False','timer_diff':timer_diff})
+            return json.dumps({'status':'False','timer_diff':timer_diff, 'hint_number':hint_number})
         else:
             logger2.info("Multiple students with the same username {0}. Return False".format(username))
-            return json.dumps({'status':'False','timer_diff':timer_diff})
+            return json.dumps({'status':'False','timer_diff':timer_diff, 'hint_number':hint_number})
 
     except:
         db.rollback()
         logger2.error("Database has been rolled back because of an Exception below:")
         logger2.error(traceback.format_exc())
         logger2.error("Return False")
-        return json.dumps({'status':'False','timer_diff':timer_diff})
+        return json.dumps({'status':'False','timer_diff':timer_diff, 'hint_number':hint_number})
     
     logger2.error("Return False because of an error.")
-    return json.dumps({'status':'False','timer_diff':timer_diff})
+    return json.dumps({'status':'False','timer_diff':timer_diff, 'hint_number':hint_number})
 
 app.run(host='0.0.0.0')
