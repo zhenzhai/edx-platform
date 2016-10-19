@@ -4,6 +4,7 @@ import MySQLdb
 from flask import request, Flask
 from flask_cors import CORS, cross_origin
 import traceback
+import json
 
 import logging.handlers
 import logging
@@ -106,14 +107,15 @@ def select_student():
              problem_info.find('week'), problem_info.find('problem'), problem_info.find('part')
         week_id, problem_id, part_id = \
                  problem_info[week_pos+4:problem_pos], problem_info[problem_pos+7:part_pos], problem_info[part_pos+4:]
-        week_number = "WEEK{0}".format(week_id)
+        int(week_id)
+	week_number = "WEEK{0}".format(week_id)
         logger2.info("record captured {0}".format(week_number))
     except:
         logger2.error("problem_info format wrong: {0}. Return False".format(problem_info))
         return json.dumps({'status':'False','timer_diff':timer_diff, 'hint_number':hint_number})
 
     logger2.info("grabbed username:{0}".format(username))
-    select_params = (username)
+    select_params = (username,)
     select_sql = """SELECT * FROM hint_assignment
                     WHERE username = %s"""
 
@@ -124,7 +126,8 @@ def select_student():
         if(len(records) == 1):
             student = records[0]
             logger2.info("fetched student log permission of username:{0}.".format(username))
-            if student[week_number] == '1':
+            logger2.info(student)
+	    if student[int(week_id)] == '1':
                 return json.dumps({'status':'True','timer_diff':timer_diff})
             else:
                 return json.dumps({'status':'False','timer_diff':timer_diff})
