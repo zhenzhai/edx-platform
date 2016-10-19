@@ -43,7 +43,7 @@ def get_top_node(tree):
 
 
 
-def find_Hits(List,tol = 1+1e-3):
+def find_Hits(List,tol = 1+1e-5):
     """ Given a combined list of subtrees from both attempt and answer,
     sorted by value, find the matching pairs of trees
     tol is the tolerance used to define which pairs of values match. 

@@ -48,7 +48,7 @@ def evaluate_w_variables(ans, att, variable_values, test_all=False):
   	ans = ans.replace("}","")
   	att = att.strip("'")
 	matches = find_matches_w_variables(ans, att, variable_values, test_all)
-	if matches and len(matches) == 1 and matches[0] == att:
+	if matches and len(matches) == 1 and matches[0][2] == att:
 		return True
 	else:
 		return False

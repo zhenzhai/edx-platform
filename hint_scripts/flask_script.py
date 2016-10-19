@@ -93,9 +93,8 @@ def hint_button():
     return 'success'
 
 
-@app.route('/hint_permission', methods=['GET'])
+@app.route('/hint_permission', methods=['POST'])
 def select_student():
-    logger2.info("select_student log")
     logger2.info("captured post")
     username = request.form["username"]
     problem_info = request.form["problem_info"]

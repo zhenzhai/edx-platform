@@ -42,7 +42,7 @@ def common_subexpressions(params):
                 if attempt_piece != ans_piece:
                     return 'The {0} {1} is correct, it could also be written as {2}'.format(sub_type,attempt_piece,ans_piece)
                 else:
-                    return 'The {0} {1} is correct'.fromat(sub_type,attempt_piece)
+                    return 'The {0} {1} is correct'.format(sub_type,attempt_piece)
 
 
 

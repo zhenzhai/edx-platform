@@ -63,14 +63,15 @@ function show_hint() {
 
   $.ajax({
             url: 'http://edx.cse.ucsd.edu:5000/hint_permission',
-            type: 'get',
+            type: 'post',
             datatype: 'json',
             data: {'username': name, 'problem_info': problem_info,
              'timer_diff': timer_diff, 'hint_number': hint_number},
             success: function (response) {
-              var timer_diff = response['timer_diff'];
-              var status = response['status'];
-              var hint_number = response['hint_number'];
+              var parsedJson = $.parseJSON(response);
+              var timer_diff = parsedJson['timer_diff'];
+              var status = parsedJson['status'];
+              var hint_number = parsedJson['hint_number'];
               var minutes = 3;
               var seconds_diff = minutes*60*1000;
               if (timer_diff > seconds_diff && status == "True") {
