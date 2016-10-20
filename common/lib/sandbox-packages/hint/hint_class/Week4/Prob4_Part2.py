@@ -15,7 +15,7 @@ class Prob4_Part2:
 		hint=''
 		
 		try:
-			hint='Assume that there are 100 male and 100 female members in the population(since they are equal). Now, using these figures, calculate the number of colorblind males and colorblind females based on the percentages and use them to find the probabilities used in the equation.'
+			hint='Assume that there are 100 male and 100 female members in the population(both equal).'
 			
 			if len(hint)>0:
                                 return hint+' If there are 2% colorblind males and 5% colorblind females, then what is the probability that a person chosen at random is colorblind i.e. P(colorblind)?','(2/100)*(100/200) + (5/100)*(100/200)'

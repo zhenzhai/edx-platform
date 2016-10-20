@@ -97,6 +97,12 @@ function show_hint_in_problem() {
     var hintStatusId = hintInputId.replace('input', 'status');
     var proInputId = proIds[index];
     var proId = proInputId.replace('input', 'status');
+
+    var u_hintTextId = hintTextId + "_textHint";
+    var proEle = document.getElementById(u_hintTextId);
+    if (proEle) {
+      proEle.style.display = "";
+    }
     
     var hintInputEle = document.getElementById(hintInputId);
     if (!hintInputEle) {

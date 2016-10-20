@@ -3,7 +3,7 @@ from hint_class_helpers.get_numerical_answer import get_numerical_answer
 from hint_class_helpers.find_matches import find_matches
 from hint_class_helpers.find_matches_w_variables import find_matches_w_variables
 
-def check_w_tol(ans, att, tol = 1+1e-3):
+def check_w_tol(ans, att, tol = 1+1e-5):
 	if ans == 0:
 		if att == 0:
 			return True
