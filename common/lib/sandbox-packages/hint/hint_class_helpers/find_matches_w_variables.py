@@ -3,6 +3,7 @@ from expr_parser import Eval_parsed
 from collections import deque
 from collections import defaultdict
 from find_matches import find_matches
+from make_params import make_params
 
 
 def equal_len(variable_list):

@@ -16,7 +16,7 @@ class Prob5_Part2:
 		try:
 			if not 'C' in self.attempt:
 				hint = 'How do you pick 2 cards from a deck?'
-				return hint + 'if you are going to pick 2 cards from a 4-card deck, how many combinations are there?', '4*3*2*1/2*1*2*1'
+				return hint + ' if you are going to pick 2 cards from a 4-card deck, how many combinations are there?', '4*3*2*1/(2*1*2*1)'
 
 			elif not '-' in self.attempt:
 
@@ -26,26 +26,26 @@ class Prob5_Part2:
 			elif 'P' in self.attempt:
 
 				hint = 'Does the order of the selected cards matter?'
-				return hint + 'if you are going to pick 2 cards from a 4-card deck, how many combinations are there?', '4*3*2*1/2*1*2*1'
+				return hint + 'if you are going to pick 2 cards from a 4-card deck, how many combinations are there?', '4*3*2*1/(2*1*2*1)'
 
 			elif '+' in self.attempt:
 				
 				hint = 'Should you add different parts of your expression?'
-				return hint + 'if you are going to pick 2 cards from a 4-card deck, how many combinations are there?', '4*3*2*1/2*1*2*1'
+				return hint + 'if you are going to pick 2 cards from a 4-card deck, how many combinations are there?', '4*3*2*1/(2*1*2*1)'
 
 			elif '!' in self.attempt:
 
 				hint = 'Should you do factorial?'
-				return hint + 'if you are going to pick 2 cards from a 4-card deck, how many combinations are there?', '4*3*2*1/2*1*2*1'
+				return hint + 'if you are going to pick 2 cards from a 4-card deck, how many combinations are there?', '4*3*2*1/(2*1*2*1)'
 
 			elif '*' in self.attempt:
 
 				hint = 'Should you multiply different parts of your expression?'
-				return hint + 'if you are going to pick 2 cards from a 4-card deck, how many combinations are there?', '4*3*2*1/2*1*2*1'
+				return hint + 'if you are going to pick 2 cards from a 4-card deck, how many combinations are there?', '4*3*2*1/(2*1*2*1)'
 
 			if len(hint) > 0:
 
-				return hint +' if you are going to pick 2 cards from a 4-card deck, how many combinations are there?', '4*3*2*1/2*1*2*1'
+				return hint +' if you are going to pick 2 cards from a 4-card deck, how many combinations are there?', '4*3*2*1/(2*1*2*1)'
 			else:
 
 				return '',''
