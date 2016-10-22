@@ -94,6 +94,11 @@ def hint_button():
     return 'success'
 
 
+@app.route('/debug')
+def debug():
+    return "It is working!"
+
+
 @app.route('/hint_permission', methods=['POST'])
 def select_student():
     logger2.info("captured post")
@@ -148,4 +153,5 @@ def select_student():
     logger2.error("Return False because of an error.")
     return json.dumps({'status':'False','timer_diff':timer_diff, 'hint_number':hint_number})
 
-app.run(host='0.0.0.0')
+if __name__ == '__main__':
+	app.run(host='0.0.0.0')
