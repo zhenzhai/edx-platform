@@ -9,8 +9,9 @@ $(function() {
         uhintTextId = hintTextId + "_textHint";
         if (document.getElementById(uhintTextId)) {
           hint_content = document.getElementById(uhintTextId).innerHTML;
-        } else if (document.getElementById(hintTextId)) {
-          hint_content = document.getElementById(hintTextId).innerHTML;
+        }
+        if (document.getElementById(hintTextId)) {
+          hint_content += document.getElementById(hintTextId).innerHTML;
         }
         var attempt = "no attempt"
         if (index < proIds.length) {
