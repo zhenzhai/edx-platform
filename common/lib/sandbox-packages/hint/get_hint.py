@@ -47,6 +47,18 @@ def get_hint_wo_cond(ans, att, hint_text_id, i):
 
 	return ""
 
+def get_hint_wo_uni(ans, att, hint_text_id, i):
+	ans = ans.replace("{","")
+	ans = ans.replace("}","")
+	param = make_params(ans, att)
+	if param == {}:
+		return ""
+	hint_text, hint_answer = get_conditional_hints(hint_text_id, i, param)
+	if hint_text and hint_answer:
+		hint = hint_format.format_c_hint(hint_text, hint_text_id, hint_answer, i)
+		return hint
+
+	return ""
 
 def get_hint_w_variables(ans, att, hint_text_id, i, variables):
 	"""
