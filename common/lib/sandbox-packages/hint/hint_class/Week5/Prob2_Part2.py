@@ -1,6 +1,7 @@
 class Prob2_Part2:
     """
     Author: Geovonni Najera
+    Edited: Zhen Zhai
     Date: 10/25/2016
     """
 
@@ -15,7 +16,7 @@ class Prob2_Part2:
 
         hint = 'Recall notes on mixtures.'
         
-        return hint + ' If B(x) was a PDF over the interval [0,3] and it had a componment weight of 7, what would the CDF be at x=3', '7'
+        return hint + ' If F(x) is a CDF of N(u,1) with a componment weight of 1, what would the value F(u)?', '0.5'
 
     def get_problems(self):
         self.problem_list = ["CumulativeDistributionFunctions/cdf_norm_point/part2"]

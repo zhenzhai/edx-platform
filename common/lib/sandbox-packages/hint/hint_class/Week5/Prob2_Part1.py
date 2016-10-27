@@ -1,6 +1,7 @@
 class Prob2_Part1:
     """
     Author: Geovonni Najera
+    Edited: Zhen Zhai
     Date: 10/25/2016
     """
 
@@ -13,9 +14,9 @@ class Prob2_Part1:
 
         
 
-        hint = 'Recall how standard deviation relates to the distribution of a normal distribution.'
+        hint = 'According to the standard normal CDF table for N(u, 1) (can be found online),'
         
-        return hint + ' How many lengths of std would cover approximately 99.7% of the distribution?', '3'
+        return hint + ' CDF at u has the value of 0.5. CDF at u+3 has a value very close to 1. What value does CDF has at u-1?', '0.16'
 
     def get_problems(self):
         self.problem_list = ["CumulativeDistributionFunctions/cdf_norm_point/part1"]

@@ -14,10 +14,10 @@ class Prob1_Part4:
         hint = ''
 
         try:
-            hint = 'Suppose F = 0.4X + kY where X and Y are two random variable with certain distribution.'
+            hint = 'Suppose F = 0.4X + kY where X and Y are two random variable with certain distribution. '
 
             if len(hint) > 0:
-                return hint + ',' 'Now, you know that the component weight of X is 0.4, then what is the component weight of Y?', '0.6'
+                return hint + 'Now, you know that the component weight of X is 0.4, then what is the component weight of Y?', '0.6'
             else:
                 return '', ''
         except Exception:

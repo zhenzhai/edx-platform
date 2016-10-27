@@ -3,6 +3,7 @@
 class Prob3_Part1:
 	"""
 	Author: Vrushali Samant
+	Edited: Zhen Zhai
 	Date: 10/24/2016
 	"""
 
@@ -12,7 +13,8 @@ class Prob3_Part1:
 		self.att_tree = params['att_tree'] #attempt tree
 		self.ans_tree = params['ans_tree'] #solution tree
 
-		return "Is the spread of the normal component 1. narrow; 2. average; 3. wide? (Enter the number corresponding to the correct answer).", "1."
+		return "According to the standard normal CDF table for N(0, 1) (can be found online),\
+		 at what value will the CDF get very close to 1?", "3"
 
 	def get_problems(self):
 		self.problem_list = ["CumulativeDistributionFunctions/cdf_norm_uni"]

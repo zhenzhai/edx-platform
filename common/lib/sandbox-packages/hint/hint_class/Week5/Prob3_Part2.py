@@ -3,6 +3,7 @@
 class Prob3_Part2:
 	"""
 	Author: Vrushali Samant
+	Edited: Zhen Zhai
 	Date: 10/24/2016
 	"""
 
@@ -12,7 +13,7 @@ class Prob3_Part2:
 		self.att_tree = params['att_tree'] #attempt tree
 		self.ans_tree = params['ans_tree'] #solution tree
 
-		return "If the component weight of the normal distribution is .45, what is the weight then of the uniform distrbution?",".55"
+		return "If the component weight of the uniform distribution is 0.45, what is the weight then of the normal distrbution?","0.55"
 
 	def get_problems(self):
 		self.problem_list = ["CumulativeDistributionFunctions/cdf_norm_uni"]
