@@ -17,7 +17,7 @@ class Prob6_Part1:
 		try:
 			if '-' not in self.attempt:
 				hint='You need to compute the probability of temperature falling within a range. Do you need to reverse Chebyshev\'s equation?'
-			else if '100' not in self.attempt:
+			elif '100' not in self.attempt:
 				hint='Please enter a percentage i.e. multiply your probability by 100.'
 			
 			if len(hint)>0:
