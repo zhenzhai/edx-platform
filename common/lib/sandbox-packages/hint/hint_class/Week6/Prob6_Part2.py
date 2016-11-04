@@ -1,6 +1,7 @@
 class Prob6_Part2:
 	"""
 	Author: Sunil Raiyani
+	Edited: Zhen Zhai
 	Date: 10/31/2016
 	"""
 
@@ -16,10 +17,10 @@ class Prob6_Part2:
 		
 		try:
 			if '0.5' not in self.attempt and '1/2' not in self.attempt:
-				hint='You are concerned with only half part of the probability in Chebyshev\'s equation now i.e P(X-E[X]>=a) (without the modulus) How will it affect your equation?'
+				hint='The question is only asking for one of the tail probability in Chebyshev\'s equation. How will it affect your equation?'
 			
 			if len(hint)>0:
-                                return hint+' If P(|X|>=a) <= 0.6 and the distribution is symmetric around 0, what is P(X>=a)?','0.3'
+                                return hint+' If P(|X-u|>=a) <= 0.6 and the distribution is symmetric around u, what is P(X-u >= a)?','0.3'
                         else:
                                 return '',''
 		except Exception:
