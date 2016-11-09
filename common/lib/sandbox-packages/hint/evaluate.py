@@ -3,7 +3,7 @@ from hint_class_helpers.get_numerical_answer import get_numerical_answer
 from hint_class_helpers.find_matches import find_matches
 from hint_class_helpers.find_matches_w_variables import find_matches_w_variables
 
-def check_w_tol(ans, att, tol = 1+1e-5):
+def check_w_tol(ans, att, tol):
 	if ans == 0:
 		if att == 0:
 			return True
@@ -17,7 +17,7 @@ def check_w_tol(ans, att, tol = 1+1e-5):
 			return False
 
 
-def evaluate(ans, att):
+def evaluate(ans, att, tol = 1+1e-5):
 	ans = ans.strip("\[")
   	ans = ans.strip("\]")
   	ans = ans.replace("{","")
@@ -30,12 +30,12 @@ def evaluate(ans, att):
 		return False
 	att_value = get_numerical_answer(p['att_tree'])
 	ans_value = get_numerical_answer(p['ans_tree'])
-	final_pairs = find_matches(p)
+	final_pairs = find_matches(p, tol)
 	#logger.info("output matching: {0}.".format(final_pairs))
 
 	if len(final_pairs) == 1 and final_pairs[0][0] == 'R':
 		return True
-	elif check_w_tol(ans_value, att_value):
+	elif check_w_tol(ans_value, att_value, tol):
 		return True
 	else:
 		return False

@@ -43,7 +43,7 @@ def get_top_node(tree):
 
 
 
-def find_Hits(List,tol = 1+1e-5):
+def find_Hits(List,tol):
     """ Given a combined list of subtrees from both attempt and answer,
     sorted by value, find the matching pairs of trees
     tol is the tolerance used to define which pairs of values match. 
@@ -63,6 +63,8 @@ def find_Hits(List,tol = 1+1e-5):
         # get the tree node
         node1 = get_top_node(item1)
         node2 = get_top_node(item2)
+        print '1 ', item1
+        print '2 ', item2
         if item1[1]!=item2[1] and ratio < tol and ratio > (1/tol) and node1 == node2:
             if item1[1]=='c':
                 Hits.append((item1,item2))
@@ -115,7 +117,7 @@ def find_dominating_hits(Hits,answer,attempt):
 
 
 
-def find_matches(params):
+def find_matches(params, tol = 1+1e-5):
     """ return a list of hits """
     attempt=params['attempt']
     attempt_tree=params['att_tree']
@@ -127,10 +129,8 @@ def find_matches(params):
 
     # sort by value
     combined_list=sorted(answer_list+attempt_list,key=lambda x: (x[0],len(x[2])))
-
     # find all hits
-    Hits=find_Hits(combined_list)
-
+    Hits=find_Hits(combined_list, tol)
     # eliminate dominating hits
     final_matches=find_dominating_hits(Hits,answer,attempt)
     
