@@ -16,7 +16,7 @@ class Prob6_Part9:
 
         try:
             hint = 'The Expectation of X is the sum of all X values times the probability of that value.'
-			return hint + 'If X is a flip of an unbiased coin, and heads = 1, what is E[X]??', '0.5'
+            return hint + 'If X is a flip of an unbiased coin, and heads = 1, what is E[X]??', '0.5'
 
         except Exception:
             return '',''

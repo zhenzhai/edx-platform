@@ -16,7 +16,7 @@ class Prob6_Part13:
 
         try:
             hint = 'Recall how to find the correlation coefficient between X and Y.'
-			return hint + ' If Cov(X,Y) is 4, sqrt(Var(X)) is 2 and sqrt(Var(Y)) is 2, what is the correlation coefficient between X and Y?', '1'
+            return hint + ' If Cov(X,Y) is 4, sqrt(Var(X)) is 2 and sqrt(Var(Y)) is 2, what is the correlation coefficient between X and Y?', '1'
 
         except Exception:
             return '',''

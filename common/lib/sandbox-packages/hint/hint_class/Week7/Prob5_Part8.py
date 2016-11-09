@@ -16,7 +16,7 @@ class Prob5_Part8:
 
         try:
             hint = 'The marginal distribution of Y is the sum of all X values.'
-			return hint + ' If P(X=1,Y=2) = P(X=2,Y=2) = P(X=3,Y=2) = 0.1, what is P(Y=2)?', '0.3'
+            return hint + ' If P(X=1,Y=2) = P(X=2,Y=2) = P(X=3,Y=2) = 0.1, what is P(Y=2)?', '0.3'
 
         except Exception:
             return '',''

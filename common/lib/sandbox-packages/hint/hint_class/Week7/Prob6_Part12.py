@@ -16,7 +16,7 @@ class Prob6_Part12:
 
         try:
             hint = 'Recall the formula to find covariance.'
-			return hint + ' If E(XY) is 4, E(X)E(Y) is 2, what is Cov(X,Y)?', '2'
+            return hint + ' If E(XY) is 4, E(X)E(Y) is 2, what is Cov(X,Y)?', '2'
 
         except Exception:
             return '',''

@@ -16,7 +16,7 @@ class Prob7_Part5:
 
         try:
             hint = 'The Variance of X is E[X^2] - (E[X})^2. '
-			return hint + 'If X is a flip of an unbiased coin, and heads = 1, what is Var[X]??', '0.25'
+            return hint + 'If X is a flip of an unbiased coin, and heads = 1, what is Var[X]??', '0.25'
 
         except Exception:
             return '',''
