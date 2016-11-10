@@ -74,6 +74,11 @@ def get_hint_w_variables(ans, att, hint_text_id, i, variables):
 		hint = hint_format.format_u_hint(hint, hint_text_id, i)
 		return hint
 
+	hint_text, hint_answer = get_conditional_hints(hint_text_id, i, param)
+	if hint_text and hint_answer:
+		hint = hint_format.format_c_hint(hint_text, hint_text_id, hint_answer, i)
+		return hint
+
 	hint = get_last_universal_hints(param)
 	if hint:
 		hint = hint_format.format_u_hint(hint, hint_text_id, i)

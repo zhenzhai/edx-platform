@@ -39,8 +39,10 @@ def format_c_hint(hint_text, hint_id, hint_answer, i):
 		#logger.error("index out of range in foramt_c_hint")
 		return ""
 
-	hint_text = hint_text.replace(">", "&gt;")
-	hint_text = hint_text.replace("<", "&lt;")
+	if ">" in hint_text and "<" not in hint_text:
+		hint_text = hint_text.replace(">", "&gt;")
+	elif "<" in hint_text and ">" not in hint_text
+		hint_text = hint_text.replace("<", "&lt;")
 
 	textHint_id = hint_id[i] + "_textHint"
 	hintDiv_id = hint_id[i] + "_hintDiv"
