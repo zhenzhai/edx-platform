@@ -41,7 +41,7 @@ def format_c_hint(hint_text, hint_id, hint_answer, i):
 
 	if ">" in hint_text and "<" not in hint_text:
 		hint_text = hint_text.replace(">", "&gt;")
-	elif "<" in hint_text and ">" not in hint_text
+	elif "<" in hint_text and ">" not in hint_text:
 		hint_text = hint_text.replace("<", "&lt;")
 
 	textHint_id = hint_id[i] + "_textHint"
