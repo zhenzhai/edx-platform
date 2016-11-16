@@ -12,7 +12,7 @@ class Prob4_Part3:
 		self.att_tree = params['att_tree'] #attempt tree
 		self.ans_tree = params['ans_tree'] #solution tree
 		
-		if '1-' in m:
+		if '1-' in self.attempt:
 			return "Recall the question says 'at least' - so instead of computing the CDF, we calculate 1-CDF = 1-(1-e^(-lamda*delta))=e^(-lamda*delta). Given that lambda=1/2 and delta=4, P(X>=a)=e^_____", "(-(1/2)*(4))"
 	
 	def get_problems(self):

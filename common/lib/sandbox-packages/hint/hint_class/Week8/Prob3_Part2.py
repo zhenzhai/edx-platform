@@ -15,11 +15,11 @@ class Prob3_Part2:
 
         try:
             if not '/' in self.attempt or not '*' in self.attempt or not '!' in self.attempt:
-                hint = 'In order to calculate P(X=k), you need to know the rate parameter and k.'
+                hint = 'Suppose you want to calculate the probability that your square will receive ' \
+                       'exactly 10 hits in 24 hours. '
 
             if len(hint) > 0:
-                return hint + 'If you want to calculate the probability that your square will receive ' \
-                              'exactly 10 hits in 24 hours, what is the value of k you should use? ', '10'
+                return hint + 'What is the value of k you should use for P(X=k)?', '10'
             else:
                 return '', ''
 

@@ -15,8 +15,8 @@ class Prob3_Part4:
 
         try:
             if not '/' in self.attempt:
-                hint = 'Suppose you want to calculate the probability that the time between consecutive ' \
-                       'hits will be shorter than 1 hours.'
+                hint = 'Assume you want to calculate the prob that the time between consecutive hits ' \
+                       'will be shorter than 1 hours and the time unit is 24-hour period;'
 
             if len(hint) > 0:
                 return hint + 'What is the time difference between two consecutive bombs?', '1/24'

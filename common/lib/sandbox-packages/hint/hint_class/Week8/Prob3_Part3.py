@@ -15,12 +15,11 @@ class Prob3_Part3:
 
         try:
             if not '/' in self.attempt or not '*' in self.attempt or not '!' in self.attempt:
-                hint = 'Assume the probability that a square will receive exactly 1 hits in 24 hours is ' \
-                       '1/2, and there are total of 10 equal area squares;'
+                hint = 'Assume the prob that a square receives exactly 1 hit in 24 hours is ' \
+                       '1/2, and there are 10 equal area squares;'
 
             if len(hint) > 0:
-                return hint + 'What is the expected number of squares that will receive exactly 1 hits in ' \
-                              '24 hours?', '5'
+                return hint + 'What is the expected number of squares that will receive 1 hits in 24 hrs?', '5'
             else:
                 return '', ''
 

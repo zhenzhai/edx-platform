@@ -20,7 +20,7 @@ class Prob3_Part1:
 
             if len(hint) > 0:
                 return hint + 'For each block, what is the expected number of bombs that will land on it' \
-                              'within a day?', '10'
+                              ' in a day?', '10'
             else:
                 return '', ''
 
