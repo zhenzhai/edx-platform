@@ -10,7 +10,7 @@ def check_w_tol(ans, att, tol):
 		else:
 			return False
 	else:
-		ratio = att/ans
+		ratio = float(att)/ans
 		if ratio < tol and ratio > (1/tol):
 			return True
 		else:
